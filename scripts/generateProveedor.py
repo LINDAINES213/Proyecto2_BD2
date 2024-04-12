@@ -32,8 +32,10 @@ def loadProveedor(uri, usuario, contraseña):
         with open(csv_path, 'r') as file:
             lines = file.readlines()
             headers = lines[0].strip().split(',')  # Leer los encabezados del CSV
+            headers = [header.strip().replace('"', '') for header in headers]
             for line in lines[1:]:
                 data = line.strip().split(',')  # Obtener los datos de cada línea
+                data = [element.strip().replace('"', '') for element in data]
                 properties = {header: value for header, value in zip(headers, data)}
                 session.run(f"CREATE (n:{label} $properties)", parameters={"properties": properties})
 
