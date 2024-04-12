@@ -19,7 +19,6 @@ def get_personal(label):
         nodes_info.append(node_properties)
 
     return {"response": nodes_info}
-    return {"response": [{"name": row["name"], "Count": row["count"]} for row in results]}
 
 @personal.post("/create_personal")
 def create_personal(personal_data: dict):
