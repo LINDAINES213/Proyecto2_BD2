@@ -44,7 +44,7 @@ def create_personal(personal_data: dict):
     # Recopilar las propiedades del nuevo nodo creado
     created_user_info = []
     for record in result:
-        created_user_info.append(dict(record["u"]))
+        created_user_info.append(dict(record["p"]))
 
     return {"response": created_user_info}
 
@@ -75,7 +75,7 @@ def update_personal(dpi: int, updated_data: dict):
     # Recopilar las propiedades del nodo actualizado
     updated_user_info = []
     for record in result:
-        updated_user_info.append(dict(record["u"]))
+        updated_user_info.append(dict(record["p"]))
 
     return {"response": "node updated"}
 
