@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from dotenv import load_dotenv
 from routes import personal
 
 app = FastAPI()
