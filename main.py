@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from dotenv import load_dotenv
-from routes import users
+from routes import personal
 
 app = FastAPI()
 
-app.include_router(users.users)
+app.include_router(personal.personal)
 
 @app.get("/")
 def default():
