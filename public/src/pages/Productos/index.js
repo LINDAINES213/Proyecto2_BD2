@@ -1,3 +1,3 @@
-import CRUDoperations from "./CRUDoperations"
+import Productos from "./Productos"
 
-export default CRUDoperations
+export default Productos

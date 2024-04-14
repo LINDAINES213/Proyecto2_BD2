@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { buttonContainer, inputContainer, inputText, selectText, crud, leftAligned, editButton, scrollableTable,
   formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit
- } from './CRUDoperations.module.css'
+ } from './Productos.module.css'
 import { Loading } from '../../components'
 import axios from 'axios'
 
-const CRUDoperations = () => {
+const Productos = () => {
   const [users, setUsers] = useState([])
   const [id, setId] = useState(0)
   const [name, setName] = useState('')
@@ -338,4 +338,4 @@ const CRUDoperations = () => {
   )
 }
 
-export default CRUDoperations
+export default Productos

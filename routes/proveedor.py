@@ -10,7 +10,7 @@ def get_proveedor():
     driver_neo4j = connection()
     session = driver_neo4j.session()
     # Consulta Cypher con un parámetro
-    query = f'MATCH (n:Proveedor) RETURN n.id AS id, n.nombre AS nombre, n.direccion AS direccion, n.tipo_de_producto AS tipoDeProducto, n.telefono AS telefono, n.email AS email' #n.name AS name, COUNT(n) AS count
+    query = f'MATCH (n:Proveedor) RETURN n' #n.name AS name, COUNT(n) AS count
     # Pasando el valor del parámetro label
     results = session.run(query)
     # Recopilando todas las propiedades de cada nodo

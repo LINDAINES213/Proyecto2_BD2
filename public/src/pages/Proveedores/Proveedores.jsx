@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
   formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider
  } from './Proveedores.module.css'
 
 
-function ProveedorComponent() {
+ const Proveedor = () => {
   const [proveedores, setProveedores] = useState([])
   const [id, setId] = useState(0)
   const [nombre, setNombre] = useState('')
@@ -19,6 +20,7 @@ function ProveedorComponent() {
 
 
   useEffect(() => {
+    setLoading(true)
     axios.get('http://127.0.0.1:8001/nodes/Proveedor')
       .then(response => {
         setProveedores(response.data.response);
@@ -82,11 +84,13 @@ function ProveedorComponent() {
 
   const fetchData = (limit) => {
   
+    setLoading(true)
+
     const parsedLimit = parseInt(limit)
     const isLimitInteger = !isNaN(parsedLimit) && Number.isInteger(parsedLimit)  
     const url = isLimitInteger
-      ? `https://frail-maryanne-uvg.koyeb.app/?limit=${limit}`
-      : 'https://frail-maryanne-uvg.koyeb.app/'
+      ? `http://127.0.0.1:8001/?limit=${limit}`
+      : 'http://127.0.0.1:8001/'
   
     axios.get(url)
       .then((res) => {
@@ -101,6 +105,14 @@ function ProveedorComponent() {
   }
 
   const renderTable = () => {
+    if (loading) {
+      console.log("info", proveedores)
+      return (
+        <div className={centeredDiv}>
+          Loading
+        </div>
+      )
+    }
     switch (selectedOption) {
       case 'verUsuarios':
         return (
@@ -127,6 +139,12 @@ function ProveedorComponent() {
               </div>
               <div className={inputContainer}>
                     <input className={inputText} value={tipo_de_producto} onChange={(e) => setTipo_de_producto(e.target.value)} type="text" placeholder='Tipo de Producto' />
+                    <div className={buttonContainer}>
+                      <button className=" btn btn-sm btn-primary waves-effect waves-light right" type="submit" name="action"> Enviar  
+                      
+                      <i className="material-icons right"> send</i>
+                      </button>
+                    </div>
               </div>
             </form>
           </div>        
@@ -178,4 +196,4 @@ function ProveedorComponent() {
   )
 }
 
-export default ProveedorComponent
+export default Proveedor
