@@ -1,15 +1,16 @@
+import uuid
 from fastapi import APIRouter
 from database.db import connection
 
 # Definir un enrutador de API para la sección de usuarios
-personal = APIRouter()
+cliente = APIRouter()
 
-@personal.get("/nodes/Personal")
-def get_personal():
+@cliente.get("/nodes/Cliente")
+def get_cliente():
     driver_neo4j = connection()
     session = driver_neo4j.session()
     # Consulta Cypher con un parámetro
-    query = f'MATCH (n:Personal) RETURN n' #n.name AS name, COUNT(n) AS count
+    query = f'MATCH (n:Cliente) RETURN n' #n.name AS name, COUNT(n) AS count
     # Pasando el valor del parámetro label
     results = session.run(query)
     # Recopilando todas las propiedades de cada nodo
@@ -20,26 +21,28 @@ def get_personal():
 
     return {"response": nodes_info}
 
-@personal.post("/create_personal")
-def create_personal(personal_data: dict):
+@cliente.post("/create_cliente")
+def create_cliente(cliente_data: dict):
     driver_neo4j = connection()
     session = driver_neo4j.session()
 
+    id = str(uuid.uuid4())
+
     # Extraer los datos del usuario del cuerpo de la solicitud
-    dpi = personal_data.get("DPI")
-    nombre = personal_data.get("nombre")
-    edad = personal_data.get("Edad")
-    email = personal_data.get("email")
-    telefono = personal_data.get("telefono")
-    estado = personal_data.get("estado")
-    tipo_de_licencia = personal_data.get("Tipo_de_licencia")
+    correo = cliente_data.get("correo")
+    nombre = cliente_data.get("nombre")
+    direccion = cliente_data.get("direccion")
+    nit = cliente_data.get("NIT")
+    telefono = cliente_data.get("telefono")
+
+    #(:Cliente {correo: "eddie84@example.com", direccion: "724 Samuel Village Apt. 263 Williamston  NY 01844", NIT: 8634223727, id: "105", telefono: "+1-239-298-4574x71509", nombre: "Gary Powers"})
 
     # Consulta Cypher para crear un nodo de usuario
-    query = '''CREATE (p:Personal {DPI: $dpi, nombre: $nombre, edad: $edad, email: $email, telefono: $telefono, estado: $estado, Tipo_de_licencia: $tipo_de_licencia})
+    query = '''CREATE (p:Cliente {nombre: $nombre, correo: $correo, direccion: $direccion, telefono: $telefono, nit: $nit, id: $id})
     RETURN p'''
 
     # Ejecutar la consulta Cypher con los parámetros proporcionados
-    result = session.run(query, dpi=dpi, nombre=nombre, edad=edad, email=email, telefono=telefono, estado=estado, tipo_de_licencia=tipo_de_licencia)
+    result = session.run(query, id=id, nombre=nombre, correo=correo, direccion=direccion, telefono=telefono, nit=nit)
 
     # Recopilar las propiedades del nuevo nodo creado
     created_user_info = []
@@ -48,29 +51,27 @@ def create_personal(personal_data: dict):
 
     return {"response": created_user_info}
 
-@personal.put("/update_personal/{dpi}")
-def update_personal(dpi: int, updated_data: dict):
+@cliente.put("/update_cliente/{id}")
+def update_cliente(id: str, updated_data: dict):
     driver_neo4j = connection()
     session = driver_neo4j.session()
 
     # Extraer los datos actualizados del cuerpo de la solicitud
-    dpi = updated_data.get("DPI")
+    correo = updated_data.get("correo")
     nombre = updated_data.get("nombre")
-    edad = updated_data.get("Edad")
-    email = updated_data.get("email")
+    direccion = updated_data.get("direccion")
+    nit = updated_data.get("NIT")
     telefono = updated_data.get("telefono")
-    estado = updated_data.get("estado")
-    tipo_de_licencia = updated_data.get("Tipo_de_licencia")
 
     # Consulta Cypher para actualizar el nodo de usuario
     query = '''
-    MATCH (p:Personal {DPI: $dpi})
-    SET p.nombre = $nombre, p.Edad = $edad, p.email = $email, p.telefono = $telefono, p.estado = $estado, p.Tipo_de_licencia = $tipo_de_licencia
+    MATCH (p:Cliente {id: $id})
+    SET p.nombre = $nombre, p.correo = $correo, p.direccion = $direccion, p.telefono = $telefono, p.nit = $nit
     RETURN p
     '''
 
     # Ejecutar la consulta Cypher con los parámetros proporcionados
-    result = session.run(query, nombre=nombre, edad=edad, email=email, telefono=telefono, estado=estado, tipo_de_licencia=tipo_de_licencia, dpi=dpi)
+    result = session.run(query, nombre=nombre, direccion=direccion, correo=correo, telefono=telefono, nit=nit, id=id)
 
     # Recopilar las propiedades del nodo actualizado
     updated_user_info = []
@@ -79,18 +80,18 @@ def update_personal(dpi: int, updated_data: dict):
 
     return {"response": "node updated"}
 
-@personal.delete("/delete_personal/{dpi}")
-def delete_personal(dpi: int):
+@cliente.delete("/delete_cliente/{id}")
+def delete_cliente(id: str):
     driver_neo4j = connection()
     session = driver_neo4j.session()
 
     # Consulta Cypher para eliminar el nodo de usuario
     query = '''
-    MATCH (p:Personal {DPI: $dpi})
+    MATCH (p:Cliente {id: $id})
     DELETE p
     '''
 
     # Ejecutar la consulta Cypher con el parámetro proporcionado
-    session.run(query, dpi=dpi)
+    session.run(query, id=id)
 
     return {"response": "Person deleted successfully"}
