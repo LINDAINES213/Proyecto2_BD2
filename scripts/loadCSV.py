@@ -6,6 +6,15 @@ from generateCliente import *
 from generateAlmacen import *
 from generateREABASTECE import *
 from generateOrdenDeCompra import *
+from generateRECIBE import *
+from generateSOLICITA import *
+from generateVehiculo import *
+from generateTIENE_ASIGNADO import *
+from generateENTREGA import *
+from generatePERTENECE_A import *
+from generatePublicidad import *
+from generatePROMOCIONA_PUBLICIDAD import *
+from generateBRINDA_INFORMACION import *
 
 # Establecer la conexión con la base de datos Neo4j
 uri = "neo4j+s://f6120b34.databases.neo4j.io"
@@ -27,4 +36,22 @@ contraseña = "mmHnKEyuPplktl35zNEi-q31mR4qBY-4hFKAXN2JGhY"
 #generateREABASTECE()
 #loadREABASTECE(uri, usuario, contraseña)
 #generateOrdenDeCompra()
-loadOrdenDeCompra(uri, usuario, contraseña)
+#loadOrdenDeCompra(uri, usuario, contraseña)
+#generateRECIBE()
+#loadRECIBE(uri, usuario, contraseña)
+#generateSOLICITA()
+#loadSOLICITA(uri, usuario, contraseña)
+#generateVehiculo()
+#loadVehiculo(uri, usuario, contraseña)
+#generateTIENE_ASIGNADO()
+#loadTIENE_ASIGNADO(uri, usuario, contraseña)
+#generateENTREGA()
+#loadENTREGA(uri, usuario, contraseña)
+#generatePERTENECE_A()
+#loadPERTENECE_A(uri, usuario, contraseña)
+#generatePublicidad()
+#loadPublicidad(uri, usuario, contraseña)
+#generatePROMOCIONA_PUBLICIDAD()
+#loadPROMOCIONA_PUBLICIDAD(uri, usuario, contraseña)
+#generateBRINDA_INFORMACION()
+loadBRINDA_INFORMACION(uri, usuario, contraseña)

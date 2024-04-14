@@ -80,7 +80,7 @@ def loadOrdenDeCompra(uri, usuario, contraseña):
                     elif header == "cantidad":  # Convertir a lista de enteros
                         list_values = value.split(':')
                         properties[header] = f"[{', '.join(list_values)}]"
-                    elif header in ["id", "cantidad_total"]:  # Tratar como enteros
+                    elif header in ["cantidad_total"]:  # Tratar como enteros
                         properties[header] = int(value)
                     elif header in ["envio", "total"]:  # Tratar como flotantes
                         properties[header] = float(value)
