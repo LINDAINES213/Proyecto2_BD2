@@ -5,12 +5,12 @@ from database.db import connection
 # Definir un enrutador de API para la sección de usuarios
 proveedor = APIRouter()
 
-@proveedor.get("/nodes/{label}")
+@proveedor.get("/nodes/Proveedor")
 def get_proveedor(label):
     driver_neo4j = connection()
     session = driver_neo4j.session()
     # Consulta Cypher con un parámetro
-    query = f'MATCH (n:{label}) RETURN n' #n.name AS name, COUNT(n) AS count
+    query = f'MATCH (n:Proveedor) RETURN n' #n.name AS name, COUNT(n) AS count
     # Pasando el valor del parámetro label
     results = session.run(query, label=label)
     # Recopilando todas las propiedades de cada nodo
