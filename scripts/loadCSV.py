@@ -8,6 +8,9 @@ from generateREABASTECE import *
 from generateOrdenDeCompra import *
 from generateRECIBE import *
 from generateSOLICITA import *
+from generateVehiculo import *
+from generateTIENE_ASIGNADO import *
+from generateENTREGA import *
 
 # Establecer la conexión con la base de datos Neo4j
 uri = "neo4j+s://f6120b34.databases.neo4j.io"
@@ -33,4 +36,10 @@ contraseña = "mmHnKEyuPplktl35zNEi-q31mR4qBY-4hFKAXN2JGhY"
 #generateRECIBE()
 #loadRECIBE(uri, usuario, contraseña)
 #generateSOLICITA()
-loadSOLICITA(uri, usuario, contraseña)
+#loadSOLICITA(uri, usuario, contraseña)
+#generateVehiculo()
+#loadVehiculo(uri, usuario, contraseña)
+#generateTIENE_ASIGNADO()
+#loadTIENE_ASIGNADO(uri, usuario, contraseña)
+#generateENTREGA()
+loadENTREGA(uri, usuario, contraseña)
