@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
   formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider
- } from './Cliente.module.css'
+ } from './Almacen.module.css'
 
 
- const Cliente = () => {
-  const [cliente, setCliente] = useState([])
+const Almacen = () => {
+  const [almacen, setAlmacen] = useState([])
   const [id, setId] = useState(0)
-  const [nombre, setNombre] = useState('')
-  const [correo, setCorreo] = useState('')
+  const [fecha_de_inauguracion, setFecha_de_inauguracion] = useState('')
+  const [presupuesto, setPresupuesto] = useState('')
   const [direccion, setDireccion] = useState('')
-  const [telefono, setTelefono] = useState('')
-  const [NIT, setNIT] = useState('')
+  const [capacidad_vehiculos, setCapacidad_vehiculos] = useState('')
+  const [capacidad_total, setCapacidad_total] = useState('')
   const [limit, setLimit] = useState()
   const [selectedOption, setSelectedOption] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
@@ -20,15 +20,15 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
 
   useEffect(() => {
     setLoading(true)
-    axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Cliente')
+    axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Almacen')
       .then(response => {
-        setCliente(response.data.response);
+        setAlmacen(response.data.response);
         setId(0)
-        setNombre('')
-        setCorreo('')
+        setFecha_de_inauguracion('')
+        setPresupuesto('')
         setDireccion('')
-        setTelefono('')
-        setNIT('')
+        setCapacidad_vehiculos('')
+        setCapacidad_total('')
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
@@ -40,40 +40,40 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   const submit = (event, id) => {
     event.preventDefault()
     if (id === 0) {
-      axios.post("https://frail-maryanne-uvg.koyeb.app/create_cliente", {
-        nombre,
-        correo,
+      axios.post("https://frail-maryanne-uvg.koyeb.app/create_almacen", {
+        fecha_de_inauguracion,
+        presupuesto,
         direccion,
-        telefono,
-        NIT
+        capacidad_vehiculos,
+        capacidad_total
       }).then(() => {
         fetchData()
-        setNombre('')
-        setCorreo('')
+        setFecha_de_inauguracion('')
+        setPresupuesto('')
         setDireccion('')
-        setTelefono('')
-        setNIT('')
+        setCapacidad_vehiculos('')
+        setCapacidad_total('')
       })
     } else {
-      axios.put(`https://frail-maryanne-uvg.koyeb.app/update_cliente/${id}`, {
-        nombre,
-        correo,
+      axios.put(`https://frail-maryanne-uvg.koyeb.app/update_almacen/${id}`, {
+        fecha_de_inauguracion,
+        presupuesto,
         direccion,
-        telefono,
-        NIT
+        capacidad_vehiculos,
+        capacidad_total
       }).then(() => {
         fetchData()
-        setNombre('')
-        setCorreo('')
+        setFecha_de_inauguracion('')
+        setPresupuesto('')
         setDireccion('')
-        setTelefono('')
-        setNIT('')
+        setCapacidad_vehiculos('')
+        setCapacidad_total('')
       })
     }
   }
   
   const deleteData = (id) => {
-    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_cliente/${id}`)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_almacen/${id}`)
       .then(() => {
         fetchData()
       })
@@ -93,7 +93,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   
     axios.get(url)
       .then((res) => {
-        setCliente(res.data)
+        setAlmacen(res.data)
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
@@ -105,7 +105,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
 
   const renderTable = () => {
     if (loading) {
-      console.log("info", cliente)
+      console.log("info", almacen)
       return (
         <div className={centeredDiv}>
           Loading
@@ -117,25 +117,25 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
         return (
           <div>
             <div className='col lg-6 mt-5'>
-            <h3>Añadir Cliente:</h3>
+            <h3>Añadir Almacen:</h3>
             <form onSubmit={(e) => submit(e, id)}>
               <div className={formGrid}>
                 <div className={inputContainer}>
-                    <input className={inputText} value={nombre} onChange={(e) => setNombre(e.target.value)} type="text" 
-                      placeholder='Nombre' />
+                    <input className={inputText} value={fecha_de_inauguracion} onChange={(e) => setFecha_de_inauguracion(e.target.value)} type="date" 
+                      placeholder='Fecha de Inauguracion (YY-MM-DD)' />
                 </div>
                 <div className={inputContainer}>
-                    <input className={inputText} value={correo} onChange={(e) => setCorreo(e.target.value)} type="number" placeholder='Correo' />
+                    <input className={inputText} value={presupuesto} onChange={(e) => setPresupuesto(e.target.value)} type="number" placeholder='Presupuesto' />
                 </div>
                 <div className={inputContainer}>
                     <input className={inputText} value={direccion} onChange={(e) => setDireccion(e.target.value)} type="text" placeholder='Direccion' />
                 </div>
                 <div className={inputContainer}>
-                    <input className={inputText} value={telefono} onChange={(e) => setTelefono(e.target.value)} type="number" placeholder='Telefono' />
+                    <input className={inputText} value={capacidad_vehiculos} onChange={(e) => setCapacidad_vehiculos(e.target.value)} type="number" placeholder='Capacidad de Vehiculos' />
                 </div>
                 <div className={inputContainer}>
                     <input 
-                      className={inputText} value={NIT} onChange={(e) => setNIT(e.target.value)} placeholder='NIT' type='number'
+                      className={inputText} value={capacidad_total} onChange={(e) => setCapacidad_total(e.target.value)} placeholder='Capacidad total' type='number'
                     />
                     <div className={buttonContainer}>
                       <button className=" btn btn-sm btn-primary waves-effect waves-light right" type="submit" name="action"> Enviar  
@@ -149,23 +149,25 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
           <div className={scrollableTable}>
             <table className='table'>
               <thead>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Telefono</th>
+                <th>ID</th>
+                <th>Fecha de Inauguracion</th>
+                <th>Presupuesto</th>
                 <th>Direccion</th>
-                <th>NIT</th>
+                <th>Capacidad Vehiculod</th>
+                <th>Capacidad total</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
 
               </thead>
               <tbody>
-                {cliente.map(rest =>
+                {almacen.map(rest =>
                       <tr key={rest.id}>
-                        <td className={leftAligned}>{rest.nombre}</td>
-                        <td>{rest.correo}</td>
-                        <td>{rest.telefono}</td>
+                        <td className={leftAligned}>{rest.id}</td>
+                        <td>{rest.fecha_de_inauguracion}</td>
+                        <td>{rest.presupuesto}</td>
                         <td>{rest.direccion}</td>
-                        <td>{rest.NIT}</td>
+                        <td>{rest.capacidad_vehiculos}</td>
+                        <td>{rest.capacidad_total}</td>
                         <td>
                           hola
                         </td>
@@ -195,4 +197,4 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   )
 }
 
-export default Cliente
+export default Almacen
