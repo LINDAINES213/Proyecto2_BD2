@@ -23,8 +23,8 @@ function App() {
          selectedMenuItem !== 'Proveedores' &&
          selectedMenuItem !== 'Productos' &&
          selectedMenuItem !== 'Personal' &&
-         selectedMenuItem !== 'Restaurantes' &&
-         selectedMenuItem !== 'Usuarios' && 
+         selectedMenuItem !== 'Clientes' &&
+         selectedMenuItem !== 'Almacen' && 
          selectedMenuItem !== 'Estadísticas' && 
          selectedMenuItem !== 'Perfiles' && <p>Contenido no definido.</p>}
       </Content>
