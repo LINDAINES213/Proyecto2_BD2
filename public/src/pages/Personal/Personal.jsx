@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
   formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider
- } from './Productos.module.css'
+ } from './Personal.module.css'
 
 
- const Productos = () => {
+ const Personal = () => {
   const [productos, setProductos] = useState([])
   const [id, setId] = useState(0)
   const [nombre, setNombre] = useState('')
@@ -195,4 +195,4 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   )
 }
 
-export default Productos
+export default Personal

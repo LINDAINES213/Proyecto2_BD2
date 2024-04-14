@@ -21,7 +21,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
 
   useEffect(() => {
     setLoading(true)
-    axios.get('http://127.0.0.1:8001/nodes/Proveedor')
+    axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Proveedor')
       .then(response => {
         setProveedores(response.data.response);
         setId(0)
@@ -41,7 +41,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   const submit = (event, id) => {
     event.preventDefault()
     if (id === 0) {
-      axios.post("http://127.0.0.1:8001/create_proveedor", {
+      axios.post("https://frail-maryanne-uvg.koyeb.app/create_proveedor", {
         nombre,
         direccion,
         telefono,
@@ -56,7 +56,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
         setTipo_de_producto('')
       })
     } else {
-      axios.put(`http://127.0.0.1:8001/update_proveedor/${id}`, {
+      axios.put(`https://frail-maryanne-uvg.koyeb.app/update_proveedor/${id}`, {
         nombre,
         direccion,
         telefono,
@@ -74,7 +74,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   }
   
   const deleteData = (id) => {
-    axios.delete(`http://127.0.0.1:8001/delete_proveedor/${id}`)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_proveedor/${id}`)
       .then(() => {
         fetchData()
       })
@@ -89,8 +89,8 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
     const parsedLimit = parseInt(limit)
     const isLimitInteger = !isNaN(parsedLimit) && Number.isInteger(parsedLimit)  
     const url = isLimitInteger
-      ? `http://127.0.0.1:8001/?limit=${limit}`
-      : 'http://127.0.0.1:8001/'
+      ? `https://frail-maryanne-uvg.koyeb.app/?limit=${limit}`
+      : 'https://frail-maryanne-uvg.koyeb.app/'
   
     axios.get(url)
       .then((res) => {
