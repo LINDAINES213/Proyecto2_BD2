@@ -4,6 +4,7 @@ from generateProducto import *
 from generateTIENE import *
 from generateCliente import *
 from generateAlmacen import *
+from generateREABASTECE import *
 
 # Establecer la conexión con la base de datos Neo4j
 uri = "neo4j+s://f6120b34.databases.neo4j.io"
@@ -20,5 +21,7 @@ contraseña = "mmHnKEyuPplktl35zNEi-q31mR4qBY-4hFKAXN2JGhY"
 #loadTIENE(uri, usuario, contraseña)
 #generateCliente()
 #loadCliente(uri, usuario, contraseña)
-generateAlmacen()
-loadAlmacen(uri, usuario, contraseña)
+#generateAlmacen()
+#loadAlmacen(uri, usuario, contraseña)
+#generateREABASTECE()
+loadREABASTECE(uri, usuario, contraseña)
