@@ -6,6 +6,36 @@
   margin-left: 1vw;
 }
 
+.btnSend {
+  padding: 10px 20px;
+  color: white;
+  background-color: #022f5f;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+
+}
+
+.btaPage {
+  display: flex;
+  padding: 10px 20px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.btnPage[disabled] {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btnPage:hover:not([disabled]) {
+  background-color: #0056b3;
+}
 
 
 .inputContainer {
@@ -45,7 +75,7 @@ height: 80vh;
 }
 
 .inputText {
-  border: 3px solid #ff0000;
+  border: 3px solid #3700ff;
   border-radius: 5px; /* Ajusta el valor según sea necesario para obtener el radio deseado */
   width: 20vw;
   padding: 5px;
@@ -74,7 +104,7 @@ label {
 }
 
 .inputTextSmall {
-  border: 3px solid #ff0000;
+  border: 3px solid #020092;
   border-radius: 5px; /* Ajusta el valor según sea necesario para obtener el radio deseado */
   width: 15vw;
   padding: 5px;
@@ -97,7 +127,7 @@ padding-right: 10px;
 }
 
 input:focus {
-  border: 3px solid #ba0101;
+  border: 3px solid #1c0050;
   outline: none;
 }
 
@@ -105,14 +135,14 @@ h3 {
   margin-top: 0;
   margin-bottom: 2vh;
   display: inline-block; 
-  border-bottom: 3px solid #ff0000; /* Añade la línea de subrayado más gruesa en el enfoque */
+  border-bottom: 3px solid #0004ff; /* Añade la línea de subrayado más gruesa en el enfoque */
 }
 
 h4 {
 margin-top: 0;
 margin-bottom: 2vh;
 display: inline-block; 
-border-bottom: 3px solid #ff0000; /* Añade la línea de subrayado más gruesa en el enfoque */
+border-bottom: 3px solid #1100ff; /* Añade la línea de subrayado más gruesa en el enfoque */
 }
 
 select {
@@ -122,7 +152,7 @@ border: 0;
 }
 
 button {
-  background-color:  #ff0000;
+  background-color:  #0026ff;
   display: flex;
   align-items: center;
   border-radius: 5px;

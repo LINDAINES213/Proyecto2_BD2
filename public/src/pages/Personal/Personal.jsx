@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
-  formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider
+import { buttonContainer, inputContainer, inputText, crud, leftAligned, scrollableTable,
+  formGrid, centeredDiv, btnSend
  } from './Personal.module.css'
+import Loading from '../../components/Loading';
 
-
- const Personal = () => {
+const Personal = () => {
   const [personal, setPersonal] = useState([])
   const [id, setId] = useState(0)
   const [DPI, setDPI] = useState('')
@@ -19,6 +19,25 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   const [selectedOption, setSelectedOption] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageSize = 10; // Número de elementos por página
+
+  // Calcula el rango de datos a mostrar
+  const startIndex = currentPage * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currentData = personal.slice(startIndex, endIndex);
+
+  // Calcula el número total de páginas
+  const pageCount = Math.ceil(personal.length / pageSize);
+
+  // Función para cambiar de página
+  const nextPage = () => {
+    setCurrentPage(current => (current + 1 < pageCount) ? current + 1 : current);
+  };
+
+  const prevPage = () => {
+    setCurrentPage(current => (current - 1 >= 0) ? current - 1 : current);
+  };
 
   useEffect(() => {
     setLoading(true)
@@ -37,6 +56,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
       .catch((error) => {
         console.error('Error fetching data:', error)
       }).finally(() => {
+        console.log("data", personal)
         setLoading(false)
       })
   }, [])
@@ -91,8 +111,6 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
       })
   }
 
-
-
   const fetchData = (limit) => {
   
     setLoading(true)
@@ -120,7 +138,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
       console.log("info", personal)
       return (
         <div className={centeredDiv}>
-          Loading
+          <Loading />
         </div>
       )
     }
@@ -158,7 +176,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
               <div className={inputContainer}>
                     <input className={inputText} value={Tipo_de_licencia} onChange={(e) => setTipo_de_licencia(e.target.value)} placeholder='Tipo de Licencia' type='text' />
                     <div className={buttonContainer}>
-                      <button className=" btn btn-sm btn-primary waves-effect waves-light right" type="submit" name="action"> Enviar  
+                      <button className="btn btn-primary" type="submit" name="action"> Enviar  
                       <i className="material-icons right"> send</i>
                       </button>
               </div>
@@ -168,39 +186,43 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
           <div className={scrollableTable}>
             <table className='table'>
               <thead>
-                <th>DPI</th>
-                <th>Nombre</th>
-                <th>Edad</th>
-                <th>Telefono</th>
-                <th>Email</th>
-                <th>Estado</th>
-                <th>Tipo de Licencia</th>
-                <th>Editar</th>
-                <th>Eliminar</th>
-
+                <tr>
+                  <th>DPI</th>
+                  <th>Nombre</th>
+                  <th>Edad</th>
+                  <th>Telefono</th>
+                  <th>Email</th>
+                  <th>Estado</th>
+                  <th>Tipo de Licencia</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
               </thead>
               <tbody>
-                {personal.map(rest =>
-                      <tr key={rest.id}>
-                        <td className={leftAligned}>{rest.DPI}</td>
-                        <td>{rest.nombre}</td>
-                        <td>{rest.Edad}</td>
-                        <td>{rest.telefono}</td>
-                        <td>{rest.email}</td>
-                        <td>{rest.estado}</td>
-                        <td>{rest.Tipo_de_licencia}</td>
-                        <td>
-                          hola
-                        </td>
-                        <td>
-                          <button onClick={() => deleteData(rest.DPI)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
-                            <i className="material-icons ">delete</i>
-                          </button>
-                        </td>
-                      </tr>
-                    )}
+                {currentData.map(rest => (
+                  <tr key={rest.id}>
+                    <td className={leftAligned}>{rest.DPI}</td>
+                    <td>{rest.nombre}</td>
+                    <td>{rest.Edad}</td>
+                    <td>{rest.telefono}</td>
+                    <td>{rest.email}</td>
+                    <td>{rest.estado ? 'Activo' : 'Inactivo'}</td>
+                    <td>{rest.Tipo_de_licencia}</td>
+                    <td>Editar</td>
+                    <td>
+                      <button onClick={() => deleteData(rest.DPI)} className="btn btn-sm btn-danger waves-light" type="submit" name="action">
+                        <i className="material-icons">delete</i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0' }}>
+            <button onClick={prevPage} disabled={currentPage === 0} className="btn btn-primary">Anterior</button>
+            <span style={{ margin: '0 15px' }}>Página {currentPage + 1} de {pageCount}</span>
+            <button onClick={nextPage} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">Siguiente</button>
           </div>
         </div>
         )
