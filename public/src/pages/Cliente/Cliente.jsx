@@ -2,19 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
   formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider
- } from './Personal.module.css'
+ } from './Cliente.module.css'
 
 
- const Personal = () => {
-  const [personal, setPersonal] = useState([])
+ const Cliente = () => {
+  const [cliente, setCliente] = useState([])
   const [id, setId] = useState(0)
-  const [DPI, setDPI] = useState('')
   const [nombre, setNombre] = useState('')
-  const [Edad, setEdad] = useState('')
-  const [email, setEmail] = useState('')
+  const [correo, setCorreo] = useState('')
+  const [direccion, setDireccion] = useState('')
   const [telefono, setTelefono] = useState('')
-  const [Tipo_de_licencia, setTipo_de_licencia] = useState('')
-  const [estado, setEstado] = useState('')
+  const [NIT, setNIT] = useState('')
   const [limit, setLimit] = useState()
   const [selectedOption, setSelectedOption] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
@@ -22,17 +20,15 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
 
   useEffect(() => {
     setLoading(true)
-    axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Personal')
+    axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Cliente')
       .then(response => {
-        setPersonal(response.data.response);
+        setCliente(response.data.response);
         setId(0)
-        setDPI('')
         setNombre('')
-        setEdad('')
-        setEmail('')
+        setCorreo('')
+        setDireccion('')
         setTelefono('')
-        setEstado('')
-        setTipo_de_licencia('')
+        setNIT('')
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
@@ -44,48 +40,40 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   const submit = (event, id) => {
     event.preventDefault()
     if (id === 0) {
-      axios.post("https://frail-maryanne-uvg.koyeb.app/create_personal", {
-        DPI,
+      axios.post("https://frail-maryanne-uvg.koyeb.app/create_cliente", {
         nombre,
-        Edad,
-        email,
+        correo,
+        direccion,
         telefono,
-        estado,
-        Tipo_de_licencia
+        NIT
       }).then(() => {
         fetchData()
-        setDPI('')
         setNombre('')
-        setEdad('')
-        setEmail('')
+        setCorreo('')
+        setDireccion('')
         setTelefono('')
-        setEstado('')
-        setTipo_de_licencia('')
+        setNIT('')
       })
     } else {
-      axios.put(`https://frail-maryanne-uvg.koyeb.app/update_personal/${DPI}`, {
-        DPI,
+      axios.put(`https://frail-maryanne-uvg.koyeb.app/update_cliente/${DPI}`, {
         nombre,
-        Edad,
-        email,
-        estado,
+        correo,
+        direccion,
         telefono,
-        Tipo_de_licencia
+        NIT
       }).then(() => {
         fetchData()
-        setDPI('')
         setNombre('')
-        setEdad('')
-        setEstado('')
-        setEmail('')
+        setCorreo('')
+        setDireccion('')
         setTelefono('')
-        setTipo_de_licencia('')
+        setNIT('')
       })
     }
   }
   
   const deleteData = (DPI) => {
-    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_personal/${DPI}`)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_cliente/${DPI}`)
       .then(() => {
         fetchData()
       })
@@ -105,7 +93,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   
     axios.get(url)
       .then((res) => {
-        setPersonal(res.data)
+        setCliente(res.data)
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
@@ -117,7 +105,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
 
   const renderTable = () => {
     if (loading) {
-      console.log("info", personal)
+      console.log("info", cliente)
       return (
         <div className={centeredDiv}>
           Loading
@@ -129,71 +117,60 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
         return (
           <div>
             <div className='col lg-6 mt-5'>
-            <h3>Añadir Personal:</h3>
+            <h3>Añadir Cliente:</h3>
             <form onSubmit={(e) => submit(e, id)}>
               <div className={formGrid}>
-              <div className={inputContainer}>
-                    <input className={inputText} value={DPI} onChange={(e) => setDPI(e.target.value)} type="number" 
-                      placeholder='DPI' />
-                </div>
                 <div className={inputContainer}>
                     <input className={inputText} value={nombre} onChange={(e) => setNombre(e.target.value)} type="text" 
                       placeholder='Nombre' />
                 </div>
                 <div className={inputContainer}>
-                    <input className={inputText} value={Edad} onChange={(e) => setEdad(e.target.value)} type="number" placeholder='Edad' />
+                    <input className={inputText} value={correo} onChange={(e) => setCorreo(e.target.value)} type="number" placeholder='Correo' />
                 </div>
                 <div className={inputContainer}>
-                    <input className={inputText} value={estado} onChange={(e) => setEstado(e.target.value)} type="text" placeholder='Estado' />
+                    <input className={inputText} value={direccion} onChange={(e) => setDireccion(e.target.value)} type="text" placeholder='Direccion' />
                 </div>
                 <div className={inputContainer}>
                     <input className={inputText} value={telefono} onChange={(e) => setTelefono(e.target.value)} type="number" placeholder='Telefono' />
                 </div>
                 <div className={inputContainer}>
                     <input 
-                      className={inputText} value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' type='text'
+                      className={inputText} value={NIT} onChange={(e) => setNIT(e.target.value)} placeholder='NIT' type='number'
                     />
-                </div>
-              </div>
-              <div className={inputContainer}>
-                    <input className={inputText} value={Tipo_de_licencia} onChange={(e) => setTipo_de_licencia(e.target.value)} placeholder='Tipo de Licencia' type='text' />
                     <div className={buttonContainer}>
                       <button className=" btn btn-sm btn-primary waves-effect waves-light right" type="submit" name="action"> Enviar  
                       <i className="material-icons right"> send</i>
                       </button>
-              </div>
+                    </div>
+                </div>
               </div>
             </form>
           </div>        
           <div className={scrollableTable}>
             <table className='table'>
               <thead>
-                <th>DPI</th>
                 <th>Nombre</th>
-                <th>Edad</th>
+                <th>Correo</th>
                 <th>Telefono</th>
-                <th>Email</th>
-                <th>Estado</th>
-                <th>Tipo de Licencia</th>
+                <th>Direccion</th>
+                <th>NIT</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
 
               </thead>
               <tbody>
-                {personal.map(rest =>
+                {cliente.map(rest =>
                       <tr key={rest.id}>
-                        <td className={leftAligned}>{rest.DPI}</td>
-                        <td>{rest.nombre}</td>
-                        <td>{rest.Edad}</td>
+                        <td className={leftAligned}>{rest.nombre}</td>
+                        <td>{rest.correo}</td>
                         <td>{rest.telefono}</td>
-                        <td>{rest.email}</td>
-                        <td>{rest.estado}</td>
-                        <td>{rest.Tipo_de_licencia}</td>
+                        <td>{rest.direccion}</td>
+                        <td>{rest.NIT}</td>
                         <td>
                           hola
                         </td>
                         <td>
-                          <button onClick={() => deleteData(rest.DPI)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
+                          <button onClick={() => deleteData(rest.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
                             <i className="material-icons ">delete</i>
                           </button>
                         </td>
@@ -218,4 +195,4 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   )
 }
 
-export default Personal
+export default Cliente

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { Proveedores, Productos, Personal } from './pages'
+import { Proveedores, Productos, Personal, Cliente } from './pages'
 import { Content, Sidebar } from './components'
 
 // eslint-disable-next-line react/function-component-definition
@@ -19,6 +19,7 @@ function App() {
         {selectedMenuItem === 'Proveedores' && <Proveedores /> }
         {selectedMenuItem === 'Productos' && <Productos /> }
         {selectedMenuItem === 'Personal' && <Personal /> }
+        {selectedMenuItem === 'Clientes' && <Cliente /> }
         {selectedMenuItem !== 'Inicio' &&
          selectedMenuItem !== 'Proveedores' &&
          selectedMenuItem !== 'Productos' &&
