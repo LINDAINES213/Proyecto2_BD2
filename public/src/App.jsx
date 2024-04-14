@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { CRUDoperations, Restaurants, Recipes, Sales, Charts, Profiles } from './pages'
+import { Proveedores } from './pages'
 import { Content, Sidebar } from './components'
 
 // eslint-disable-next-line react/function-component-definition
@@ -16,14 +16,9 @@ function App() {
       <Sidebar onSelect={handleMenuSelect} />
       <Content selectedMenuItem={selectedMenuItem}>
         {selectedMenuItem === 'Inicio' && <p>Contenido relacionado con Inicio.</p>}
-        {selectedMenuItem === 'Ventas' && <Sales /> }
-        {selectedMenuItem === 'Recetas' && <Recipes />}
-        {selectedMenuItem === 'Usuarios' && <CRUDoperations />}
-        {selectedMenuItem === 'Restaurantes' && <Restaurants />}
-        {selectedMenuItem === 'Estadísticas' && <Charts />}
-        {selectedMenuItem === 'Perfiles' && <Profiles />}
+        {selectedMenuItem === 'Proveedores' && <Proveedores /> }
         {selectedMenuItem !== 'Inicio' &&
-         selectedMenuItem !== 'Acerca de' &&
+         selectedMenuItem !== 'Proveedores' &&
          selectedMenuItem !== 'Ventas' &&
          selectedMenuItem !== 'Recetas' &&
          selectedMenuItem !== 'Restaurantes' &&
