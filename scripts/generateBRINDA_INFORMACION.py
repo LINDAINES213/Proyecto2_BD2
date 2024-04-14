@@ -2,6 +2,7 @@ import pandas as pd
 import random
 from datetime import datetime, timedelta
 from faker import Faker
+from neo4j import GraphDatabase
 
 fake = Faker()
 
@@ -16,22 +17,19 @@ def generateBRINDA_INFORMACION():
 
     relaciones = []
 
-    almacen_ids = almacen_df['id'].tolist()
+    # Asumimos que hay un único almacén, entonces tomamos su ID directamente
+    id_almacen = almacen_df['id'].iloc[0]
+
     publicidad_ids = publicidad_df['id'].tolist()
 
-    random.shuffle(almacen_ids)
-    random.shuffle(publicidad_ids)
-
-    min_length = min(len(almacen_ids), len(publicidad_ids))
-    
-    for i in range(min_length):
+    for id_publicidad in publicidad_ids:
         fecha_brindada = random_date()
         presupuesto = round(random.uniform(1000.0, 50000.0), 2)
         solicitud = fake.text(max_nb_chars=30).replace('\n', ' ').replace(",", " ").replace('"', "").replace("'", "")       
-        
+
         relaciones.append({
-            "id_almacen": almacen_ids[i],
-            "id_publicidad": publicidad_ids[i],
+            "id_almacen": id_almacen,
+            "id_publicidad": id_publicidad,
             "fecha_brindada": fecha_brindada,
             "presupuesto": presupuesto,
             "solicitud": solicitud
@@ -41,9 +39,7 @@ def generateBRINDA_INFORMACION():
     relaciones_df.to_csv('scripts/Relaciones_BRINDA_INFORMACION.csv', index=False)
     print("Archivo 'Relaciones_BRINDA_INFORMACION.csv' creado con éxito.")
 
-### Modificación del script para cargar la relación "BRINDA_INFORMACION" en Neo4j
 
-from neo4j import GraphDatabase
 
 def loadBRINDA_INFORMACION(uri, user, password):
     driver = GraphDatabase.driver(uri, auth=(user, password))
@@ -56,7 +52,6 @@ def loadBRINDA_INFORMACION(uri, user, password):
                 data = line.strip().split(',')
                 properties = {header: value for header, value in zip(headers, data)}
                 
-                # Convertir el presupuesto a float
                 properties['presupuesto'] = float(properties['presupuesto'])
                 print("Datos crudos limpios:", properties)    
                 query = """
@@ -71,11 +66,9 @@ def loadBRINDA_INFORMACION(uri, user, password):
 
         print("Todas las relaciones han sido importadas.")
 
-
     with driver.session() as session:
         csv_path = 'scripts/Relaciones_BRINDA_INFORMACION.csv'
         import_relations(session, csv_path)
 
     driver.close()
     print("Relaciones cargadas exitosamente.")
-

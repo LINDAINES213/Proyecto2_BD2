@@ -15,18 +15,10 @@ def generatePERTENECE_A():
 
     relaciones = []
 
-    # Asegurar al menos una relación para cada Vehiculo, mientras haya almacenes disponibles
-    almacen_ids = almacen_df['id'].tolist()
-    vehiculo_ids = vehiculo_df['id'].tolist()
+    # Suponemos que hay un solo almacén en el archivo Almacen.csv
+    almacen_id = almacen_df['id'].iloc[0]  # Tomar el ID del único almacén
 
-    random.shuffle(vehiculo_ids)
-
-    for vehiculo_id in vehiculo_ids:
-        if not almacen_ids:
-            break  # No hay más almacenes disponibles
-        almacen_id = random.choice(almacen_ids)
-        almacen_ids.remove(almacen_id)  # Remover el almacén elegido de la lista disponible
-
+    for vehiculo_id in vehiculo_df['id']:
         fecha_adquisicion = random_date()
         estado = True  # Predominantemente true
         mantenimiento = bool(random.getrandbits(1))
@@ -77,3 +69,4 @@ def loadPERTENECE_A(uri, user, password):
 
     driver.close()
     print("Relaciones cargadas exitosamente.")
+

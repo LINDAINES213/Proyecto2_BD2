@@ -12,12 +12,12 @@ def generateAlmacen():
     with open('scripts/Almacen.csv', 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(nodo_schema)  # Escribir los encabezados
-        for id in range(700):  # Generar 700 nodos como solicitado
+        for id in range(1):  # Generar 700 nodos como solicitado
             writer.writerow([
                 id + 1,  # ID
                 fake.address().replace('\n', ' ').replace(",", " ").replace('"', "").replace("'", ""),  # Dirección
                 random.randint(4000, 5000),  # Capacidad total
-                random.randint(100, 200),  # Capacidad de vehículos
+                random.randint(700, 1000),  # Capacidad de vehículos
                 round(random.uniform(75000, 200000), 2),  # Presupuesto
                 fake.date_between(start_date="-30y", end_date="today").strftime("%Y-%m-%d")  # Fecha de inauguración
             ])

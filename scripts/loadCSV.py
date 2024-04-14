@@ -15,6 +15,9 @@ from generatePERTENECE_A import *
 from generatePublicidad import *
 from generatePROMOCIONA_PUBLICIDAD import *
 from generateBRINDA_INFORMACION import *
+from generateMANEJA_ORDEN import *
+from generateFactura import *
+from generateGENERA import *
 
 # Establecer la conexión con la base de datos Neo4j
 uri = "neo4j+s://f6120b34.databases.neo4j.io"
@@ -54,4 +57,10 @@ contraseña = "mmHnKEyuPplktl35zNEi-q31mR4qBY-4hFKAXN2JGhY"
 #generatePROMOCIONA_PUBLICIDAD()
 #loadPROMOCIONA_PUBLICIDAD(uri, usuario, contraseña)
 #generateBRINDA_INFORMACION()
-loadBRINDA_INFORMACION(uri, usuario, contraseña)
+#loadBRINDA_INFORMACION(uri, usuario, contraseña)
+#generateMANEJA_ORDEN()
+#loadMANEJA_ORDEN(uri, usuario, contraseña)
+#generateFactura()
+#loadFacturas(uri, usuario, contraseña)
+#generateGENERA()
+loadGENERA(uri, usuario, contraseña)
