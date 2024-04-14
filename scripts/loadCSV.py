@@ -11,6 +11,10 @@ from generateSOLICITA import *
 from generateVehiculo import *
 from generateTIENE_ASIGNADO import *
 from generateENTREGA import *
+from generatePERTENECE_A import *
+from generatePublicidad import *
+from generatePROMOCIONA_PUBLICIDAD import *
+from generateBRINDA_INFORMACION import *
 
 # Establecer la conexión con la base de datos Neo4j
 uri = "neo4j+s://f6120b34.databases.neo4j.io"
@@ -42,4 +46,12 @@ contraseña = "mmHnKEyuPplktl35zNEi-q31mR4qBY-4hFKAXN2JGhY"
 #generateTIENE_ASIGNADO()
 #loadTIENE_ASIGNADO(uri, usuario, contraseña)
 #generateENTREGA()
-loadENTREGA(uri, usuario, contraseña)
+#loadENTREGA(uri, usuario, contraseña)
+#generatePERTENECE_A()
+#loadPERTENECE_A(uri, usuario, contraseña)
+#generatePublicidad()
+#loadPublicidad(uri, usuario, contraseña)
+#generatePROMOCIONA_PUBLICIDAD()
+#loadPROMOCIONA_PUBLICIDAD(uri, usuario, contraseña)
+#generateBRINDA_INFORMACION()
+loadBRINDA_INFORMACION(uri, usuario, contraseña)
