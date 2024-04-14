@@ -8,17 +8,14 @@ def generateRECIBE():
     almacenes_df = pd.read_csv('scripts/Almacen.csv')
     ordenes_df = pd.read_csv('scripts/OrdenDeCompra.csv')
     
+    # Asumir que hay solo un almacén
+    almacen_id = almacenes_df['id'].iloc[0]  # Obtener el ID del único almacén
+    
     # Lista para guardar las relaciones
     relaciones = []
     
-    # Asignar cada almacen a una orden de compra, minimizando las relaciones
-    almacenes_ids = almacenes_df['id'].tolist()
-    ordenes_ids = ordenes_df['id'].tolist()
-    random.shuffle(almacenes_ids)
-    random.shuffle(ordenes_ids)
-    
-    # Asegurando que cada nodo esté conectado al menos una vez
-    for almacen_id, orden_id in zip(almacenes_ids, ordenes_ids):
+    # Asignar el único almacen a cada orden de compra
+    for orden_id in ordenes_df['id']:
         prioridad = random.choice(["alta", "media", "baja"])
         tiempo_estimado = random.randint(1, 20)
         peso = random.randint(0, 800)
@@ -50,7 +47,6 @@ def loadRECIBE(uri, usuario, contraseña):
                 data = line.strip().split(',')
                 data = [element.strip().replace('"', '') for element in data]
                 properties = {header: value for header, value in zip(headers, data)}
-                print("Datos crudos limpios:", properties)
                 # Crear la relación con sus propiedades
                 query = """
                 MATCH (a:Almacen {id: $id_almacen})
@@ -71,3 +67,4 @@ def loadRECIBE(uri, usuario, contraseña):
 
     driver.close()
     print("Relaciones cargadas exitosamente.")
+

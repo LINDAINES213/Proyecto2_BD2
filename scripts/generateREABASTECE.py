@@ -16,20 +16,19 @@ def generateREABASTECE():
     proveedores_df = pd.read_csv('scripts/Proveedor.csv')
     almacenes_df = pd.read_csv('scripts/Almacen.csv')
     
+    # Asumimos que solo hay un almacén, tomamos su ID
+    id_unico_almacen = almacenes_df['id'].iloc[0]
+    
     # Lista para guardar las relaciones
     relaciones = []
     
-    # Asignar cada proveedor a un almacen, minimizando las relaciones
+    # Asignar el único ID de almacén a todos los proveedores
     proveedores_ids = proveedores_df['id'].tolist()
-    almacenes_ids = almacenes_df['id'].tolist()
-    random.shuffle(proveedores_ids)
-    random.shuffle(almacenes_ids)
     
-    # Zip the shuffled lists, ensuring each node is connected at least once
-    for proveedor_id, almacen_id in zip(proveedores_ids, almacenes_ids):
+    for proveedor_id in proveedores_ids:
         relaciones.append({
             "id_proveedor": proveedor_id,
-            "id_almacen": almacen_id,
+            "id_almacen": id_unico_almacen,
             "fecha_de_reabastecimiento": random_date().isoformat(),
             "calidad_del_producto": random.randint(1, 10),
             "monto": round(random.uniform(4000, 7000), 2)
@@ -41,7 +40,6 @@ def generateREABASTECE():
     # Guardar las relaciones en un archivo CSV
     relaciones_df.to_csv('scripts/Relaciones_Reabastece.csv', index=False)
     print("Archivo 'Relaciones_Reabastece.csv' creado con éxito.")
-
 
 
 def loadREABASTECE(uri, usuario, contraseña):
