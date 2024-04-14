@@ -64,7 +64,7 @@ def generateProducto():
 
     nodo_schema = ["id", "nombre", "precio", "precio_al_por_mayor", "descripcion", "categoria"]
     total_productos = sum(len(v) for v in categorias_productos.values())
-    productos_por_nodo = 700 / total_productos
+    productos_por_nodo = 1400 / total_productos
 
     with open('scripts/Producto.csv', 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file, quoting=csv.QUOTE_ALL, escapechar='\\')

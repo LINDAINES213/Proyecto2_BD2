@@ -3,14 +3,14 @@ import os
 import pandas as pd
 import random
 import datetime
-from datetime import datetime  # Importar para la conversión de fechas
+from datetime import datetime, timedelta, date
 
 
 def random_date():
     """Genera una fecha aleatoria dentro de los últimos 3 años."""
-    start_date = datetime.date.today() - datetime.timedelta(days=3 * 365)
+    start_date = date.today() - timedelta(days=3 * 365)
     random_days = random.randrange(3 * 365)
-    return start_date + datetime.timedelta(days=random_days)
+    return start_date + timedelta(days=random_days)
 
 def random_availability():
     """Devuelve True con un 90% de probabilidad, y False con un 10%."""
