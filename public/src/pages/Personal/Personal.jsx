@@ -19,25 +19,16 @@ const Personal = () => {
   const [selectedOption, setSelectedOption] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
 
+  // Paginacion
   const [currentPage, setCurrentPage] = useState(0);
-  const pageSize = 10; // Número de elementos por página
-
-  // Calcula el rango de datos a mostrar
+  const pageSize = 10; 
   const startIndex = currentPage * pageSize;
   const endIndex = startIndex + pageSize;
-  const currentData = personal.slice(startIndex, endIndex);
-
-  // Calcula el número total de páginas
-  const pageCount = Math.ceil(personal.length / pageSize);
-
-  // Función para cambiar de página
-  const nextPage = () => {
-    setCurrentPage(current => (current + 1 < pageCount) ? current + 1 : current);
-  };
-
-  const prevPage = () => {
-    setCurrentPage(current => (current - 1 >= 0) ? current - 1 : current);
-  };
+  const personalSeguros = personal ?? [];
+  const currentData = personalSeguros.slice(startIndex, endIndex);
+  const pageCount = Math.ceil(personalSeguros.length / pageSize);
+  const nextPage = () => { setCurrentPage(current => (current + 1 < pageCount) ? current + 1 : current); };
+  const prevPage = () => { setCurrentPage(current => (current - 1 >= 0) ? current - 1 : current);};
 
   useEffect(() => {
     setLoading(true)
@@ -174,12 +165,12 @@ const Personal = () => {
                 </div>
               </div>
               <div className={inputContainer}>
-                    <input className={inputText} value={Tipo_de_licencia} onChange={(e) => setTipo_de_licencia(e.target.value)} placeholder='Tipo de Licencia' type='text' />
-                    <div className={buttonContainer}>
-                      <button className="btn btn-primary" type="submit" name="action"> Enviar  
-                      <i className="material-icons right"> send</i>
-                      </button>
-              </div>
+                <input className={inputText} value={Tipo_de_licencia} onChange={(e) => setTipo_de_licencia(e.target.value)} placeholder='Tipo de Licencia' type='text' />
+                <div className={buttonContainer}>
+                  <button className="btn btn-primary" type="submit" name="action"> Enviar  
+                    <i className="material-icons right"> send</i>
+                  </button>
+                </div>
               </div>
             </form>
           </div>        
