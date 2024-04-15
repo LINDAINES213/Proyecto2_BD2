@@ -45,7 +45,7 @@ height: 80vh;
 }
 
 .inputText {
-  border: 3px solid #ff0000;
+  border: 3px solid #1e0070;
   border-radius: 5px; /* Ajusta el valor según sea necesario para obtener el radio deseado */
   width: 20vw;
   padding: 5px;

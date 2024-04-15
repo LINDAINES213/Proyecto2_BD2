@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { buttonContainer, inputContainer, inputText, crud, leftAligned, scrollableTable,
+import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
   formGrid, centeredDiv,
  } from './Productos.module.css'
 import Loading from '../../components/Loading';
@@ -23,7 +23,6 @@ const Productos = () => {
   const startIndex = currentPage * pageSize;
   const endIndex = startIndex + pageSize;
   const productosSeguros = productos ?? [];
-  console.log("p",productosSeguros)
   const currentData = productosSeguros.slice(startIndex, endIndex);
   const pageCount = Math.ceil(productosSeguros.length / pageSize);
   const nextPage = () => { setCurrentPage(current => (current + 1 < pageCount) ? current + 1 : current); };
@@ -126,7 +125,7 @@ const Productos = () => {
         return (
           <div>
             <div className='col lg-6 mt-5'>
-            <h3>Añadir producto:</h3>
+            <h3 style={{ borderBottom: '3px solid #0004ff'}}>Añadir producto:</h3>
             <form onSubmit={(e) => submit(e, id)}>
               <div className={formGrid}>
                 <div className={inputContainer}>
@@ -139,17 +138,20 @@ const Productos = () => {
                 <div className={inputContainer}>
                     <input className={inputText} value={categoria} onChange={(e) => setCategoria(e.target.value)} type="text" placeholder='Categoria' />
                 </div>
-                <div className={inputContainer}>
-                    <input className={inputText} value={precio} onChange={(e) => setPrecio(e.target.value)} placeholder='Precio' type='number'/>
-                </div>
               </div>
-              <div className={inputContainer}>
-                <input className={inputText} value={precio_al_por_mayor} onChange={(e) => setPrecio_al_por_mayor(e.target.value)} placeholder='Precio al por mayor' type='number' />
+              <div className={formGrid}>
+                <div className={inputContainer}>
+                  <input className={inputText} value={precio} onChange={(e) => setPrecio(e.target.value)} placeholder='Precio' type='number'/>
+                </div>
+                <div className={inputContainer}>
+                  <input className={inputText} value={precio_al_por_mayor} onChange={(e) => setPrecio_al_por_mayor(e.target.value)} placeholder='Precio al por mayor' type='number' />
                   <div className={buttonContainer}>
-                    <button className=" btn btn-sm btn-primary waves-effect waves-light right" type="submit" name="action"> Enviar  
+                    <button type="submit" name="action"> Enviar  
                     <i className="material-icons right"> send</i>
                    </button>
+                </div>
               </div>
+
               </div>
             </form>
           </div>        
@@ -173,9 +175,9 @@ const Productos = () => {
                         <td>{rest.precio ? `$${rest.precio}` : "sin datos"}</td>
                         <td>{rest.precio_al_por_mayor ? `$${rest.precio_al_por_mayor}` : "sin datos"}</td>
                         <td>
-                          <button onClick={() => deleteData(rest.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
+                          <button onClick={() => submit()} className={editButton} type="submit" name="action">
                             <i className="material-icons ">edit</i>
-                          </button>                        
+                          </button>
                         </td>
                         <td>
                           <button onClick={() => deleteData(rest.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
@@ -188,10 +190,23 @@ const Productos = () => {
             </table>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0' }}>
-            <button onClick={prevPage} disabled={currentPage === 0} className="btn btn-primary">Anterior</button>
-            <span style={{ margin: '0 15px' }}>Página {currentPage + 1} de {pageCount}</span>
-            <button onClick={nextPage} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">Siguiente</button>
+            <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0} className="btn btn-primary">
+              Ir al inicio
+            </button>
+            <button onClick={prevPage} disabled={currentPage === 0} className="btn btn-primary">
+              Anterior
+            </button>
+            <span style={{ margin: '0 15px' }}>
+              Página {currentPage + 1} de {pageCount}
+            </span>
+            <button onClick={nextPage} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">
+              Siguiente
+            </button>
+            <button onClick={() => setCurrentPage(pageCount - 1)} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">
+              Ir al final
+            </button>
           </div>
+
         </div>
         )
       default:
