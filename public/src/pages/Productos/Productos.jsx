@@ -87,9 +87,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
 
     const parsedLimit = parseInt(limit)
     const isLimitInteger = !isNaN(parsedLimit) && Number.isInteger(parsedLimit)  
-    const url = isLimitInteger
-      ? `https://frail-maryanne-uvg.koyeb.app/?limit=${limit}`
-      : 'https://frail-maryanne-uvg.koyeb.app/'
+    const url = 'ttps://frail-maryanne-uvg.koyeb.app/nodes/Producto'
   
     axios.get(url)
       .then((res) => {
@@ -157,13 +155,14 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
 
               </thead>
               <tbody>
+                {console.log("extra",productos)}
                 {productos.map(rest =>
                       <tr key={rest.id}>
-                        <td className={leftAligned}>{rest.nombre}</td>
-                        <td>{rest.descripcion}</td>
-                        <td>{rest.categoria}</td>
-                        <td>{rest.precio}</td>
-                        <td>{rest.precio_al_por_mayor}</td>
+                        <td className={leftAligned}>{rest.nombre || "sin datos"}</td>
+                        <td>{rest.descripcion || "sin datos"}</td>
+                        <td>{rest.categoria || "sin datos"}</td>
+                        <td>{rest.precio ? `$${rest.precio}` : "sin datos"}</td>
+                        <td>{rest.precio_al_por_mayor ? `$${rest.precio_al_por_mayor}` : "sin datos"}</td>
                         <td>
                           hola
                         </td>
