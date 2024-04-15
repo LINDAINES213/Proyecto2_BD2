@@ -1,14 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import personal
-from routes import proveedor
-from routes import producto
-from routes import cliente
-from routes import almacen
-from routes import factura
-from routes import ordenCompra
-from routes import publicidad
-from routes import vehiculos
+from routes.nodes import personal
+from routes.nodes import proveedor
+from routes.nodes import producto
+from routes.nodes import cliente
+from routes.nodes import almacen
+from routes.nodes import factura
+from routes.nodes import ordenCompra
+from routes.nodes import publicidad
+from routes.nodes import vehiculos
+from routes.relations import rTiene
 
 app = FastAPI()
 
@@ -33,6 +34,7 @@ app.include_router(factura.factura_router)
 app.include_router(ordenCompra.orden_compra_router)
 app.include_router(publicidad.publicidad_router)
 app.include_router(vehiculos.vehiculo_router)
+app.include_router(rTiene.tiene)
 
 @app.get("/")
 def default():
