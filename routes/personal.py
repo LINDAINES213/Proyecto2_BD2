@@ -28,11 +28,11 @@ def create_personal(personal_data: dict):
     # Extraer los datos del usuario del cuerpo de la solicitud
     dpi = int(personal_data.get("DPI"))
     nombre = personal_data.get("nombre")
-    edad = personal_data.get("Edad")
+    edad = int(personal_data.get("Edad"))
     email = personal_data.get("email")
     telefono = personal_data.get("telefono")
     estado = personal_data.get("estado")
-    if estado in ['true', 'True']:
+    if estado in ['true', 'True', 'Activo', 'activo']:
         estado = True
     else:
         estado = False
