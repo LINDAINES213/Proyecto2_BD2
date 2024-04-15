@@ -31,7 +31,7 @@ def create_producto(producto_data: dict):
     # Extraer los datos del usuario del cuerpo de la solicitud
     descripcion = producto_data.get("descripcion")
     precio = producto_data.get("precio")
-    precio_al_por_mayor = producto_data.get("telefono")
+    precio_al_por_mayor = producto_data.get("precio_al_por_mayor")
     nombre = producto_data.get("nombre")
     categoria = producto_data.get("categoria")
 

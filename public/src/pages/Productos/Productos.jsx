@@ -47,6 +47,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
         precio,
         precio_al_por_mayor
       }).then(() => {
+        console.log("productos",productos)
         fetchData()
         setNombre('')
         setDescripcion('')
@@ -78,7 +79,6 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
         fetchData()
       })
   }
-
 
 
   const fetchData = (limit) => {
@@ -131,17 +131,15 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
                     <input className={inputText} value={categoria} onChange={(e) => setCategoria(e.target.value)} type="text" placeholder='Categoria' />
                 </div>
                 <div className={inputContainer}>
-                    <input 
-                      className={inputText} value={precio} onChange={(e) => setPrecio(e.target.value)} placeholder='Precio' type='number'
-                    />
+                    <input className={inputText} value={precio} onChange={(e) => setPrecio(e.target.value)} placeholder='Precio' type='number'/>
                 </div>
               </div>
               <div className={inputContainer}>
-                    <input className={inputText} value={precio_al_por_mayor} onChange={(e) => setPrecio_al_por_mayor(e.target.value)} placeholder='Precio al por mayor' type='number' />
-                    <div className={buttonContainer}>
-                      <button className=" btn btn-sm btn-primary waves-effect waves-light right" type="submit" name="action"> Enviar  
-                      <i className="material-icons right"> send</i>
-                      </button>
+                <input className={inputText} value={precio_al_por_mayor} onChange={(e) => setPrecio_al_por_mayor(e.target.value)} placeholder='Precio al por mayor' type='number' />
+                  <div className={buttonContainer}>
+                    <button className=" btn btn-sm btn-primary waves-effect waves-light right" type="submit" name="action"> Enviar  
+                    <i className="material-icons right"> send</i>
+                   </button>
               </div>
               </div>
             </form>
