@@ -91,7 +91,7 @@ def delete_personal(dpi: int):
     # Consulta Cypher para eliminar el nodo de usuario
     query = '''
     MATCH (p:Personal {DPI: $dpi})
-    DELETE p
+    DETACH DELETE p
     '''
 
     # Ejecutar la consulta Cypher con el parámetro proporcionado
