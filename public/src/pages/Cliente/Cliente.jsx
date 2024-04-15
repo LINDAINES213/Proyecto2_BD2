@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
   formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider
  } from './Cliente.module.css'
-
+import { Loading } from '../../components';
 
  const Cliente = () => {
   const [cliente, setCliente] = useState([])
@@ -17,6 +17,17 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
   const [selectedOption, setSelectedOption] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
 
+  // Paginacion
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageSize = 10; 
+  const startIndex = currentPage * pageSize;
+  const endIndex = startIndex + pageSize;
+  const productosSeguros = cliente ?? [];
+  const currentData = productosSeguros.slice(startIndex, endIndex);
+  const pageCount = Math.ceil(productosSeguros.length / pageSize);
+  const nextPage = () => { setCurrentPage(current => (current + 1 < pageCount) ? current + 1 : current); };
+  const prevPage = () => { setCurrentPage(current => (current - 1 >= 0) ? current - 1 : current);};
+  
 
   useEffect(() => {
     setLoading(true)
@@ -81,19 +92,17 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
 
 
 
-  const fetchData = (limit) => {
+  const fetchData = () => {
   
     setLoading(true)
 
-    const parsedLimit = parseInt(limit)
-    const isLimitInteger = !isNaN(parsedLimit) && Number.isInteger(parsedLimit)  
-    const url = isLimitInteger
-      ? `https://frail-maryanne-uvg.koyeb.app/?limit=${limit}`
-      : 'https://frail-maryanne-uvg.koyeb.app/'
+    //const parsedLimit = parseInt(limit)
+    //const isLimitInteger = !isNaN(parsedLimit) && Number.isInteger(parsedLimit)  
+    const url = 'https://frail-maryanne-uvg.koyeb.app/nodes/Cliente'
   
     axios.get(url)
       .then((res) => {
-        setCliente(res.data)
+        setCliente(res.data.response)
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
@@ -108,7 +117,7 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
       console.log("info", cliente)
       return (
         <div className={centeredDiv}>
-          Loading
+          <Loading />
         </div>
       )
     }
@@ -125,11 +134,13 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
                       placeholder='Nombre' />
                 </div>
                 <div className={inputContainer}>
-                    <input className={inputText} value={correo} onChange={(e) => setCorreo(e.target.value)} type="number" placeholder='Correo' />
+                    <input className={inputText} value={correo} onChange={(e) => setCorreo(e.target.value)} type="Email" placeholder='Correo' />
                 </div>
                 <div className={inputContainer}>
                     <input className={inputText} value={direccion} onChange={(e) => setDireccion(e.target.value)} type="text" placeholder='Direccion' />
                 </div>
+              </div>
+              <div className={formGrid}>
                 <div className={inputContainer}>
                     <input className={inputText} value={telefono} onChange={(e) => setTelefono(e.target.value)} type="number" placeholder='Telefono' />
                 </div>
@@ -156,10 +167,9 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
                 <th>NIT</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
-
               </thead>
               <tbody>
-                {cliente.map(rest =>
+                {currentData.map(rest =>
                       <tr key={rest.id}>
                         <td className={leftAligned}>{rest.nombre}</td>
                         <td>{rest.correo}</td>
@@ -167,7 +177,9 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
                         <td>{rest.direccion}</td>
                         <td>{rest.NIT}</td>
                         <td>
-                          hola
+                          <button onClick={() => submit()} className={editButton} type="submit" name="action">
+                            <i className="material-icons ">edit</i>
+                          </button>
                         </td>
                         <td>
                           <button onClick={() => deleteData(rest.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
@@ -178,6 +190,23 @@ import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButt
                     )}
               </tbody>
             </table>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0' }}>
+            <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0} className="btn btn-primary">
+              Ir al inicio
+            </button>
+            <button onClick={prevPage} disabled={currentPage === 0} className="btn btn-primary">
+              Anterior
+            </button>
+            <span style={{ margin: '0 15px' }}>
+              Página {currentPage + 1} de {pageCount}
+            </span>
+            <button onClick={nextPage} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">
+              Siguiente
+            </button>
+            <button onClick={() => setCurrentPage(pageCount - 1)} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">
+              Ir al final
+            </button>
           </div>
         </div>
         )

@@ -32,13 +32,13 @@ def create_cliente(cliente_data: dict):
     correo = cliente_data.get("correo")
     nombre = cliente_data.get("nombre")
     direccion = cliente_data.get("direccion")
-    nit = cliente_data.get("NIT")
+    nit = int(cliente_data.get("NIT"))
     telefono = cliente_data.get("telefono")
 
     #(:Cliente {correo: "eddie84@example.com", direccion: "724 Samuel Village Apt. 263 Williamston  NY 01844", NIT: 8634223727, id: "105", telefono: "+1-239-298-4574x71509", nombre: "Gary Powers"})
 
     # Consulta Cypher para crear un nodo de usuario
-    query = '''CREATE (p:Cliente {nombre: $nombre, correo: $correo, direccion: $direccion, telefono: $telefono, nit: $nit, id: $id})
+    query = '''CREATE (p:Cliente {nombre: $nombre, correo: $correo, direccion: $direccion, telefono: $telefono, NIT: $nit, id: $id})
     RETURN p'''
 
     # Ejecutar la consulta Cypher con los parámetros proporcionados
@@ -66,7 +66,7 @@ def update_cliente(id: str, updated_data: dict):
     # Consulta Cypher para actualizar el nodo de usuario
     query = '''
     MATCH (p:Cliente {id: $id})
-    SET p.nombre = $nombre, p.correo = $correo, p.direccion = $direccion, p.telefono = $telefono, p.nit = $nit
+    SET p.nombre = $nombre, p.correo = $correo, p.direccion = $direccion, p.telefono = $telefono, p.NIT = $nit
     RETURN p
     '''
 
@@ -88,7 +88,7 @@ def delete_cliente(id: str):
     # Consulta Cypher para eliminar el nodo de usuario
     query = '''
     MATCH (p:Cliente {id: $id})
-    DELETE p
+    DETACH DELETE p
     '''
 
     # Ejecutar la consulta Cypher con el parámetro proporcionado
