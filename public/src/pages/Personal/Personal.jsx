@@ -111,7 +111,7 @@ const Personal = () => {
     const url = 'https://frail-maryanne-uvg.koyeb.app/nodes/Personal'
     axios.get(url)
       .then((res) => {
-        setPersonal(res.data)
+        setPersonal(res.data.response)
       })
       .catch((error) => {
         console.error('Error fetching data:', error)

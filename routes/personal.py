@@ -39,11 +39,11 @@ def create_personal(personal_data: dict):
     tipo_de_licencia = personal_data.get("Tipo_de_licencia")
 
     # Consulta Cypher para crear un nodo de usuario
-    query = '''CREATE (p:Personal {DPI: $dpi, nombre: $nombre, edad: $edad, email: $email, telefono: $telefono, estado: $estado, Tipo_de_licencia: $tipo_de_licencia})
+    query = '''CREATE (p:Personal {DPI: $dpi, nombre: $nombre, Edad: $edad, email: $email, telefono: $telefono, estado: $estado, Tipo_de_licencia: $tipo_de_licencia})
     RETURN p'''
 
     # Ejecutar la consulta Cypher con los parámetros proporcionados
-    result = session.run(query, dpi=dpi, nombre=nombre, edad=edad, email=email, telefono=telefono, estado=estado, tipo_de_licencia=tipo_de_licencia)
+    result = session.run(query, dpi=dpi, nombre=nombre, Edad=edad, email=email, telefono=telefono, estado=estado, tipo_de_licencia=tipo_de_licencia)
 
     # Recopilar las propiedades del nuevo nodo creado
     created_user_info = []
