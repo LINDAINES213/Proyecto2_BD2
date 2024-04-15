@@ -126,7 +126,7 @@ import { Loading } from '../../components';
         return (
           <div>
             <div className='col lg-6 mt-5'>
-            <h3 style={{ borderBottom: '3px solid #0004ff'}}>Añadir proveedor:</h3>
+            <h3 style={{ borderBottom: '3px solid #000000'}}>Añadir proveedor:</h3>
             <form onSubmit={(e) => submit(e, id)}>
               <div className={formGrid}>
                 <div className={inputContainer}>

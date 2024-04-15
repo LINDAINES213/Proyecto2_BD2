@@ -6,7 +6,7 @@ import { content } from './Content.module.css'
 const Content = ({ selectedMenuItem, children }) => {
   return (
     <div className={content}>
-      <h1>{selectedMenuItem}</h1>
+      <h1 style={{marginBottom: '1vh'}}>{selectedMenuItem}</h1>
       {children}
     </div>
   )

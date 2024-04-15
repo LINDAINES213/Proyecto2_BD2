@@ -44,7 +44,7 @@ height: 80vh;
 }
 
 .inputText {
-  border: 3px solid #03017c;
+  border: 3px solid #000000;
   border-radius: 5px; /* Ajusta el valor según sea necesario para obtener el radio deseado */
   width: 20vw;
   padding: 5px;
@@ -121,7 +121,7 @@ border: 0;
 }
 
 button {
-  background-color:  #0011ff;
+  background-color:  #000000;
   display: flex;
   align-items: center;
   border-radius: 5px;

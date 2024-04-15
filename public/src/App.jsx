@@ -15,22 +15,20 @@ function App() {
     <div className="app">
       <Sidebar onSelect={handleMenuSelect} />
       <Content selectedMenuItem={selectedMenuItem}>
-        {selectedMenuItem === 'Inicio' && <p>Contenido relacionado con Inicio.</p>}
-        {selectedMenuItem === 'Proveedores' && <Proveedores /> }
-        {selectedMenuItem === 'Productos' && <Productos /> }
-        {selectedMenuItem === 'Personal' && <Personal /> }
-        {selectedMenuItem === 'Clientes' && <Cliente /> }
-        {selectedMenuItem === 'Publicidad' && <Publicidad /> }
-        {selectedMenuItem === 'Almacen' && <Almacen /> }
-        {selectedMenuItem !== 'Inicio' &&
-         selectedMenuItem !== 'Proveedores' &&
-         selectedMenuItem !== 'Productos' &&
-         selectedMenuItem !== 'Personal' &&
-         selectedMenuItem !== 'Clientes' &&
-         selectedMenuItem !== 'Publicidad' &&
-         selectedMenuItem !== 'Almacen' && 
-         selectedMenuItem !== 'Estadísticas' && 
-         selectedMenuItem !== 'Perfiles' && <p>Contenido no definido.</p>}
+        {selectedMenuItem === '📦 Almacen' && <Almacen /> }
+        {selectedMenuItem === '🚚 Proveedores' && <Proveedores /> }
+        {selectedMenuItem === '📝 Productos' && <Productos /> }
+        {selectedMenuItem === '👷‍♂️ Personal' && <Personal /> }
+        {selectedMenuItem === '💆 Clientes' && <Cliente /> }
+        {selectedMenuItem === '📊 Publicidad' && <Publicidad /> }
+        {selectedMenuItem !== '📦 Almacen' &&
+         selectedMenuItem !== '🚚 Proveedores' &&
+         selectedMenuItem !== '📝 Productos' &&
+         selectedMenuItem !== '👷‍♂️ Personal' &&
+         selectedMenuItem !== '💆 Clientes' &&
+         selectedMenuItem !== '📊 Publicidad' &&
+         selectedMenuItem !== '🌏 Estadísticas' && 
+         selectedMenuItem !== '👀 Perfiles' && <p>Contenido no definido.</p>}
       </Content>
     </div>
   )

@@ -2,6 +2,9 @@
     height: 99vh;
     background-color: #090088;
     color: white;
+    font-weight: bolder;
+    font-size:x-large;
+    margin-bottom: 0vh;
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -11,15 +14,17 @@
   ul {
     list-style: none;
     padding: 2vw;
+    padding-top: 1vw;
+    padding-bottom: 0;
   }
   
   li {
     cursor: pointer;
-    margin-bottom: 10px;
+    margin-bottom: 3vh;
   }
   
   /* Estilo para resaltar el elemento seleccionado */
   li.selected {
-    background-color: #555;
+    background-color: #c7c5c5;
   }
   
