@@ -26,12 +26,16 @@ def create_personal(personal_data: dict):
     session = driver_neo4j.session()
 
     # Extraer los datos del usuario del cuerpo de la solicitud
-    dpi = personal_data.get("DPI")
+    dpi = int(personal_data.get("DPI"))
     nombre = personal_data.get("nombre")
     edad = personal_data.get("Edad")
     email = personal_data.get("email")
     telefono = personal_data.get("telefono")
     estado = personal_data.get("estado")
+    if estado in ['true', 'True']:
+        estado = True
+    else:
+        estado = False
     tipo_de_licencia = personal_data.get("Tipo_de_licencia")
 
     # Consulta Cypher para crear un nodo de usuario

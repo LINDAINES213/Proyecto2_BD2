@@ -206,7 +206,6 @@ const Productos = () => {
               Ir al final
             </button>
           </div>
-
         </div>
         )
       default:

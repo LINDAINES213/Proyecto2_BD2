@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { buttonContainer, inputContainer, inputText, crud, leftAligned, scrollableTable,
-  formGrid, centeredDiv, btnSend
+  formGrid, centeredDiv, editButton
  } from './Personal.module.css'
 import Loading from '../../components/Loading';
 
@@ -102,16 +102,13 @@ const Personal = () => {
       })
   }
 
-  const fetchData = (limit) => {
+  const fetchData = () => {
   
     setLoading(true)
 
-    const parsedLimit = parseInt(limit)
-    const isLimitInteger = !isNaN(parsedLimit) && Number.isInteger(parsedLimit)  
-    const url = isLimitInteger
-      ? `https://frail-maryanne-uvg.koyeb.app/?limit=${limit}`
-      : 'https://frail-maryanne-uvg.koyeb.app/'
-  
+    //const parsedLimit = parseInt(limit)
+    //const isLimitInteger = !isNaN(parsedLimit) && Number.isInteger(parsedLimit)  
+    const url = 'https://frail-maryanne-uvg.koyeb.app/nodes/Personal'
     axios.get(url)
       .then((res) => {
         setPersonal(res.data)
@@ -141,7 +138,7 @@ const Personal = () => {
             <h3 style={{ borderBottom: '3px solid #0004ff'}}>Añadir Personal:</h3>
             <form onSubmit={(e) => submit(e, id)}>
               <div className={formGrid}>
-              <div className={inputContainer}>
+                <div className={inputContainer}>
                     <input className={inputText} value={DPI} onChange={(e) => setDPI(e.target.value)} type="number" 
                       placeholder='DPI' />
                 </div>
@@ -152,6 +149,8 @@ const Personal = () => {
                 <div className={inputContainer}>
                     <input className={inputText} value={Edad} onChange={(e) => setEdad(e.target.value)} type="number" placeholder='Edad' />
                 </div>
+              </div>
+              <div className={formGrid}>
                 <div className={inputContainer}>
                     <input className={inputText} value={estado} onChange={(e) => setEstado(e.target.value)} type="text" placeholder='Estado' />
                 </div>
@@ -164,12 +163,14 @@ const Personal = () => {
                     />
                 </div>
               </div>
+              <div className={formGrid}>
               <div className={inputContainer}>
                 <input className={inputText} value={Tipo_de_licencia} onChange={(e) => setTipo_de_licencia(e.target.value)} placeholder='Tipo de Licencia' type='text' />
-                <div className={buttonContainer}>
-                  <button className="btn btn-primary" type="submit" name="action"> Enviar  
-                    <i className="material-icons right"> send</i>
-                  </button>
+                  <div className={buttonContainer}>
+                    <button className="btn btn-primary" type="submit" name="action"> Enviar  
+                      <i className="material-icons right"> send</i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </form>
@@ -199,7 +200,11 @@ const Personal = () => {
                     <td>{rest.email}</td>
                     <td>{rest.estado ? 'Activo' : 'Inactivo'}</td>
                     <td>{rest.Tipo_de_licencia}</td>
-                    <td>Editar</td>
+                    <td>
+                      <button onClick={() => submit()} className={editButton} type="submit" name="action">
+                        <i className="material-icons ">edit</i>
+                      </button>
+                    </td>
                     <td>
                       <button onClick={() => deleteData(rest.DPI)} className="btn btn-sm btn-danger waves-light" type="submit" name="action">
                         <i className="material-icons">delete</i>
@@ -211,9 +216,21 @@ const Personal = () => {
             </table>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0' }}>
-            <button onClick={prevPage} disabled={currentPage === 0} className="btn btn-primary">Anterior</button>
-            <span style={{ margin: '0 15px' }}>Página {currentPage + 1} de {pageCount}</span>
-            <button onClick={nextPage} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">Siguiente</button>
+            <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0} className="btn btn-primary">
+              Ir al inicio
+            </button>
+            <button onClick={prevPage} disabled={currentPage === 0} className="btn btn-primary">
+              Anterior
+            </button>
+            <span style={{ margin: '0 15px' }}>
+              Página {currentPage + 1} de {pageCount}
+            </span>
+            <button onClick={nextPage} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">
+              Siguiente
+            </button>
+            <button onClick={() => setCurrentPage(pageCount - 1)} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">
+              Ir al final
+            </button>
           </div>
         </div>
         )
