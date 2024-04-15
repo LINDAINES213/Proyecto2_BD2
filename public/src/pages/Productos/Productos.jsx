@@ -94,7 +94,7 @@ const Productos = () => {
   }
 
 
-  const fetchData = (limit) => {
+  const fetchData = () => {
   
     setLoading(true)
     //const parsedLimit = parseInt(limit)
@@ -163,7 +163,6 @@ const Productos = () => {
                 <th>Precio al por mayor</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
-
               </thead>
               <tbody>
                 {currentData.map(rest =>

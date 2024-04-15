@@ -88,7 +88,7 @@ def delete_producto(id: str):
     # Consulta Cypher para eliminar el nodo de usuario
     query = '''
     MATCH (p:Producto {id: $id})
-    DELETE p
+    DETACH DELETE p
     '''
 
     # Ejecutar la consulta Cypher con el parámetro proporcionado
