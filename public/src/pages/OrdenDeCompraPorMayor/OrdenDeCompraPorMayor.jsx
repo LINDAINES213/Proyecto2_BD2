@@ -167,7 +167,7 @@ import { Loading } from '../../components';
   }
   
   const deleteData = (id) => {
-    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_orden_compra/${id}`)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_orden_compra_por_mayor/${id}`)
       .then(() => {
         fetchData()
       })
