@@ -55,11 +55,8 @@ import { Loading } from '../../components';
 
   const submit = (event, id) => {
     event.preventDefault()
-    const PorMayor = "/create_vehiculo_transporte_ligero"
-    const PorMenor = "/create_vehiculo_transporte_pesado"
-
     if (id === 0) {
-      axios.post(url), {
+      axios.post("https://frail-maryanne-uvg.koyeb.app/create_proveedor", {
         envio, 
         fecha, 
         total, 

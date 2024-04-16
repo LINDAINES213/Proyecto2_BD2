@@ -22,14 +22,14 @@ function App() {
         {selectedMenuItem === '💆 Clientes' && <Cliente /> }
         {selectedMenuItem === '📊 Publicidad' && <Publicidad /> }
         {selectedMenuItem === '💵 Orden de Compra' && <OrdenDeCompra /> }
-        {selectedMenuItem === 'Vehiculos' && <Vehiculos /> }
+        {selectedMenuItem === '🚗 Vehiculos' && <Vehiculos /> }
         {selectedMenuItem !== '📦 Almacen' &&
          selectedMenuItem !== '🚚 Proveedores' &&
          selectedMenuItem !== '📝 Productos' &&
          selectedMenuItem !== '👷‍♂️ Personal' &&
          selectedMenuItem !== '💆 Clientes' &&
          selectedMenuItem !== '📊 Publicidad' &&
-         selectedMenuItem !== 'Vehiculos' &&
+         selectedMenuItem !== '🚗 Vehiculos' &&
          selectedMenuItem !== '🌏 Estadísticas' && 
          selectedMenuItem !== '💵 Orden de Compra' && 
          selectedMenuItem !== '👀 Perfiles' && <p>Contenido no definido.</p>}
