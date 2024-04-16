@@ -240,7 +240,7 @@ import { Loading } from '../../components';
                   </select>
                   <button type="button" style={{paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={handleAddCodigo}>Añadir +</button>
                   {codigo_producto.length > 0 && (
-                    <div className={floatingWindow} style={{right: "1vw", top: "75vh"}}>
+                    <div className={floatingWindow} style={{right: "1vw", top: "79vh"}}>
                       <ul className={productList}>
                         {codigo_producto.map((codigo, index) => (
                           <li key={index} className={productItem}>
@@ -267,7 +267,7 @@ import { Loading } from '../../components';
                   <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={handleAddCantidad}>Añadir+</button>
                   {console.log("codigo", cantidad)}
                   {cantidad.length > 0 ? (
-                    <div className={floatingWindow} style={{left: "16vw", top: "75vh"}}>
+                    <div className={floatingWindow} style={{left: "16vw", top: "79vh"}}>
                       <ul className={productList}>
                         {cantidad.map((codigo, index) => (
                           <li key={index} className={productItem}>
