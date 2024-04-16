@@ -23,6 +23,8 @@ def get_almacen():
 
     return {"response": nodes_info}
 
+
+
 @almacen.post("/create_almacen")
 def create_almacen(almacen_data: dict):
     driver_neo4j = connection()
@@ -91,7 +93,7 @@ def delete_almacen(id: str):
     # Consulta Cypher para eliminar el nodo de usuario
     query = '''
     MATCH (p:Almacen {id: $id})
-    DELETE p
+    DETACH DELETE p
     '''
 
     # Ejecutar la consulta Cypher con el parámetro proporcionado

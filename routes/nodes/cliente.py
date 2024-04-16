@@ -21,6 +21,19 @@ def get_cliente():
 
     return {"response": nodes_info}
 
+@cliente.get("/nodes/Cliente/{id}")
+def get_cliente(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    query = f"MATCH (n:Cliente) WHERE n.id = '{id}' RETURN n"
+    results = session.run(query)
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
 @cliente.post("/create_cliente")
 def create_cliente(cliente_data: dict):
     driver_neo4j = connection()

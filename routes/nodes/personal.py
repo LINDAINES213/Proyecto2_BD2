@@ -20,6 +20,35 @@ def get_personal():
 
     return {"response": nodes_info}
 
+@personal.get("/nodes/Personal/{id}")
+def get_personalId(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    query = f"MATCH (n:Personal) WHERE n.id = '{id}' RETURN n"
+    results = session.run(query)
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
+@personal.get("/nodes/Personal")
+def get_personal():
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    # Consulta Cypher con un parámetro
+    query = f'MATCH (n:Personal) RETURN n' #n.name AS name, COUNT(n) AS count
+    # Pasando el valor del parámetro label
+    results = session.run(query)
+    # Recopilando todas las propiedades de cada nodo
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
 @personal.post("/create_personal")
 def create_personal(personal_data: dict):
     driver_neo4j = connection()

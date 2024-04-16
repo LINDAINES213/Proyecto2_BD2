@@ -9,7 +9,20 @@ orden_compra_router = APIRouter()
 def get_orden_compra():
     driver_neo4j = connection()
     session = driver_neo4j.session()
-    query = f'MATCH (n:OrdenDeCompra) RETURN n'
+    query = f'MATCH (n:OrdenDeCompra:PorMenor) RETURN n'
+    results = session.run(query)
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
+@orden_compra_router.get("/nodes/OrdenDeCompra/{id}")
+def get_ordenCompra(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    query = f"MATCH (n:OrdenDeCompra:PorMenor) WHERE n.id = '{id}' RETURN n"
     results = session.run(query)
     nodes_info = []
     for row in results:
@@ -79,7 +92,7 @@ def delete_orden_compra(id: str):
 
     query = '''
     MATCH (o:OrdenDeCompra:PorMenor {id: $id})
-    DELETE o
+    DETACH DELETE o
     '''
 
     session.run(query, id=id)
@@ -94,6 +107,19 @@ def get_orden_compra_por_mayor():
     driver_neo4j = connection()
     session = driver_neo4j.session()
     query = f'MATCH (n:OrdenDeCompra:PorMayor) RETURN n'
+    results = session.run(query)
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
+@orden_compra_router_por_mayor.get("/nodes/OrdenDeCompraPorMayor/{id}")
+def get_ordenCompra(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    query = f"MATCH (n:OrdenDeCompra:PorMayor) WHERE n.id = '{id}' RETURN n"
     results = session.run(query)
     nodes_info = []
     for row in results:
@@ -163,7 +189,7 @@ def delete_orden_compra_por_mayor(id: str):
 
     query = '''
     MATCH (o:OrdenDeCompra:PorMayor {id: $id})
-    DELETE o
+    DETACH DELETE o
     '''
 
     session.run(query, id=id)

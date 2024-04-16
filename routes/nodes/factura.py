@@ -18,6 +18,19 @@ def get_factura():
 
     return {"response": nodes_info}
 
+@factura_router.get("/nodes/Factura/{id}")
+def get_factura(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    query = f"MATCH (n:Factura) WHERE n.id = '{id}' RETURN n"
+    results = session.run(query)
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
 @factura_router.post("/create_factura")
 def create_factura(factura_data: dict):
     driver_neo4j = connection()
@@ -88,7 +101,7 @@ def delete_factura(id: str):
 
     query = '''
     MATCH (f:Factura {id: $id})
-    DELETE f
+    DETACH DELETE f
     '''
 
     session.run(query, id=id)

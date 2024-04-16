@@ -17,6 +17,19 @@ def get_vehiculo_transporte_ligero():
 
     return {"response": nodes_info}
 
+@vehiculo_router.get("/nodes/VehiculoTransporteLigero/{id}")
+def get_vehicloId(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    query = f"MATCH (n:Vehiculo:TransporteLigero) WHERE n.id = '{id}' RETURN n"
+    results = session.run(query)
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
 @vehiculo_router.post("/create_vehiculo_transporte_ligero")
 def create_vehiculo_transporte_ligero(vehiculo_data: dict):
     driver_neo4j = connection()
@@ -72,7 +85,7 @@ def delete_vehiculo_transporte_ligero(id: str):
 
     query = '''
     MATCH (v:Vehiculo:TransporteLigero {id: $id})
-    DELETE v
+    DETATCH DELETE v
     '''
 
     session.run(query, id=id)
@@ -87,6 +100,19 @@ def get_vehiculo_transporte_pesado():
     driver_neo4j = connection()
     session = driver_neo4j.session()
     query = f'MATCH (n:Vehiculo:TransportePesado) RETURN n'
+    results = session.run(query)
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
+@vehiculo_router_pesado.get("/nodes/VehiculoTransportePesado/{id}")
+def get_vehicloId(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    query = f"MATCH (n:Vehiculo:TransportePesado) WHERE n.id = '{id}' RETURN n"
     results = session.run(query)
     nodes_info = []
     for row in results:

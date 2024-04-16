@@ -21,6 +21,19 @@ def get_producto():
 
     return {"response": nodes_info}
 
+@producto.get("/nodes/Producto/{id}")
+def get_ordenCompra(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    query = f"MATCH (n:Producto) WHERE n.id = '{id}' RETURN n"
+    results = session.run(query)
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
 @producto.post("/create_producto")
 def create_producto(producto_data: dict):
     driver_neo4j = connection()

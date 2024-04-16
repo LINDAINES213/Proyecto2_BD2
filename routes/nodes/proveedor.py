@@ -21,6 +21,19 @@ def get_proveedor():
 
     return {"response": nodes_info}
 
+@proveedor.get("/nodes/Proveedor/{id}")
+def get_ProveedorId(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    query = f"MATCH (n:Proveedor) WHERE n.id = '{id}' RETURN n"
+    results = session.run(query)
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
 @proveedor.post("/create_proveedor")
 def create_proveedor(proveedor_data: dict):
     driver_neo4j = connection()

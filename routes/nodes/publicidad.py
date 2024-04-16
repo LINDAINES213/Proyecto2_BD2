@@ -17,6 +17,19 @@ def get_publicidad():
 
     return {"response": nodes_info}
 
+@publicidad_router.get("/nodes/Publicidad/{id}")
+def get_ordenCompra(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    query = f"MATCH (n:Publicidad) WHERE n.id = '{id}' RETURN n"
+    results = session.run(query)
+    nodes_info = []
+    for row in results:
+        node_properties = dict(row["n"])
+        nodes_info.append(node_properties)
+
+    return {"response": nodes_info}
+
 @publicidad_router.post("/create_publicidad")
 def create_publicidad(publicidad_data: dict):
     driver_neo4j = connection()
@@ -72,7 +85,7 @@ def delete_publicidad(id: str):
 
     query = '''
     MATCH (p:Publicidad {id: $id})
-    DELETE p
+    DETACH DELETE p
     '''
 
     session.run(query, id=id)
