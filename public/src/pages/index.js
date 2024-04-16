@@ -4,7 +4,8 @@ import Personal from "./Personal"
 import Cliente from "./Cliente"
 import Almacen from "./Almacen"
 import Publicidad from "./Publicidad"
-import OrdenDeCompra from "./OrdenDeCompra"
+import OrdenDeCompraPorMenor from "./OrdenDeCompraPorMenor"
+import OrdenDeCompraPorMayor from "./OrdenDeCompraPorMayor"
 import Vehiculos from "./Vehiculos"
 
 export {
@@ -14,6 +15,7 @@ export {
     Cliente,
     Almacen,
     Publicidad,
-    OrdenDeCompra,
+    OrdenDeCompraPorMenor,
+    OrdenDeCompraPorMayor,
     Vehiculos
 }

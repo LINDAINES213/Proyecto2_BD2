@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { Proveedores, Productos, Personal, Cliente, Almacen, Publicidad, OrdenDeCompra, Vehiculos} from './pages'
+import { Proveedores, Productos, Personal, Cliente, Almacen, Publicidad, OrdenDeCompraPorMenor, OrdenDeCompraPorMayor, Vehiculos} from './pages'
 import { Content, Sidebar } from './components'
 
 // eslint-disable-next-line react/function-component-definition
@@ -21,7 +21,8 @@ function App() {
         {selectedMenuItem === '👷‍♂️ Personal' && <Personal /> }
         {selectedMenuItem === '💆 Clientes' && <Cliente /> }
         {selectedMenuItem === '📊 Publicidad' && <Publicidad /> }
-        {selectedMenuItem === '💵 Orden de Compra' && <OrdenDeCompra /> }
+        {selectedMenuItem === '💵 Orden de Compra ⬇️ Por Menor' && <OrdenDeCompraPorMenor /> }
+        {selectedMenuItem === '💵 Orden de Compra ⬆️ Por Mayor' && <OrdenDeCompraPorMayor /> }
         {selectedMenuItem === '🚗 Vehiculos' && <Vehiculos /> }
         {selectedMenuItem !== '📦 Almacen' &&
          selectedMenuItem !== '🚚 Proveedores' &&
@@ -31,7 +32,8 @@ function App() {
          selectedMenuItem !== '📊 Publicidad' &&
          selectedMenuItem !== '🚗 Vehiculos' &&
          selectedMenuItem !== '🌏 Estadísticas' && 
-         selectedMenuItem !== '💵 Orden de Compra' && 
+         selectedMenuItem !== '💵 Orden de Compra ⬇️ Por Menor' && 
+         selectedMenuItem !== '💵 Orden de Compra ⬆️ Por Mayor' && 
          selectedMenuItem !== '👀 Perfiles' && <p>Contenido no definido.</p>}
       </Content>
     </div>

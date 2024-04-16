@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { buttonContainer, inputContainer, inputText, crud, centerAligned, editButton, scrollableTable,
-  formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider,productButton,productItem,productList,  floatingWindow
- } from './OrdenDeCompra.module.css'
+  formGrid, centeredDiv, productButton,productItem,productList,  floatingWindow
+ } from './OrdenDeCompraPorMayor.module.css'
 import { Loading } from '../../components';
 
- const OrdenDeCompra = () => {
+ const OrdenDeCompraPorMayor = () => {
   const [ordenDeCompra, setOrdenDeCompra] = useState([])
   const [id, setId] = useState(0)
   const [envio, setEnvio] = useState('')
@@ -16,11 +16,11 @@ import { Loading } from '../../components';
   const [cantidad, setCantidad] = useState([])
   const [metodo_pago, setMetodo_pago] = useState('')
   const [total, setTotal] = useState('')
-  const [limit, setLimit] = useState()
-  const [selectedOption, setSelectedOption] = useState('verUsuarios')
+  const [selectedOption, ] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
   const [codigoProducto, setCodigoProducto] = useState(''); // Para el input actual
   const [productosList, setProductosList] = useState([]);
+  const [clientesList, setClientesList] = useState([]);
   const [cant, setCant] = useState('')
 
   const handleInputChange = (e) => {
@@ -44,7 +44,7 @@ import { Loading } from '../../components';
 
   const handleAddCantidad = () => {
     const intCant = parseInt(cant, 10); // Convierte cant a un entero base 10
-    if (!isNaN(intCant) && !cantidad.includes(intCant)) { // Asegura que intCant es un número
+    if (!isNaN(intCant)) { // Asegura que intCant es un número
       setCantidad([...cantidad, intCant]); // Añade el entero al array
       setCant(''); // Limpia el input
     }
@@ -53,6 +53,11 @@ import { Loading } from '../../components';
   const handleDeleteCantidad = (codigo) => {
     setCantidad(cantidad.filter(c => c !== codigo)); // Elimina el código del array
   };
+
+  const handleClientChange = (event) => {
+    setIDCliente(event.target.value); // Actualiza el estado con el nuevo ID de cliente seleccionado
+  };
+  
 
   // Paginacion
   const [currentPage, setCurrentPage] = useState(0);
@@ -67,7 +72,7 @@ import { Loading } from '../../components';
   
   useEffect(() => {
     setLoading(true)
-    axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/OrdenDeCompra')
+    axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/OrdenDeCompraPorMayor')
       .then(response => {
         setOrdenDeCompra(response.data.response);
         setId(0)
@@ -90,6 +95,14 @@ import { Loading } from '../../components';
         .catch((error) => {
           console.error('Error fetching data:', error)
         })
+
+        axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Cliente')
+        .then(response => {
+          setClientesList(response.data.response);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error)
+        })
       })
   }, [])
 
@@ -102,7 +115,7 @@ import { Loading } from '../../components';
           const producto = productosList.find(p => p.id === codigo_producto[i]);  // Encuentra el producto basado en el id
 
           if (producto) {
-            sum += cantidad[i] * producto.precio;  // Calcula contribución al total
+            sum += cantidad[i] * producto.precio_al_por_mayor;  // Calcula contribución al total
           }
         }
         setTotal(sum);
@@ -113,7 +126,7 @@ import { Loading } from '../../components';
   const submit = (event, id) => {
     event.preventDefault()
     if (id === 0) {
-      axios.post("https://frail-maryanne-uvg.koyeb.app/create_proveedor", {
+      axios.post("https://frail-maryanne-uvg.koyeb.app/create_orden_compra_por_mayor", {
         envio, 
         fecha, 
         total, 
@@ -128,7 +141,7 @@ import { Loading } from '../../components';
         setTotal('')
         setIDCliente('')
         setCodigo_producto([])
-        setCantidad('')
+        setCantidad([])
         setMetodo_pago('')
       })
     } else {
@@ -147,14 +160,14 @@ import { Loading } from '../../components';
         setTotal('')
         setIDCliente('')
         setCodigo_producto([])
-        setCantidad('')
+        setCantidad([ ])
         setMetodo_pago('')
       })
     }
   }
   
   const deleteData = (id) => {
-    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_proveedor/${id}`)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_orden_compra/${id}`)
       .then(() => {
         fetchData()
       })
@@ -165,7 +178,7 @@ import { Loading } from '../../components';
 
     //const parsedLimit = parseInt(limit)
     //const isLimitInteger = !isNaN(parsedLimit) && Number.isInteger(parsedLimit)    const url = 'https://frail-maryanne-uvg.koyeb.app/nodes/Producto'
-    const url = 'https://frail-maryanne-uvg.koyeb.app/nodes/OrdenDeCompra'
+    const url = 'https://frail-maryanne-uvg.koyeb.app/nodes/OrdenDeCompraPorMayor'
   
     axios.get(url)
       .then((res) => {
@@ -225,7 +238,7 @@ import { Loading } from '../../components';
                       </option>
                     ))}
                   </select>
-                  <button type="button" style={{paddingBottom: "0.4vh", paddingTop: "0.4vh"}} onClick={handleAddCodigo}>Añadir +</button>
+                  <button type="button" style={{paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={handleAddCodigo}>Añadir +</button>
                   {codigo_producto.length > 0 && (
                     <div className={floatingWindow} style={{right: "1vw", top: "75vh"}}>
                       <ul className={productList}>
@@ -251,7 +264,7 @@ import { Loading } from '../../components';
                     placeholder='Cantidad'
                     type='number'
                   />
-                  <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh"}} onClick={handleAddCantidad}>Añadir+</button>
+                  <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={handleAddCantidad}>Añadir+</button>
                   {console.log("codigo", cantidad)}
                   {cantidad.length > 0 ? (
                     <div className={floatingWindow} style={{left: "16vw", top: "75vh"}}>
@@ -272,17 +285,35 @@ import { Loading } from '../../components';
                   )}
                 </div>
                 <div className={inputContainer}>
-                    <input className={inputText} value={metodo_pago} onChange={(e) => setMetodo_pago(e.target.value)} type="text" placeholder='Metodo de pago' />
-                    <div className={buttonContainer}>
-                      <button className=" btn btn-sm btn-primary waves-effect waves-light right" style={{padding: "1vh"}} type="submit" name="action"> Enviar  
-                      <i className="material-icons right"> send</i>
-                      </button>
-                    </div>
+                  <select
+                    className={inputText}
+                    value={id_cliente} // Aquí se almacena el ID del cliente seleccionado
+                    onChange={handleClientChange} // Esta función se ejecuta cuando se selecciona un cliente
+                    placeholder='Seleccione un cliente'
+                  >
+                    {/* Opción por defecto */}
+                    <option value="">Seleccione un cliente</option>
+                    {/* Mapeo de clientesList para generar las opciones */}
+                    {clientesList.map((cliente, index) => (
+                      <option key={index} value={cliente.id}>
+                        ID: {cliente.id} {cliente.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className={formGrid}>
+                <div className={inputContainer}>
+                  <input className={inputText} value={metodo_pago} onChange={(e) => setMetodo_pago(e.target.value)} type="text" placeholder='Metodo de pago' />
+                  <div className={buttonContainer}>
+                    <button className=" btn btn-sm btn-primary waves-effect waves-light right" style={{padding: "0.5vh"}} type="submit" name="action"> Enviar  
+                    <i className="material-icons right"> send</i>
+                    </button>
+                  </div>
                 </div>
                 {(total !== undefined && total !== '' && !isNaN(total) && total >= 0) && (
-                  <div className={inputContainer} >
-                    {console.log("t", total)}
-                    <span style={{backgroundColor: 'white', borderRadius: "5px", color: "black", padding: '1vh'}}>Total: ${total.toFixed(2)}</span>  {/* Muestra el total aquí */}
+                  <div className={inputContainer}>
+                    <span style={{backgroundColor: 'white', borderRadius: "5px", color: "black", padding: '0.5vh', marginLeft: '0.5vw'}}>Total: ${total.toFixed(2)}</span>  {/* Muestra el total aquí */}
                   </div>
                 )}
               </div>
@@ -375,4 +406,4 @@ import { Loading } from '../../components';
   )
 }
 
-export default OrdenDeCompra
+export default OrdenDeCompraPorMayor

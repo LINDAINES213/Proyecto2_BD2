@@ -146,28 +146,42 @@ def get_ordenCompra(id: str):
 @orden_compra_router_por_mayor.post("/create_orden_compra_por_mayor")
 def create_orden_compra_por_mayor(orden_compra_data: dict):
     driver_neo4j = connection()
-    session = driver_neo4j.session()
-    id = str(uuid.uuid4())
+    with driver_neo4j.session() as session:
+        id = str(uuid.uuid4())
 
-    envio = orden_compra_data.get("envio")
-    fecha = orden_compra_data.get("fecha")
-    fecha = datetime.strptime(fecha, "%Y-%m-%d")
-    total = orden_compra_data.get("total")
-    id_cliente = orden_compra_data.get("id_cliente")
-    codigo_producto = orden_compra_data.get("codigo_producto")
-    cantidad = orden_compra_data.get("cantidad")
-    metodo_pago = orden_compra_data.get("metodo_pago")
+        # Extraer y validar datos
+        envio = float(orden_compra_data.get("envio", 0.0))
+        fecha_str = orden_compra_data.get("fecha", "")
+        total = float(orden_compra_data.get("total", 0.0))
+        codigo_producto = orden_compra_data.get("codigo_producto", [])  # Asegurar que es lista
+        cantidad_str_list = orden_compra_data.get("cantidad", [])  # Asumir que viene como lista de strings
+        metodo_pago = str(orden_compra_data.get("metodo_pago", ""))
+        id_cliente = str(orden_compra_data.get("id_cliente", ""))
 
-    query = '''CREATE (o:OrdenDeCompra:PorMayor {envio: $envio, fecha: $fecha, total: $total, id_cliente: $id_cliente, codigo_producto: $codigo_producto, id: $id, cantidad: $cantidad, metodo_pago: $metodo_pago})
-    RETURN o'''
+        # Convertir fecha y cantidades
+        if fecha_str:
+            fecha = datetime.strptime(fecha_str, "%Y-%m-%d").date()
+        else:
+            fecha = datetime.now().date()  # Uso de fecha actual como fallback
+        
+        cantidad = [int(c) for c in cantidad_str_list]  # Convertir cada elemento a int
 
-    result = session.run(query, id=id, envio=envio, fecha=fecha, total=total, id_cliente=id_cliente, codigo_producto=codigo_producto, cantidad=cantidad, metodo_pago=metodo_pago)
+        # Consulta para crear el nodo en Neo4j
+        query = '''
+            CREATE (o:OrdenDeCompra:PorMayor {
+                envio: $envio, fecha: $fecha, total: $total, id_cliente: $id_cliente, 
+                codigo_producto: $codigo_producto, id: $id, cantidad: $cantidad, 
+                metodo_pago: $metodo_pago
+            })
+            RETURN o
+        '''
 
-    created_orden_compra_info = []
-    for record in result:
-        created_orden_compra_info.append(dict(record["o"]))
+        # Ejecución de la consulta y recopilación de resultados
+        result = session.run(query, id=id, envio=envio, fecha=fecha, total=total, id_cliente=id_cliente,
+                             codigo_producto=codigo_producto, cantidad=cantidad, metodo_pago=metodo_pago)
 
-    return {"response": created_orden_compra_info}
+        created_orden_compra_info = [dict(record["o"]) for record in result]
+        return {"response": created_orden_compra_info}
 
 @orden_compra_router_por_mayor.put("/update_orden_compra_por_mayor/{id}")
 def update_orden_compra_por_mayor(id: str, updated_data: dict):
