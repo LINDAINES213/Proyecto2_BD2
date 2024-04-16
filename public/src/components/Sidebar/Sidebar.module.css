@@ -1,16 +1,16 @@
 .sidebar {
-    height: 99vh;
-    background-color: #090088;
-    color: white;
-    font-weight: bolder;
-    font-size: large;
-    margin-bottom: 0vh;
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    padding-top: 1vh;
-  }
-  
+  height: 99vh;
+  background-image: linear-gradient(145deg, #090088 0%, #902a2a 50%, #1b1b77 100%);
+  color: white;
+  font-weight: bolder;
+  font-size: large;
+  margin-bottom: 0vh;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding-top: 1vh;
+}
+
   ul {
     list-style: none;
     padding: 2vw;

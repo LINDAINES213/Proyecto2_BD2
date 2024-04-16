@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
-  formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider
+import { buttonContainer, inputContainer, inputText, crud, centerAligned, editButton, scrollableTable,
+  formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider,productButton,productItem,productList,floatingWindow
  } from './OrdenDeCompra.module.css'
 import { Loading } from '../../components';
 
@@ -12,14 +12,31 @@ import { Loading } from '../../components';
   const [envio, setEnvio] = useState('')
   const [fecha, setFecha] = useState('')
   const [id_cliente, setIDCliente] = useState('')
-  const [codigo_producto, setCodigo_producto] = useState('')
+  const [codigo_producto, setCodigo_producto] = useState([])
   const [cantidad, setCantidad] = useState('')
   const [metodo_pago, setMetodo_pago] = useState('')
   const [total, setTotal] = useState('')
   const [limit, setLimit] = useState()
   const [selectedOption, setSelectedOption] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
+  const [codigoProducto, setCodigoProducto] = useState(''); // Para el input actual
+  const [productosList, setProductosList] = useState([]);
 
+  const handleInputChange = (e) => {
+    setCodigoProducto(e.target.value);
+  };
+  
+  const handleAddCodigo = () => {
+    if (codigoProducto !== '' && !codigo_producto.includes(codigoProducto)) {
+      setCodigo_producto([...codigo_producto, codigoProducto]); // Añade el código al array
+      setCodigoProducto(''); // Limpia el select
+    }
+  };
+  
+  const handleDeleteCodigo = (codigo) => {
+    setCodigo_producto(codigo_producto.filter(c => c !== codigo)); // Elimina el código del array
+  };
+  
 
   // Paginacion
   const [currentPage, setCurrentPage] = useState(0);
@@ -42,7 +59,7 @@ import { Loading } from '../../components';
         setFecha('')
         setTotal('')
         setIDCliente('')
-        setCodigo_producto('')
+        setCodigo_producto([])
         setCantidad('')
         setMetodo_pago('')
       })
@@ -50,6 +67,13 @@ import { Loading } from '../../components';
         console.error('Error fetching data:', error)
       }).finally(() => {
         setLoading(false)
+        axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Producto')
+        .then(response => {
+          setProductosList(response.data.response);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error)
+        })
       })
   }, [])
 
@@ -70,7 +94,7 @@ import { Loading } from '../../components';
         setFecha('')
         setTotal('')
         setIDCliente('')
-        setCodigo_producto('')
+        setCodigo_producto([])
         setCantidad('')
         setMetodo_pago('')
       })
@@ -89,7 +113,7 @@ import { Loading } from '../../components';
         setFecha('')
         setTotal('')
         setIDCliente('')
-        setCodigo_producto('')
+        setCodigo_producto([])
         setCantidad('')
         setMetodo_pago('')
       })
@@ -142,7 +166,7 @@ import { Loading } from '../../components';
         return (
           <div>
             <div className='col lg-6 mt-5'>
-            <h3 style={{ borderBottom: '3px solid #000000'}}>Añadir proveedor:</h3>
+            <h3 style={{ borderBottom: '3px solid #000000'}}>Añadir orden de compra:</h3>
             <form onSubmit={(e) => submit(e, id)}>
               <div className={formGrid}>
                 <div className={inputContainer}>
@@ -153,19 +177,47 @@ import { Loading } from '../../components';
                     <input className={inputText} value={fecha} onChange={(e) => setFecha(e.target.value)} type="date" placeholder='Fecha de emision' />
                 </div>
                 <div className={inputContainer}>
-                    <input 
-                      className={inputText} value={codigo_producto} onChange={(e) => setCodigo_producto(e.target.value)} placeholder='Codigo de producto' type='text'
-                    />
+                  <select
+                    className={inputText}
+                    value={codigoProducto}
+                    onChange={handleInputChange}
+                    placeholder='Seleccione un producto'
+                  >
+                    {/* Opción por defecto */}
+                    <option value="">Seleccione un producto</option>
+                    {/* Suponiendo que tienes un arreglo `productos` con objetos { codigo, nombre } */}
+                    {productosList.map((producto, index) => (
+                      <option key={index} value={producto.codigo}>
+                        ID: {producto.id} {producto.nombre} 
+                      </option>
+                    ))}
+                  </select>
+                  <button type="button" style={{paddingBottom: "0.4vh", paddingTop: "0.4vh"}} onClick={handleAddCodigo}>Añadir +</button>
+                  {codigo_producto.length > 0 && (
+                    <div className={floatingWindow}>
+                      <ul className={productList}>
+                        {codigo_producto.map((codigo, index) => (
+                          <li key={index} className={productItem}>
+                            {codigo}
+                            <button type="button" className={productButton} style={{ backgroundColor: "transparent"}} onClick={() => handleDeleteCodigo(codigo)}>
+                              ❌
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
+
               </div>
               <div className={formGrid}>
                 <div className={inputContainer}>
-                      <input className={inputText} value={cantidad} onChange={(e) => setCantidad(e.target.value)} placeholder='Email' type='email' />
+                  <input className={inputText} value={cantidad} onChange={(e) => setCantidad(e.target.value)} placeholder='Cantidad' type='number' />
                 </div>
                 <div className={inputContainer}>
                     <input className={inputText} value={metodo_pago} onChange={(e) => setMetodo_pago(e.target.value)} type="text" placeholder='Metodo de pago' />
                     <div className={buttonContainer}>
-                      <button className=" btn btn-sm btn-primary waves-effect waves-light right" type="submit" name="action"> Enviar  
+                      <button className=" btn btn-sm btn-primary waves-effect waves-light right" style={{padding: "1vh"}} type="submit" name="action"> Enviar  
                       <i className="material-icons right"> send</i>
                       </button>
                     </div>
@@ -177,24 +229,42 @@ import { Loading } from '../../components';
           <div className={scrollableTable}>
             <table className='table'>
               <thead>
-                <th>Envio</th>
-                <th>Fecha</th>
                 <th>ID Cliente</th>
+                <th>Fecha</th>
                 <th>Codigo Producto</th>
                 <th>Cantidad</th>
                 <th>Metodo de pago</th>
+                <th>Envio</th>
+                <th>Total</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
               </thead>
               <tbody>
                 {currentData.map(rest =>
                       <tr key={rest.id}>
-                        <td>${rest.envio}</td>
-                        <td>{formatDate(rest.fecha)}</td>
                         <td>{rest.id_cliente}</td>
-                        <td><td>{rest.codigo_producto[0]}</td></td>
-                        <td>{rest.cantidad}</td>
+                        <td>{formatDate(rest.fecha)}</td>
+                        <td>
+                          <table>
+                            <tbody>
+                              {rest.codigo_producto.map(cod => 
+                                <tr key={cod}><td className={centerAligned}>{cod}</td></tr>
+                              )}
+                            </tbody>
+                          </table>
+                        </td>
+                        <td>
+                          <table>
+                            <tbody>
+                              {rest.cantidad.map(cod => 
+                                <tr key={cod}><td className={centerAligned}>{cod}</td></tr>
+                              )}
+                            </tbody>
+                          </table>
+                        </td>
                         <td>{rest.metodo_pago}</td>
+                        <td>${rest.envio}</td>
+                        <td>{rest.total}</td>
                         <td>
                           <button onClick={() => submit()} className={editButton} type="submit" name="action">
                             <i className="material-icons ">edit</i>
