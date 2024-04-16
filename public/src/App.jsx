@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { Proveedores, Productos, Personal, Cliente, Almacen, Publicidad, OrdenDeCompraPorMenor, OrdenDeCompraPorMayor, Vehiculos} from './pages'
+import { Proveedores, Productos, Personal, Cliente, Almacen, Publicidad, OrdenDeCompraPorMenor, OrdenDeCompraPorMayor, Vehiculos, Factura} from './pages'
 import { Content, Sidebar } from './components'
 
 // eslint-disable-next-line react/function-component-definition
@@ -23,6 +23,7 @@ function App() {
         {selectedMenuItem === '📊 Publicidad' && <Publicidad /> }
         {selectedMenuItem === '💵 Orden de Compra ⬇️ Por Menor' && <OrdenDeCompraPorMenor /> }
         {selectedMenuItem === '💵 Orden de Compra ⬆️ Por Mayor' && <OrdenDeCompraPorMayor /> }
+        {selectedMenuItem === 'Factura' && <Factura /> }
         {selectedMenuItem === '🚗 Vehiculos' && <Vehiculos /> }
         {selectedMenuItem !== '📦 Almacen' &&
          selectedMenuItem !== '🚚 Proveedores' &&
@@ -30,6 +31,7 @@ function App() {
          selectedMenuItem !== '👷‍♂️ Personal' &&
          selectedMenuItem !== '💆 Clientes' &&
          selectedMenuItem !== '📊 Publicidad' &&
+         selectedMenuItem !== 'Factura' &&
          selectedMenuItem !== '🚗 Vehiculos' &&
          selectedMenuItem !== '🌏 Estadísticas' && 
          selectedMenuItem !== '💵 Orden de Compra ⬇️ Por Menor' && 

@@ -7,6 +7,7 @@ import Publicidad from "./Publicidad"
 import OrdenDeCompraPorMenor from "./OrdenDeCompraPorMenor"
 import OrdenDeCompraPorMayor from "./OrdenDeCompraPorMayor"
 import Vehiculos from "./Vehiculos"
+import Factura from "./Factura"
 
 export {
     Proveedores,
@@ -17,5 +18,6 @@ export {
     Publicidad,
     OrdenDeCompraPorMenor,
     OrdenDeCompraPorMayor,
-    Vehiculos
+    Vehiculos,
+    Factura
 }
