@@ -10,6 +10,7 @@ from routes.nodes import ordenCompra
 from routes.nodes import publicidad
 from routes.nodes import vehiculos
 from routes.relations import rTiene
+from routes.relations import rReabastece
 
 app = FastAPI()
 
@@ -37,6 +38,7 @@ app.include_router(publicidad.publicidad_router)
 app.include_router(vehiculos.vehiculo_router)
 app.include_router(vehiculos.vehiculo_router_pesado)
 app.include_router(rTiene.tiene)
+app.include_router(rReabastece.reabastece_r)
 
 @app.get("/")
 def default():
