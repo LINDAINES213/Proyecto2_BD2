@@ -10,11 +10,12 @@
 
 .backgroundContainer {
   position: relative;
-  width: 101%;
-  height: 86.5vh; /* O ajusta según la altura que necesites */
-
+  width: 100%;
+  height: 87.5vh; /* O ajusta según la altura que necesites */
+  background: url('../src/assets/almacen.jpeg') no-repeat center center;
   background-size: 100% 150%; /* Ajusta el 150% según cuánto quieras cortar */;
   border-radius: 20px; /* Ajusta este valor para controlar la curvatura de los bordes */
+  z-index: 999;
 }
 
 .header {
