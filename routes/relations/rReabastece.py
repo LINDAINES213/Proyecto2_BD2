@@ -55,7 +55,7 @@ def create_tiene_relation(data: dict):
     query = f"""
     MATCH (p:Proveedor), (a:Almacen)
     WHERE p.id = '{proveedor_id}' AND a.id = '{almacen_id}'
-    CREATE (p)-[:TIENE {{monto: {monto}, calidad_del_producto: '{calidad_del_producto}', fecha_de_reabastecimiento: date("{fecha_de_reabastecimiento}")}}]->(a)
+    CREATE (p)-[:REABASTECE {{monto: {monto}, calidad_del_producto: '{calidad_del_producto}', fecha_de_reabastecimiento: date("{fecha_de_reabastecimiento}")}}]->(a)
     """
     
     with driver_neo4j.session() as session:
