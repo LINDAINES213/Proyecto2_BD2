@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { buttonContainer, inputContainer, inputText, crud, centerAligned, editButton, scrollableTable,
-  formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider,productButton,productItem,productList,floatingWindow
+  formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider,productButton,productItem,productList,  floatingWindow
  } from './OrdenDeCompra.module.css'
 import { Loading } from '../../components';
 
@@ -13,7 +13,7 @@ import { Loading } from '../../components';
   const [fecha, setFecha] = useState('')
   const [id_cliente, setIDCliente] = useState('')
   const [codigo_producto, setCodigo_producto] = useState([])
-  const [cantidad, setCantidad] = useState('')
+  const [cantidad, setCantidad] = useState([])
   const [metodo_pago, setMetodo_pago] = useState('')
   const [total, setTotal] = useState('')
   const [limit, setLimit] = useState()
@@ -21,6 +21,7 @@ import { Loading } from '../../components';
   const [loading, setLoading] = useState(false)
   const [codigoProducto, setCodigoProducto] = useState(''); // Para el input actual
   const [productosList, setProductosList] = useState([]);
+  const [cant, setCant] = useState('')
 
   const handleInputChange = (e) => {
     setCodigoProducto(e.target.value);
@@ -37,6 +38,20 @@ import { Loading } from '../../components';
     setCodigo_producto(codigo_producto.filter(c => c !== codigo)); // Elimina el código del array
   };
   
+  const handleInputChangeCantidad = (e) => {
+    setCant(e.target.value);
+  };
+
+  const handleAddCantidad = () => {
+    if (cant !== '' && !cantidad.includes(cant)) {
+      setCantidad([...cantidad, cant]); // Añade el código al array
+      setCant(''); // Limpia el input
+    }
+  };
+
+  const handleDeleteCantidad = (codigo) => {
+    setCantidad(cantidad.filter(c => c !== codigo)); // Elimina el código del array
+  };
 
   // Paginacion
   const [currentPage, setCurrentPage] = useState(0);
@@ -194,7 +209,7 @@ import { Loading } from '../../components';
                   </select>
                   <button type="button" style={{paddingBottom: "0.4vh", paddingTop: "0.4vh"}} onClick={handleAddCodigo}>Añadir +</button>
                   {codigo_producto.length > 0 && (
-                    <div className={floatingWindow}>
+                    <div className={floatingWindow} style={{right: "1vw", top: "75vh"}}>
                       <ul className={productList}>
                         {codigo_producto.map((codigo, index) => (
                           <li key={index} className={productItem}>
@@ -208,11 +223,35 @@ import { Loading } from '../../components';
                     </div>
                   )}
                 </div>
-
               </div>
               <div className={formGrid}>
                 <div className={inputContainer}>
-                  <input className={inputText} value={cantidad} onChange={(e) => setCantidad(e.target.value)} placeholder='Cantidad' type='number' />
+                  <input
+                    className={inputText}
+                    value={cant}
+                    onChange={handleInputChangeCantidad}
+                    placeholder='Cantidad'
+                    type='number'
+                  />
+                  <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh"}} onClick={handleAddCantidad}>Añadir+</button>
+                  {console.log("codigo", cantidad)}
+                  {cantidad.length > 0 ? (
+                    <div className={floatingWindow} style={{left: "16vw", top: "75vh"}}>
+                      <ul className={productList}>
+                        {cantidad.map((codigo, index) => (
+                          <li key={index} className={productItem}>
+                            Producto {index} ➡️ {codigo}
+
+                            <button type="button" className={productButton} style={{ backgroundColor: "transparent"}} onClick={() => handleDeleteCantidad(codigo)}>
+                              ❌
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    null
+                  )}
                 </div>
                 <div className={inputContainer}>
                     <input className={inputText} value={metodo_pago} onChange={(e) => setMetodo_pago(e.target.value)} type="text" placeholder='Metodo de pago' />
@@ -264,7 +303,7 @@ import { Loading } from '../../components';
                         </td>
                         <td>{rest.metodo_pago}</td>
                         <td>${rest.envio}</td>
-                        <td>{rest.total}</td>
+                        <td>${rest.total.toFixed(2)}</td>
                         <td>
                           <button onClick={() => submit()} className={editButton} type="submit" name="action">
                             <i className="material-icons ">edit</i>
@@ -280,7 +319,7 @@ import { Loading } from '../../components';
               </tbody>
             </table>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0', color: 'white', fontWeight: 'bolder'}}>
             <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0} className="btn btn-primary">
               Ir al inicio
             </button>

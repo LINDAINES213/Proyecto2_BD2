@@ -192,7 +192,7 @@ import { Loading } from '../../components';
               </tbody>
             </table>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0', color: 'white', fontWeight: 'bolder' }}>
             <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0} className="btn btn-primary">
               Ir al inicio
             </button>

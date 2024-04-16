@@ -254,10 +254,22 @@ const Vehiculos = () => {
               </tbody>
             </table>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0' }}>
-            <button onClick={prevPage} disabled={currentPage === 0} className="btn btn-primary">Anterior</button>
-            <span style={{ margin: '0 15px' }}>Página {currentPage + 1} de {pageCount}</span>
-            <button onClick={nextPage} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">Siguiente</button>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0', color: 'white', fontWeight: 'bolder' }}>
+            <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0} className="btn btn-primary">
+              Ir al inicio
+            </button>
+            <button onClick={prevPage} disabled={currentPage === 0} className="btn btn-primary">
+              Anterior
+            </button>
+            <span style={{ margin: '0 15px' }}>
+              Página {currentPage + 1} de {pageCount}
+            </span>
+            <button onClick={nextPage} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">
+              Siguiente
+            </button>
+            <button onClick={() => setCurrentPage(pageCount - 1)} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">
+              Ir al final
+            </button>
           </div>
         </div>
         )
