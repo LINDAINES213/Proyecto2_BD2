@@ -31,7 +31,7 @@ def get_ordenCompra(id: str):
 
     return {"response": nodes_info}
 
-@app.post("/create_orden_compra")
+@orden_compra_router.post("/create_orden_compra")
 def create_orden_compra(orden_compra_data: dict):
     driver_neo4j = connection()
     with driver_neo4j.session() as session:
