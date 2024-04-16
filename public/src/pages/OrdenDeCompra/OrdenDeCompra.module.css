@@ -1,0 +1,198 @@
+.crud {
+  padding: 0px;
+}
+
+.buttonContainer {
+  margin-left: 1vw;
+}
+
+
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2vh;
+}
+
+
+
+.buttonContainerOptions {
+display: flex;
+align-items: center;
+margin-bottom: 2vh;
+}
+
+.buttonContainerOptionsLimit {
+display: flex;
+align-items: center;
+margin-bottom: 2vh;
+}
+
+.buttonContainerOptions button {
+margin-right: 2vh;
+padding-right: 2vh;
+}
+
+.centeredDiv {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 80vh;
+}
+
+.inputContainer button {
+  background-color: rgb(8, 33, 227);
+}
+
+.inputText {
+  border: 3px solid #000000;
+  border-radius: 5px; /* Ajusta el valor según sea necesario para obtener el radio deseado */
+  width: 20vw;
+  padding: 5px;
+  color: #000000;
+  background-color: rgb(255, 255, 255);
+  box-sizing:content-box;
+  margin-left: 0.5vw;
+}
+
+.inputTextSlider {
+  border: 3px solid #ff0000;
+  border-radius: 5px; /* Ajusta el valor según sea necesario para obtener el radio deseado */
+  padding: 5px;
+  color: #000000;
+  background-color: rgb(255, 255, 255);
+  box-sizing:content-box;
+  margin-left: 0.5vw;
+}
+
+label {
+  color: #000000;
+  margin-left: 0.5vw;
+  font-weight: bold;
+  margin-bottom: 0.3vh;
+  font-size: larger;
+}
+
+.inputTextSmall {
+  border: 3px solid #ff0000;
+  border-radius: 5px; /* Ajusta el valor según sea necesario para obtener el radio deseado */
+  width: 15vw;
+  padding: 5px;
+  color: #000000;
+  background-color: rgb(255, 255, 255);
+  box-sizing:content-box;
+}
+
+.selectText {
+border: 3px solid #ff0000;
+border-radius: 5px; /* Ajusta el valor según sea necesario para obtener el radio deseado */
+width: 20vw;
+padding: 5px;
+color: #000000;
+background-color: rgb(255, 255, 255);
+box-sizing:content-box;
+margin-left: 0.5vw;
+padding-left: 0;
+padding-right: 10px;
+}
+
+input:focus {
+  border: 3px solid #ba0101;
+  outline: none;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 2vh;
+  display: inline-block; 
+  border-bottom: 3px solid #ff0000; /* Añade la línea de subrayado más gruesa en el enfoque */
+}
+
+h4 {
+margin-top: 0;
+margin-bottom: 2vh;
+display: inline-block; 
+border-bottom: 3px solid #ff0000; /* Añade la línea de subrayado más gruesa en el enfoque */
+}
+
+select {
+padding: 0;
+margin: 0;
+border: 0;
+}
+
+button {
+  background-color:  #ff0000;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  color: #000000;
+  text-align: center; /* Centra horizontalmente el contenido */
+}
+
+/* Alineación a la izquierda para celdas específicas */
+td.leftAligned {
+  color: #000000;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Estilos para los botones dentro de la tabla */
+table button {
+  padding: 5px 10px;
+  display: flex;
+  align-items: center; /* Centra verticalmente el contenido */
+  margin: auto; /* Asegura el centrado horizontal */
+}
+
+.editButton {
+  background-color:  rgb(8, 33, 227);
+}
+
+
+/* Estilos específicos para los íconos dentro de los botones */
+table button i {
+  margin-right: 5px;
+}
+
+.scrollableTable {
+ max-height: 45vh; 
+ overflow-y: auto;
+ border: 2px solid black; /* Añadir un borde negro de 1 píxel */
+}
+
+.scrollableTable::-webkit-scrollbar {
+width: 0.7vw; /* Ancho de la barra de desplazamiento */
+}
+
+.scrollableTable::-webkit-scrollbar-thumb {
+background-color: #333; /* Color del pulgar de la barra de desplazamiento */
+}
+
+.scrollableTable::-webkit-scrollbar-track {
+background-color: #f1f1f1; /* Color de fondo de la pista de la barra de desplazamiento */
+}
+
+.formGrid {
+display: grid;
+grid-template-columns: 0.8fr 1fr 2fr; /* La primera columna ocupa 1 parte y la segunda columna ocupa 2 partes */
+gap: 10px; /* Puedes ajustar el espacio entre las columnas según tus necesidades */
+}
