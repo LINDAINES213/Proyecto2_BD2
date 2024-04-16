@@ -43,11 +43,12 @@ import { Loading } from '../../components';
   };
 
   const handleAddCantidad = () => {
-    if (cant !== '' && !cantidad.includes(cant)) {
-      setCantidad([...cantidad, cant]); // Añade el código al array
+    const intCant = parseInt(cant, 10); // Convierte cant a un entero base 10
+    if (!isNaN(intCant) && !cantidad.includes(intCant)) { // Asegura que intCant es un número
+      setCantidad([...cantidad, intCant]); // Añade el entero al array
       setCant(''); // Limpia el input
     }
-  };
+  };  
 
   const handleDeleteCantidad = (codigo) => {
     setCantidad(cantidad.filter(c => c !== codigo)); // Elimina el código del array
@@ -91,6 +92,23 @@ import { Loading } from '../../components';
         })
       })
   }, [])
+
+    useEffect(() => {
+      console.log("cant",cantidad)
+      console.log("producCod",codigo_producto)
+      if (cantidad.length === codigo_producto.length) {
+        let sum = 0;
+        for (let i = 0; i < cantidad.length; i++) {
+          const producto = productosList.find(p => p.id === codigo_producto[i]);  // Encuentra el producto basado en el id
+
+          if (producto) {
+            sum += cantidad[i] * producto.precio;  // Calcula contribución al total
+          }
+        }
+        setTotal(sum);
+      }
+    }, [cantidad, codigo_producto, productosList]);  // Recalcular cuando estos estados cambian
+
 
   const submit = (event, id) => {
     event.preventDefault()
@@ -200,9 +218,9 @@ import { Loading } from '../../components';
                   >
                     {/* Opción por defecto */}
                     <option value="">Seleccione un producto</option>
-                    {/* Suponiendo que tienes un arreglo `productos` con objetos { codigo, nombre } */}
+                    {console.log("prd", productosList)}
                     {productosList.map((producto, index) => (
-                      <option key={index} value={producto.codigo}>
+                      <option key={index} value={producto.id}>
                         ID: {producto.id} {producto.nombre} 
                       </option>
                     ))}
@@ -261,7 +279,12 @@ import { Loading } from '../../components';
                       </button>
                     </div>
                 </div>
-
+                {(total !== undefined && total !== '' && !isNaN(total) && total >= 0) && (
+                  <div className={inputContainer} >
+                    {console.log("t", total)}
+                    <span style={{backgroundColor: 'white', borderRadius: "5px", color: "black", padding: '1vh'}}>Total: ${total.toFixed(2)}</span>  {/* Muestra el total aquí */}
+                  </div>
+                )}
               </div>
             </form>
           </div>        
