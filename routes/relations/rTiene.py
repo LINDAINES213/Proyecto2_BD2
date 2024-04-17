@@ -34,7 +34,7 @@ def get_personal():
                 "Proveedor": node_properties,
                 "TIENE": {
                     **relation_properties,
-                    "id": relation_id  # Agrega el ID de la relación
+                    "id": str(relation_id)  # Agrega el ID de la relación
                 },
                 "Producto": property_properties
             })
