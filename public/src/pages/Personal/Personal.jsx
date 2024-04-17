@@ -102,6 +102,15 @@ const Personal = () => {
       })
   }
 
+  const deleteAll = (id) => {
+    console.log("id",id)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_personal_nodes`)
+      .then(() => {
+        fetchData()
+      })
+  }
+
+
   const fetchData = () => {
   
     setLoading(true)
@@ -164,12 +173,17 @@ const Personal = () => {
                 </div>
               </div>
               <div className={formGrid}>
-              <div className={inputContainer}>
-                <input className={inputText} value={Tipo_de_licencia} onChange={(e) => setTipo_de_licencia(e.target.value)} placeholder='Tipo de Licencia' type='text' />
+                <div className={inputContainer}>
+                  <input className={inputText} value={Tipo_de_licencia} onChange={(e) => setTipo_de_licencia(e.target.value)} placeholder='Tipo de Licencia' type='text' />
+                    <div className={buttonContainer}>
+                      <button className="btn btn-primary" type="submit" name="action"> Enviar  
+                        <i className="material-icons right"> send</i>
+                      </button>
+                    </div>
+                </div>
+                <div className={inputContainer}>
                   <div className={buttonContainer}>
-                    <button className="btn btn-primary" type="submit" name="action"> Enviar  
-                      <i className="material-icons right"> send</i>
-                    </button>
+                    <button className=" btn btn-sm btn-primary waves-effect waves-light right" onClick={() => deleteAll()}  style={{backgroundColor: "red"}}type="button" name="action">Eliminar primeros 5 nodos</button>
                   </div>
                 </div>
               </div>

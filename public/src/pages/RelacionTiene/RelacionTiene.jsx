@@ -22,6 +22,7 @@ import { Loading } from '../../components';
   const [productosList, setProductosList] = useState([]);
   const [proveedorList, setProveedorList] = useState([]);
   const [cant, setCant] = useState('')
+  const [proveedor_delete, setProveedorDelete] = useState('');
 
   const handleInputChange = (e) => {
     setCodigoProducto(e.target.value);
@@ -154,6 +155,14 @@ import { Loading } from '../../components';
       })
   }
 
+  const deleteAll = (id) => {
+    console.log("id",id)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_tiene_relations/${id}`)
+      .then(() => {
+        fetchData()
+      })
+  }
+
   const fetchData = () => {  
     setLoading(true)
 
@@ -248,6 +257,19 @@ import { Loading } from '../../components';
                     <i className="material-icons right"> send</i>
                     </button>
                   </div>
+                </div>
+                <div className={inputContainer}>
+                  <input 
+                    type="text"
+                    className={inputText}
+                    value={proveedor_delete}
+                    style={{width: "21vw"}}
+                    onChange={(e) => setProveedorDelete(e.target.value)}
+                    placeholder="Ingrese el ID del proveedor para eliminar todas sus relaciones"
+                  />
+                  <button onClick={() => deleteAll(proveedor_delete)}  type="button" style={{backgroundColor:"transparent", padding: "0", marginLeft: '-1.5vw'}}>
+                    ❌
+                  </button>
                 </div>
               </div>
               </form>
