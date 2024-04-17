@@ -62,3 +62,26 @@ def create_tiene_relation(data: dict):
         session.run(query)
     
     return {"message": "Relación REABASTECE creada correctamente"}
+
+@reabastece_r.get("/get_relation_reabastece/{id}")
+def get_reabastece(id: int):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    
+    # Consulta Cypher para obtener los datos del cliente por su ID
+    query = f"""MATCH ()-[n:REABASTECE]->() WHERE ID(n) = $id 
+    RETURN n.monto AS monto, n.calidad_del_producto AS calidad_del_producto, n.fecha_de_reabastecimiento AS fecha_de_reabastecimiento"""
+    
+    # Ejecutar la consulta Cypher
+    results = session.run(query, id=id)
+    
+    # Obtener los datos del cliente del resultado de la consulta
+    cliente_data = results.single()
+
+    # Verificar si se encontraron datos para el cliente
+    if cliente_data:
+        # Convertir el resultado a un diccionario
+        cliente_dict = dict(cliente_data)
+        return cliente_dict
+    else:
+        return {"error": "Cliente no encontrado"}

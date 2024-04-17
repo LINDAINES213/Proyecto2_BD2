@@ -64,6 +64,29 @@ def create_proveedor(proveedor_data: dict):
 
     return {"response": created_proveedor_info}
 
+@proveedor.get("/get_proveedor/{id}")
+def get_proveedor(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    
+    # Consulta Cypher para obtener los datos del Proveedor por su ID
+    query = f"""MATCH (n:Proveedor) WHERE n.id = '{id}' 
+    RETURN n.id AS id, n.nombre AS nombre, n.email AS email, n.direccion AS direccion, n.telefono AS telefono, n.tipo_de_producto AS tipo_de_producto"""
+    
+    # Ejecutar la consulta Cypher
+    results = session.run(query)
+    
+    # Obtener los datos del proveedor del resultado de la consulta
+    proveedor_data = results.single()
+
+    # Verificar si se encontraron datos para el proveedor
+    if proveedor_data:
+        # Convertir el resultado a un diccionario
+        proveedor_dict = dict(proveedor_data)
+        return proveedor_dict
+    else:
+        return {"error": "Proveedor no encontrado"}
+
 @proveedor.put("/update_proveedor/{id}")
 def update_proveedor(id: str, updated_data: dict):
     driver_neo4j = connection()
