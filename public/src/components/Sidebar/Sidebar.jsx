@@ -4,7 +4,7 @@ import { sidebar } from './Sidebar.module.css'
 
 // Componente para el menú lateral
 const Sidebar = ({ onSelect, cambio, setCambio }) => {
-  const menuItems = ['📦 Almacen', '🚚 Proveedores', '📝 Productos', '👷‍♂️ Personal', '💆 Clientes', '🌏 Estadísticas', '👀 Perfiles','📊 Publicidad', '💵 Orden de Compra ⬇️ Por Menor', '💵 Orden de Compra ⬆️ Por Mayor', '🚗 Vehiculos','Factura']
+  const menuItems = ['📦 Almacen', '🚚 Proveedores', '📝 Productos', '👷‍♂️ Personal', '💆 Clientes', '🌏 Estadísticas', '👀 Perfiles','📊 Publicidad', '💵 Orden de Compra ⬇️ Por Menor', '💵 Orden de Compra ⬆️ Por Mayor', '🚗 Vehiculos','📄 Factura']
   const menuRelaciones = ['📝 Relacion Tiene','📝 Relacion Brinda Informacion', '📝 Relacion Promociona Publicidad', '📝 Relacion Reabastece']
 
 

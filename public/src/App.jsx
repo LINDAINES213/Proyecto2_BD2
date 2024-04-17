@@ -26,7 +26,7 @@ function App() {
             {selectedMenuItem === '📊 Publicidad' && <Publicidad />}
             {selectedMenuItem === '💵 Orden de Compra ⬇️ Por Menor' && <OrdenDeCompraPorMenor />}
             {selectedMenuItem === '💵 Orden de Compra ⬆️ Por Mayor' && <OrdenDeCompraPorMayor />}
-            {selectedMenuItem === 'Factura' && <Factura />}
+            {selectedMenuItem === '📄 Factura' && <Factura />}
             {selectedMenuItem === '🚗 Vehiculos' && <Vehiculos />}
             {selectedMenuItem !== '📦 Almacen' &&
               selectedMenuItem !== '🚚 Proveedores' &&
@@ -34,7 +34,7 @@ function App() {
               selectedMenuItem !== '👷‍♂️ Personal' &&
               selectedMenuItem !== '💆 Clientes' &&
               selectedMenuItem !== '📊 Publicidad' &&
-              selectedMenuItem !== 'Factura' &&
+              selectedMenuItem !== '📄 Factura' &&
               selectedMenuItem !== '🚗 Vehiculos' &&
               selectedMenuItem !== '🌏 Estadísticas' &&
               selectedMenuItem !== '💵 Orden de Compra ⬇️ Por Menor' &&

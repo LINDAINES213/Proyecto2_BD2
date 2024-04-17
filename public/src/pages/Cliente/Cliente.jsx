@@ -29,6 +29,21 @@ import { Loading } from '../../components';
   const prevPage = () => { setCurrentPage(current => (current - 1 >= 0) ? current - 1 : current);};
   
 
+
+  const editCliente = (id) => {
+    console.log("id",id)
+    axios.get(`https://frail-maryanne-uvg.koyeb.app/get_cliente/${id}`)
+      .then((res) => {
+        console.log("p",res)
+        setId(res.data.id)
+        setNombre(res.data.nombre)
+        setCorreo(res.data.correo)
+        setDireccion(res.data.direccion)
+        setTelefono(res.data.telefono)
+        setNIT(res.data.nit)
+      })
+  }
+
   useEffect(() => {
     setLoading(true)
     axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Cliente')
@@ -48,7 +63,8 @@ import { Loading } from '../../components';
       })
   }, [])
 
-  const submit = (event, id) => {
+  const submit = (event, i) => {
+    console.log("edi",id)
     event.preventDefault()
     if (id === 0) {
       axios.post("https://frail-maryanne-uvg.koyeb.app/create_cliente", {
@@ -73,6 +89,7 @@ import { Loading } from '../../components';
         telefono,
         NIT
       }).then(() => {
+        console.log("edicio", id)
         fetchData()
         setNombre('')
         setCorreo('')
@@ -151,7 +168,7 @@ import { Loading } from '../../components';
               </div>
               <div className={formGrid}>
                 <div className={inputContainer}>
-                    <input className={inputText} value={telefono} onChange={(e) => setTelefono(e.target.value)} type="number" placeholder='Telefono' />
+                    <input className={inputText} value={telefono} onChange={(e) => setTelefono(e.target.value)} type="text" placeholder='Telefono' />
                 </div>
                 <div className={inputContainer}>
                     <input 
@@ -191,7 +208,7 @@ import { Loading } from '../../components';
                         <td>{rest.direccion}</td>
                         <td>{rest.NIT}</td>
                         <td>
-                          <button onClick={() => submit()} className={editButton} type="submit" name="action">
+                          <button onClick={() => editCliente(rest.id)} className={editButton} type="submit" name="action">
                             <i className="material-icons ">edit</i>
                           </button>
                         </td>

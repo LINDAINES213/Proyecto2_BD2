@@ -71,7 +71,7 @@ def get_cliente(id: str):
     
     # Consulta Cypher para obtener los datos del cliente por su ID
     query = f"""MATCH (n:Cliente) WHERE n.id = '{id}' 
-    RETURN n.nombre AS nombre, n.correo AS correo, n.direccion AS direccion, n.telefono AS telefono, n.NIT AS nit"""
+    RETURN n.id AS id, n.nombre AS nombre, n.correo AS correo, n.direccion AS direccion, n.telefono AS telefono, n.NIT AS nit"""
     
     # Ejecutar la consulta Cypher
     results = session.run(query)
