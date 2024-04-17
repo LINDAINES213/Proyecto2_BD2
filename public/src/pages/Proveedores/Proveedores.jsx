@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
-  formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider
- } from './Proveedores.module.css'
+  formGrid, centeredDiv,
+} from './Proveedores.module.css'
 import { Loading } from '../../components';
 
  const Proveedor = () => {
@@ -14,9 +14,39 @@ import { Loading } from '../../components';
   const [telefono, setTelefono] = useState('')
   const [email, setEmail] = useState('')
   const [tipo_de_producto, setTipo_de_producto] = useState('')
-  const [limit, setLimit] = useState()
-  const [selectedOption, setSelectedOption] = useState('verUsuarios')
+  const [selectedOption, ] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
+
+
+  const [providerId, setProviderId] = useState('');
+  const [providerData, setProviderData] = useState(null);
+  const [isLoadingSearch, setIsLoadingSearch] = useState(false);
+  const [error, setError] = useState(null);
+  
+  const fetchProviderInfo = async () => {
+    if (!providerId) return; // Si no hay ID, no hacer nada
+    setIsLoadingSearch(true);
+    axios.get(`https://frail-maryanne-uvg.koyeb.app/nodes/Proveedor/${providerId}`)
+    .then(response => {
+      setProviderData(response.data.response);
+    })
+    .catch((error) => {
+      setError("No se encontró información para ese proveedor")
+      console.error('Error fetching data:', error)
+    }).finally(() => {
+      setIsLoadingSearch(false)
+      if (providerData !== null) {
+        if (providerData.length===0) {
+          setError("No se encontró información para ese proveedor")
+  
+        } else{
+          setError('')
+        }
+      }
+
+    })
+};
+
 
   // Paginacion
   const [currentPage, setCurrentPage] = useState(0);
@@ -209,6 +239,32 @@ import { Loading } from '../../components';
               Ir al final
             </button>
           </div>
+          <div style={{ marginTop: '20px' }}>
+          <div className={inputContainer}>
+            <input 
+              type="text"
+              className={inputText}
+              value={providerId}
+              onChange={(e) => setProviderId(e.target.value)}
+              placeholder="Ingrese el ID del proveedor"
+            />
+            <button onClick={fetchProviderInfo} disabled={isLoadingSearch} style={{backgroundColor:"transparent", padding: "0", marginLeft: '-1.5vw'}}>
+              🔎
+            </button>
+          </div>
+        </div>      
+        {isLoadingSearch && <Loading />}
+        {console.log("p", providerData)}
+        {error && <p style={{backgroundColor: "white", borderRadius: "5px", color: 'red', display:"inline", padding: "0.5vh", marginLeft:"0.5vw", fontWeight:"bolder", }}>{error}</p>}
+        {providerData && providerData.length > 0 ? (
+          <div style={{backgroundColor: "white", borderRadius: "5px", display: "inline-block", position: 'absolute', top: '81vh', left: '39vw', padding: "0.5vh", zIndex: "5"}}>
+            <p style={{padding: "0vh", margin:"0"}}><strong>Nombre:</strong> {providerData[0].nombre}</p>
+            <p style={{padding: "0vh", margin:"0"}}><strong>Email:</strong> {providerData[0].email}</p>
+            <p style={{padding: "0vh", margin:"0"}}><strong>Telefono:</strong> {providerData[0].telefono}</p>
+            <p style={{padding: "0vh", margin:"0"}}><strong>Dirección:</strong> {providerData[0].direccion}</p>
+            <p style={{padding: "0vh", margin:"0"}}><strong>Tipo de producto:</strong> {providerData[0].tipo_de_producto}</p>
+          </div>
+        ) : null}
         </div>
         )
       default:

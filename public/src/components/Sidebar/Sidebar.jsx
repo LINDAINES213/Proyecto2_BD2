@@ -14,7 +14,7 @@ const Sidebar = ({ onSelect, cambio, setCambio }) => {
 
   return (
     <div className={sidebar}>
-      <button onClick={handleSidebarButtonClick}>
+      <button onClick={handleSidebarButtonClick} style={{marginTop: '3vh'}}>
         Relaciones/Nodos
       </button>
       {cambio ? (
