@@ -2,20 +2,15 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { buttonContainer, inputContainer, inputText, crud, centerAligned, editButton, scrollableTable,
-  formGrid, centeredDiv, productButton,productItem,productList,  floatingWindow
+  formGrid, centeredDiv
  } from './RelacionTiene.module.css'
 import { Loading } from '../../components';
 
  const RelacionTiene = () => {
   const [tiene, setTiene] = useState([])
   const [id, setId] = useState(0)
-  const [envio, setEnvio] = useState('')
-  const [fecha, setFecha] = useState('')
-  const [id_cliente, setIDCliente] = useState('')
   const [codigo_producto, setCodigo_producto] = useState([])
   const [cantidad, setCantidad] = useState([])
-  const [metodo_pago, setMetodo_pago] = useState('')
-  const [total, setTotal] = useState('')
   const [selectedOption, ] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
   const [codigoProducto, setCodigoProducto] = useState(''); // Para el input actual
@@ -72,12 +67,15 @@ import { Loading } from '../../components';
   const pageSize = 10; 
   const startIndex = currentPage * pageSize;
   const endIndex = startIndex + pageSize;
+  console.log("tiene", tiene)
   const productosSeguros = tiene ?? [];
   const currentData = productosSeguros.slice(startIndex, endIndex);
+  console.log(startIndex,endIndex,currentData)
+
   const pageCount = Math.ceil(productosSeguros.length / pageSize);
   const nextPage = () => { setCurrentPage(current => (current + 1 < pageCount) ? current + 1 : current); };
   const prevPage = () => { setCurrentPage(current => (current - 1 >= 0) ? current - 1 : current);};
-  
+
   useEffect(() => {
     setLoading(true)
     axios.get('https://frail-maryanne-uvg.koyeb.app/relation/Tiene')
@@ -116,7 +114,7 @@ import { Loading } from '../../components';
   const submit = (event, id) => {
     event.preventDefault()
     if (id === 0) {
-      axios.post("https://frail-maryanne-uvg.koyeb.app/create_orden_compra_por_mayor", {
+      axios.post("https://frail-maryanne-uvg.koyeb.app/relation/create_tiene_relation", {
         producto_id, 
         proveedor_id, 
         disponibilidad, 
@@ -266,8 +264,8 @@ import { Loading } from '../../components';
               </thead>
               <tbody>
                 {console.log("dddd", currentData)}
-                {currentData.map(rest =>
-                  <tr key={rest.Producto.id}>
+                {currentData.filter(rest => rest.TIENE && Object.keys(rest.TIENE).length > 0).map((rest, index) =>
+                  <tr key={index}>
                     <td>{rest.Producto.id}</td>
                     <td>{rest.TIENE.disponibilidad ? 'Disponible' : 'No disponible'}</td>
                     <td>{rest.TIENE.tipo_de_producto}</td>
@@ -288,7 +286,7 @@ import { Loading } from '../../components';
               </tbody>
             </table>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0', color: 'white', fontWeight: 'bolder'}}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '20px 0' }}>
             <button onClick={() => setCurrentPage(0)} disabled={currentPage === 0} className="btn btn-primary">
               Ir al inicio
             </button>

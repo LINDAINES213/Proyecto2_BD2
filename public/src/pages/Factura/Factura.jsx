@@ -142,7 +142,7 @@ import { Loading } from '../../components';
   
     axios.get(url)
       .then((res) => {
-        setOrdenDeCompra(res.data.response)
+        setFactura(res.data.response)
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
@@ -160,7 +160,7 @@ import { Loading } from '../../components';
 
   const renderTable = () => {
     if (loading) {
-      console.log("info", ordenDeCompra)
+      console.log("info", factura)
       return (
         <div className={centeredDiv}>
           <Loading />
