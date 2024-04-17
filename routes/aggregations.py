@@ -42,3 +42,25 @@ def vehiculos_por_modelo_anio():
 
     return {"vehiculos_por_modelo_anio": vehiculos_por_modelo_anio}
 
+@aggregations.get("/productos_por_proveedor")
+def productos_por_proveedor():
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+
+    query = '''
+    MATCH (p:Proveedor)-[:TIENE]->(o:Producto)
+    RETURN p.id AS proveedor_id, p.nombre AS nombre, COUNT(o) AS cantidad_productos
+    ORDER BY cantidad_productos DESC
+    '''
+
+    result = session.run(query)
+
+    productos_proveedores = []
+    for record in result:
+        productos_proveedores.append({
+            "nombre": record["nombre"],
+            "cantidad_productos": record["cantidad_productos"]
+        })
+
+    return {"productos_proveedores": productos_proveedores}
+
