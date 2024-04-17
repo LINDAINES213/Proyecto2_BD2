@@ -336,6 +336,7 @@ import { Loading } from '../../components';
                 {currentData.map(rest =>
                       <tr key={rest.id}>
                         <td>{rest.id_cliente}</td>
+                        {console.log("fff", rest.fecha)}
                         <td>{formatDate(rest.fecha)}</td>
                         <td>
                           <table>

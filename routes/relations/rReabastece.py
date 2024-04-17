@@ -15,7 +15,7 @@ def get_relation():
     MATCH (p:Proveedor)-[r:REABASTECE]->(a:Almacen)
     RETURN p, r, a
     """
-    
+
     with driver_neo4j.session() as session:
         results = session.run(query)
         nodes_info = []
@@ -24,12 +24,18 @@ def get_relation():
             # Obtener las propiedades de los nodos y las relaciones
             node_properties = dict(row["p"])
             relation_properties = dict(row["r"])
-            property_properties = dict(row["a"])
+            property_properties = dict(row["o"])
             
-            # Agregar información de los nodos y las relaciones
+            # Extraer el ID interno de la relación
+            relation_id = row['r'].id  # Obtiene el ID interno de Neo4j para la relación
+
+            # Agregar información de los nodos y las relaciones incluyendo el ID de la relación
             nodes_info.append({
                 "PROVEEDOR": node_properties,
-                "REABASTECE": relation_properties,
+                "REABASTECE": {
+                    **relation_properties,
+                    "id": str(relation_id)  # Agrega el ID de la relación
+                },
                 "ALMACEN": property_properties
             })
 

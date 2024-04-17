@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { buttonContainer, inputContainer, inputText, crud, centerAligned, editButton, scrollableTable,
+import { buttonContainer, inputContainer, inputText, crud, editButton, scrollableTable,
   formGrid, centeredDiv
  } from './RelacionReabastece.module.css'
 import { Loading } from '../../components';
@@ -16,7 +16,7 @@ import { Loading } from '../../components';
   const [codigoProducto, setCodigoProducto] = useState(''); // Para el input actual
   const [monto, setMonto] = useState(0);
   const [calidad_del_producto, setCalidad_del_producto] = useState(0);
-  const [fecha_de_reabestecimiento, setFecha_de_reabestecimiento] = useState('');
+  const [fecha_de_reabastecimiento, setFecha_de_reabastecimiento] = useState('');
   const [disponibilidad, setDisponibilidad] = useState('');
   const [tipo_de_producto, setTipoDeProducto] = useState('');
   const [fecha_de_produccion, setFechaDeProduccion] = useState('');
@@ -58,8 +58,8 @@ import { Loading } from '../../components';
     setCantidad(cantidad.filter(c => c !== codigo)); // Elimina el código del array
   };
 
-  const handleProductChange = (event) => {
-    setProductoId(event.target.value); // Actualiza el estado con el nuevo ID de cliente seleccionado
+  const handleAlmacenChange = (event) => {
+    setAlmacenId(event.target.value); // Actualiza el estado con el nuevo ID de cliente seleccionado
   };
 
   const handleProveedorChange = (event) => {
@@ -84,11 +84,11 @@ import { Loading } from '../../components';
     setLoading(true)
     axios.get('https://frail-maryanne-uvg.koyeb.app/relation/Reabastece')
       .then(response => {
-        setTiene(response.data.response);
+        setReabastece(response.data.response);
         setId(0)
         setMonto(0)
         setCalidad_del_producto(0)
-        setFecha_de_reabestecimiento('')
+        setFecha_de_reabastecimiento('')
         setAlmacenId('')
         setProveedorId('')
       })
@@ -98,7 +98,7 @@ import { Loading } from '../../components';
         setLoading(false)
         axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Proveedor')
         .then(response => {
-          setProductosList(response.data.response);
+          setProveedorList(response.data.response);
         })
         .catch((error) => {
           console.error('Error fetching data:', error)
@@ -106,7 +106,7 @@ import { Loading } from '../../components';
 
         axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Almacen')
         .then(response => {
-          setProveedorList(response.data.response);
+          setAlmacenList(response.data.response);
         })
         .catch((error) => {
           console.error('Error fetching data:', error)
@@ -117,18 +117,19 @@ import { Loading } from '../../components';
 
   const submit = (event, id) => {
     event.preventDefault()
+    console.log("fecha", fecha_de_reabastecimiento)
     if (id === 0) {
       axios.post("https://frail-maryanne-uvg.koyeb.app/relation/create_reabastece_relation", {
         almacen_id, 
         proveedor_id, 
         monto, 
         calidad_del_producto,
-        fecha_de_reabestecimiento,
+        fecha_de_reabastecimiento,
       }).then(() => {
         fetchData()
         setMonto(0)
         setCalidad_del_producto(0)
-        setFecha_de_reabestecimiento('')
+        setFecha_de_reabastecimiento('')
         setAlmacenId('')
         setProveedorId('')
       })
@@ -144,7 +145,7 @@ import { Loading } from '../../components';
         setDisponibilidad('')
         setFechaDeProduccion('')
         setTipoDeProducto('')
-        setProductoId('')
+        setAlmacenId('')
         setProveedorId('')
       })
     }
@@ -171,7 +172,7 @@ import { Loading } from '../../components';
         setReabastece(res.data.response)
         setMonto(0)
         setCalidad_del_producto(0)
-        setFecha_de_reabestecimiento('')
+        setFecha_de_reabastecimiento('')
         setAlmacenId('')
         setProveedorId('')
       })
@@ -210,7 +211,7 @@ import { Loading } from '../../components';
                   <select
                     className={inputText}
                     value={almacen_id} // Aquí se almacena el ID del cliente seleccionado
-                    onChange={handleProductChange} // Esta función se ejecuta cuando se selecciona un cliente
+                    onChange={handleAlmacenChange} // Esta función se ejecuta cuando se selecciona un cliente
                     placeholder='Seleccione un Almacen'
                   >
                     {/* Opción por defecto */}
@@ -247,28 +248,15 @@ import { Loading } from '../../components';
                   <input className={inputText} value={calidad_del_producto} onChange={(e) => setCalidad_del_producto(e.target.value)} type="number" placeholder='Calidad del producto' />
                 </div>
                 <div className={inputContainer}>
-                  <input className={inputText} value={fecha_de_reabestecimiento} onChange={(e) => setFecha_de_reabestecimiento(e.target.value)} type="date" placeholder='Fecha de reabestecimiento' />
+                  <input className={inputText} value={fecha_de_reabastecimiento} onChange={(e) => setFecha_de_reabastecimiento(e.target.value)} type="date" placeholder='Fecha de reabastecimiento' />
                   <div className={buttonContainer}>
                     <button className=" btn btn-sm btn-primary waves-effect waves-light right" style={{padding: "0.5vh"}} type="submit" name="action"> Enviar  
                     <i className="material-icons right"> send</i>
                     </button>
                   </div>
                 </div>
-                <div className={inputContainer}>
-                  <input 
-                    type="text"
-                    className={inputText}
-                    value={proveedor_delete}
-                    style={{width: "21vw"}}
-                    onChange={(e) => setProveedorDelete(e.target.value)}
-                    placeholder="Ingrese el ID del proveedor para eliminar todas sus relaciones"
-                  />
-                  <button onClick={() => deleteAll(proveedor_delete)}  type="button" style={{backgroundColor:"transparent", padding: "0", marginLeft: '-1.5vw'}}>
-                    ❌
-                  </button>
-                </div>
               </div>
-              </form>
+            </form>
           </div>        
           <div className={scrollableTable}>
             <table className='table'>
@@ -276,7 +264,7 @@ import { Loading } from '../../components';
                 <th>ID Almacen</th>
                 <th>Monto</th>
                 <th>Calidad del producto</th>
-                <th>Fecha de reabestecimiento</th>
+                <th>Fecha de reabastecimiento</th>
                 <th>ID Proveedor</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
@@ -285,11 +273,12 @@ import { Loading } from '../../components';
                 {console.log("dddd", currentData)}
                 {currentData.filter(rest => rest.REABASTECE && Object.keys(rest.REABASTECE).length > 0).map((rest, index) =>
                   <tr key={index}>
-                    <td>{rest.Almacen.id}</td>
+                    <td>{rest.ALMACEN.id}</td>
                     <td>{rest.REABASTECE.monto}</td>
                     <td>{rest.REABASTECE.calidad_del_producto}</td>
-                    <td>{formatDate(rest.REABASTECE.fecha_de_reabestecimiento)}</td>
-                    <td>{rest.Proveedor.id}</td>
+                    {console.log("dddd", rest.REABASTECE.fecha_de_reabastecimiento)}
+                    <td>{rest.REABASTECE.fecha_de_reabastecimiento ? formatDate(rest.REABASTECE.fecha_de_reabastecimiento) : 'No disponible'}</td>
+                    <td>{rest.PROVEEDOR.id}</td>
                     <td>
                       <button onClick={() => submit()} className={editButton} type="submit" name="action">
                         <i className="material-icons ">edit</i>
