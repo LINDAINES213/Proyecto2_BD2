@@ -9,6 +9,7 @@ import OrdenDeCompraPorMayor from "./OrdenDeCompraPorMayor"
 import Vehiculos from "./Vehiculos"
 import Factura from "./Factura"
 import RelacionTiene from "./RelacionTiene"
+import Estadisticas from "./Estadisticas"
 
 export {
     Proveedores,
@@ -21,5 +22,6 @@ export {
     OrdenDeCompraPorMayor,
     Vehiculos,
     Factura,
-    RelacionTiene
+    RelacionTiene,
+    Estadisticas
 }
