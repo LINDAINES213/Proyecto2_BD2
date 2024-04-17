@@ -24,7 +24,7 @@ def get_relation():
             # Obtener las propiedades de los nodos y las relaciones
             node_properties = dict(row["p"])
             relation_properties = dict(row["r"])
-            property_properties = dict(row["o"])
+            property_properties = dict(row["a"])
             
             # Extraer el ID interno de la relación
             relation_id = row['r'].id  # Obtiene el ID interno de Neo4j para la relación
