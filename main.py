@@ -9,6 +9,7 @@ from routes.nodes import factura
 from routes.nodes import ordenCompra
 from routes.nodes import publicidad
 from routes.nodes import vehiculos
+from routes.nodes import deleteNodes
 from routes.relations import rTiene
 from routes.relations import rReabastece
 from routes.relations import rPromocionaPublicidad
@@ -45,6 +46,7 @@ app.include_router(rReabastece.reabastece_r)
 app.include_router(rPromocionaPublicidad.promociona_publicidad_r)
 app.include_router(rBrindaInformacion.brinda_info_r)
 app.include_router(deleteRelation.delete_relation)
+app.include_router(deleteNodes.delete_node)
 
 @app.get("/")
 def default():
