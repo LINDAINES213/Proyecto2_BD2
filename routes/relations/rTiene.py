@@ -26,10 +26,16 @@ def get_personal():
             relation_properties = dict(row["r"])
             property_properties = dict(row["o"])
             
-            # Agregar información de los nodos y las relaciones
+            # Extraer el ID interno de la relación
+            relation_id = row['r'].id  # Obtiene el ID interno de Neo4j para la relación
+
+            # Agregar información de los nodos y las relaciones incluyendo el ID de la relación
             nodes_info.append({
                 "Producto": node_properties,
-                "TIENE": relation_properties,
+                "TIENE": {
+                    **relation_properties,
+                    "id": relation_id  # Agrega el ID de la relación
+                },
                 "Proveedor": property_properties
             })
 
