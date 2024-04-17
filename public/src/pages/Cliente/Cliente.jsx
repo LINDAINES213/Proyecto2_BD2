@@ -63,7 +63,7 @@ import { Loading } from '../../components';
       })
   }, [])
 
-  const submit = (event, i) => {
+  const submit = (event, id) => {
     console.log("edi",id)
     event.preventDefault()
     if (id === 0) {
