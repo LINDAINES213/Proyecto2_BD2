@@ -10,6 +10,7 @@ import Vehiculos from "./Vehiculos"
 import Factura from "./Factura"
 import RelacionTiene from "./RelacionTiene"
 import Estadisticas from "./Estadisticas"
+import RelacionReabastece from "./RelacionReabastece"
 
 export {
     Proveedores,
@@ -23,5 +24,6 @@ export {
     Vehiculos,
     Factura,
     RelacionTiene,
-    Estadisticas
+    Estadisticas,
+    RelacionReabastece
 }
