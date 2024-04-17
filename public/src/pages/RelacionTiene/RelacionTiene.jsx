@@ -147,7 +147,7 @@ import { Loading } from '../../components';
   }
   
   const deleteData = (id) => {
-    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_orden_compra_por_mayor/${id}`)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_relacion/${id}`)
       .then(() => {
         fetchData()
       })
@@ -264,8 +264,8 @@ import { Loading } from '../../components';
               </thead>
               <tbody>
                 {console.log("dddd", currentData)}
-                {currentData.filter(rest => rest.TIENE && Object.keys(rest.TIENE).length > 0).map((rest, index) =>
-                  <tr key={index}>
+                {currentData.filter(rest => rest.TIENE && Object.keys(rest.TIENE).length > 0).map(rest =>
+                  <tr key={rest.TIENE.id}>
                     <td>{rest.Producto.id}</td>
                     <td>{rest.TIENE.disponibilidad ? 'Disponible' : 'No disponible'}</td>
                     <td>{rest.TIENE.tipo_de_producto}</td>
@@ -277,7 +277,7 @@ import { Loading } from '../../components';
                       </button>
                     </td>
                     <td>
-                      <button onClick={() => deleteData(rest.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
+                      <button onClick={() => deleteData(rest.TIENE.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
                         <i className="material-icons ">delete</i>
                       </button>
                     </td>

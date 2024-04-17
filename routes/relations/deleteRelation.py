@@ -10,6 +10,7 @@ def delete_publicidad(id: int):
     driver_neo4j = connection()
     session = driver_neo4j.session()
     
+    id = int(id)
 
     query = f'''
     MATCH ()-[r]->()
