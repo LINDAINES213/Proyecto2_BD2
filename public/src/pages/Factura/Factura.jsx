@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
   formGrid, buttonContainerOptions, centeredDiv, inputTextSmall, buttonContainerOptionsLimit, inputTextSlider
- } from './OrdenDeCompra.module.css'
+ } from './Factura.module.css'
 import { Loading } from '../../components';
 
  const Factura = () => {
@@ -138,7 +138,7 @@ import { Loading } from '../../components';
 
     //const parsedLimit = parseInt(limit)
     //const isLimitInteger = !isNaN(parsedLimit) && Number.isInteger(parsedLimit)    const url = 'https://frail-maryanne-uvg.koyeb.app/nodes/Producto'
-    const url = 'https://frail-maryanne-uvg.koyeb.app/nodes/OrdenDeCompra'
+    const url = 'https://frail-maryanne-uvg.koyeb.app/nodes/Factura'
   
     axios.get(url)
       .then((res) => {
@@ -172,7 +172,7 @@ import { Loading } from '../../components';
         return (
           <div>
             <div className='col lg-6 mt-5'>
-            <h3 style={{ borderBottom: '3px solid #000000'}}>Añadir proveedor:</h3>
+            <h3 style={{ borderBottom: '3px solid #000000'}}>Añadir Factura:</h3>
             <form onSubmit={(e) => submit(e, id)}>
               <div className={formGrid}>
                 <div className={inputContainer}>

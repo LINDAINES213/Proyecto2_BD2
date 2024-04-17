@@ -11,20 +11,40 @@
   padding-top: 1vh;
 }
 
-  ul {
-    list-style: none;
-    padding: 2vw;
-    padding-top: 1vw;
-    padding-bottom: 0;
-  }
-  
-  li {
-    cursor: pointer;
-    margin-bottom: 3vh;
-  }
-  
-  /* Estilo para resaltar el elemento seleccionado */
-  li.selected {
-    background-color: #c7c5c5;
-  }
-  
+ul {
+  list-style: none;
+  padding: 2vw;
+  padding-top: 1vw;
+  padding-bottom: 0;
+}
+
+li {
+  cursor: pointer;
+  margin-bottom: 3vh;
+}
+
+/* Estilo para resaltar el elemento seleccionado */
+li.selected {
+  background-color: #c7c5c5;
+}
+
+/* Estilo para el botón */
+button {
+  background-color: #4CAF50; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde */
+  padding: 8px 16px; /* Espaciado interno más pequeño */
+  text-align: center; /* Alineación del texto */
+  text-decoration: none; /* Sin subrayado */
+  display: block; /* Convertir a bloque para centrar */
+  margin: 0 auto; /* Centrar horizontalmente */
+  font-size: 14px; /* Tamaño de fuente más pequeño */
+  cursor: pointer;
+  border-radius: 5px; /* Bordes redondeados */
+}
+
+
+/* Estilo cuando el mouse pasa sobre el botón */
+button:hover {
+  background-color: #45a049; /* Cambio de color de fondo */
+}
