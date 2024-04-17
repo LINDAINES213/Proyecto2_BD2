@@ -147,7 +147,8 @@ import { Loading } from '../../components';
   }
   
   const deleteData = (id) => {
-    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_relacion/${id}`)
+    console.log("id",id)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_tiene_relation/${id}`)
       .then(() => {
         fetchData()
       })
@@ -264,8 +265,8 @@ import { Loading } from '../../components';
               </thead>
               <tbody>
                 {console.log("dddd", currentData)}
-                {currentData.filter(rest => rest.TIENE && Object.keys(rest.TIENE).length > 0).map(rest =>
-                  <tr key={rest.TIENE.id}>
+                {currentData.filter(rest => rest.TIENE && Object.keys(rest.TIENE).length > 0).map((rest, index) =>
+                  <tr key={index}>
                     <td>{rest.Producto.id}</td>
                     <td>{rest.TIENE.disponibilidad ? 'Disponible' : 'No disponible'}</td>
                     <td>{rest.TIENE.tipo_de_producto}</td>

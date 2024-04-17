@@ -63,4 +63,4 @@ contraseña = "mmHnKEyuPplktl35zNEi-q31mR4qBY-4hFKAXN2JGhY"
 #generateFactura()
 #loadFacturas(uri, usuario, contraseña)
 #generateGENERA()
-loadGENERA(uri, usuario, contraseña)
+#loadGENERA(uri, usuario, contraseña)

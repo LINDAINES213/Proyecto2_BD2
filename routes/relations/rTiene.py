@@ -31,12 +31,12 @@ def get_personal():
 
             # Agregar información de los nodos y las relaciones incluyendo el ID de la relación
             nodes_info.append({
-                "Producto": node_properties,
+                "Proveedor": node_properties,
                 "TIENE": {
                     **relation_properties,
                     "id": relation_id  # Agrega el ID de la relación
                 },
-                "Proveedor": property_properties
+                "Producto": property_properties
             })
 
     return {"response": nodes_info}
