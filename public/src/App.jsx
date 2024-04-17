@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { Proveedores, Productos, Personal, Cliente, Almacen, Publicidad, OrdenDeCompraPorMenor, OrdenDeCompraPorMayor, Vehiculos, Factura, RelacionTiene} from './pages'
+import { Proveedores, Productos, Personal, Cliente, Almacen, Publicidad, OrdenDeCompraPorMenor, OrdenDeCompraPorMayor, Vehiculos, Factura, RelacionTiene, RelacionReabastece} from './pages'
 import { Content, Sidebar } from './components'
 
 // eslint-disable-next-line react/function-component-definition
@@ -46,7 +46,7 @@ function App() {
             {selectedMenuItem === '📝 Relacion Tiene' && <RelacionTiene />}
             {selectedMenuItem === '📝 Relacion Brinda Informacion' && <RelacionTiene />}
             {selectedMenuItem === '📝 Relacion Promociona Publicidad' && <RelacionTiene />}
-            {selectedMenuItem === '📝 Relacion Reabastece' && <RelacionTiene />}
+            {selectedMenuItem === '📝 Relacion Reabastece' && <RelacionReabastece />}
             {selectedMenuItem !== '📝 Relacion Tiene' &&
               selectedMenuItem !== '📝 Relacion Brinda Informacion' &&
               selectedMenuItem !== '📝 Relacion Promociona Publicidad' &&
