@@ -64,6 +64,25 @@ def create_cliente(cliente_data: dict):
 
     return {"response": created_user_info}
 
+@cliente.get("/get_cliente/{id}")
+def get_cliente(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+
+    # Consulta Cypher para obtener los datos del cliente por su ID
+    query = '''
+    MATCH (p:Cliente {id: $id})
+    RETURN p.nombre AS nombre, p.correo AS correo, p.direccion AS direccion, p.telefono AS telefono, p.NIT AS nit
+    '''
+
+    # Ejecutar la consulta Cypher con el ID del cliente proporcionado
+    result = session.run(query, id=id)
+
+    # Obtener los datos del cliente del resultado de la consulta
+    cliente_data = result.data()[0]
+
+    return cliente_data
+
 @cliente.put("/update_cliente/{id}")
 def update_cliente(id: str, updated_data: dict):
     driver_neo4j = connection()
