@@ -48,6 +48,11 @@ def create_tiene_relation(data: dict):
     fecha_de_produccion = data.get("fecha_de_produccion")
     fecha_de_produccion = datetime.strptime(fecha_de_produccion, "%Y-%m-%d").strftime("%Y-%m-%d")
 
+    if disponibilidad in ['true', 'True', 'disponible', 'no disponible', 'Disponible', 'No disponible']:
+        disponibilidad = True
+    else:
+        disponibilidad = False
+
     if not producto_id or not proveedor_id:
         raise HTTPException(status_code=400, detail="Los campos producto_id y proveedor_id son obligatorios")
     
