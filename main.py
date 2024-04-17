@@ -15,6 +15,7 @@ from routes.relations import rReabastece
 from routes.relations import rPromocionaPublicidad
 from routes.relations import rBrindaInformacion
 from routes.relations import deleteRelation
+from routes import aggregations
 
 app = FastAPI()
 
@@ -47,6 +48,7 @@ app.include_router(rPromocionaPublicidad.promociona_publicidad_r)
 app.include_router(rBrindaInformacion.brinda_info_r)
 app.include_router(deleteRelation.delete_relation)
 app.include_router(deleteNodes.delete_node)
+app.include_router(aggregations.aggregations)
 
 @app.get("/")
 def default():
