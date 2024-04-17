@@ -91,6 +91,15 @@ import { Loading } from '../../components';
   }
 
 
+  const deleteAll = (id) => {
+    console.log("id",id)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_clientes_nodes`)
+      .then(() => {
+        fetchData()
+      })
+  }
+
+
 
   const fetchData = () => {
   
@@ -153,6 +162,11 @@ import { Loading } from '../../components';
                       <i className="material-icons right"> send</i>
                       </button>
                     </div>
+                </div>
+                <div className={inputContainer}>
+                  <div className={buttonContainer}>
+                    <button className=" btn btn-sm btn-primary waves-effect waves-light right" onClick={() => deleteAll()}  style={{backgroundColor: "red"}}type="button" name="action">Eliminar primeros 5 nodos</button>
+                  </div>
                 </div>
               </div>
             </form>
