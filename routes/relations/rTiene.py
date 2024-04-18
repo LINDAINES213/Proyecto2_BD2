@@ -82,36 +82,47 @@ def create_tiene_relation(data: dict):
     
     return {"message": "Relaciones TIENE creadas correctamente para los productos especificados"}
 
-@tiene.put("/relation/update_tiene_relation")
-def update_tiene_relation(updated_data_list: List[dict]):
+@tiene.post("/relation/update_tiene_relation")
+def update_tiene_relation(data: dict):
     driver_neo4j = connection()
 
-    # Iterar sobre cada diccionario en la lista de datos actualizados
-    for updated_data in updated_data_list:
-        proveedor_id = updated_data.get("proveedor_id")
-        lista_productos = updated_data.get("productos", [])  # Lista de IDs de productos
+    relaciones_actualizadas = data.get("relaciones", [])
 
-        # Propiedades a actualizar
-        nuevas_propiedades = {
-            "disponibilidad": updated_data.get("disponibilidad"),
-            "tipo_de_producto": updated_data.get("tipo_de_producto"),
-            "fecha_de_produccion": updated_data.get("fecha_de_produccion")
-        }
+    if not relaciones_actualizadas:
+        raise HTTPException(status_code=400, detail="La lista de relaciones a actualizar no puede estar vacía")
 
-        # Convertir fecha_de_produccion al formato deseado
-        nuevas_propiedades["fecha_de_produccion"] = datetime.strptime(nuevas_propiedades["fecha_de_produccion"], "%Y-%m-%d").strftime("%Y-%m-%d")
+    queries = []
+    for relacion in relaciones_actualizadas:
+        proveedor_id = relacion.get("proveedor_id")
+        productos = relacion.get("productos", [])  # Lista de IDs de productos
+        disponibilidad = data.get("disponibilidad")
+        tipo_de_producto = data.get("tipo_de_producto")
+        fecha_de_produccion = data.get("fecha_de_produccion")
+        fecha_de_produccion = datetime.strptime(fecha_de_produccion, "%Y-%m-%d").strftime("%Y-%m-%d")
 
-        if not lista_productos:
-            raise HTTPException(status_code=400, detail=f"La lista de productos para el proveedor {proveedor_id} no puede estar vacía")
+        if not proveedor_id:
+            raise HTTPException(status_code=400, detail="El campo proveedor_id es obligatorio")
 
-        # Construir y ejecutar la consulta Cypher para actualizar las relaciones TIENE
+        if not productos:
+            raise HTTPException(status_code=400, detail="La lista de productos no puede estar vacía")
+
+        if disponibilidad in ["Disponible", "disponible", "True", "true", "t"]:
+            disponibilidad = True
+        else:
+            disponibilidad = False
+
+        # Construir la parte de la consulta Cypher para cada relación
         query = f"""
-        MATCH (p:Proveedor)-[r:TIENE]->(o:Producto)
-        WHERE p.id = '{proveedor_id}' AND o.id IN $productos
-        SET r += $nuevas_propiedades
+        MATCH (p:Proveedor {{id: '{proveedor_id}'}})-[r:TIENE]->(o:Producto)
+        WHERE o.id IN {productos}
+        SET r.disponibilidad = {disponibilidad}, r.tipo_de_producto = '{tipo_de_producto}', r.fecha_de_produccion = date("{fecha_de_produccion}")
         """
-        
-        with driver_neo4j.session() as session:
-            session.run(query, nuevas_propiedades=nuevas_propiedades, productos=lista_productos)
+        queries.append(query)
 
-    return {"message": "Propiedades de las relaciones TIENE actualizadas correctamente"}
+    # Unir todas las consultas en una sola
+    full_query = "\n".join(queries)
+    
+    with driver_neo4j.session() as session:
+        session.run(full_query)
+    
+    return {"message": "Relaciones TIENE actualizadas correctamente"}
