@@ -75,8 +75,8 @@ def get_reabastece(id: int):
     session = driver_neo4j.session()
     
     # Consulta Cypher para obtener los datos del cliente por su ID
-    query = f"""MATCH ()-[n:REABASTECE]->() WHERE ID(n) = $id 
-    RETURN n.monto AS monto, n.calidad_del_producto AS calidad_del_producto, n.fecha_de_reabastecimiento AS fecha_de_reabastecimiento"""
+    query = f"""MATCH (p:Proveedor)-[n:REABASTECE]->(a:Almacen) WHERE ID(n) = $id 
+    RETURN p.id AS proveedor_id, a.id AS almacen_id, n.monto AS monto, n.calidad_del_producto AS calidad_del_producto, n.fecha_de_reabastecimiento AS fecha_de_reabastecimiento"""
     
     # Ejecutar la consulta Cypher
     results = session.run(query, id=id)
@@ -91,3 +91,38 @@ def get_reabastece(id: int):
         return cliente_dict
     else:
         return {"error": "Cliente no encontrado"}
+    
+@reabastece_r.put("/relation/update_reabastece_relation/{id}")
+def update_tiene_relation(id: int, updated_data: dict):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+
+    almacen_id = updated_data.get("almacen_id")
+    proveedor_id = updated_data.get("proveedor_id")
+
+    # Propiedades adicionales para la relación TIENE
+    monto = updated_data.get("monto")
+    calidad_del_producto = updated_data.get("calidad_del_producto")
+    fecha_de_reabastecimiento = updated_data.get("fecha_de_reabastecimiento")
+    fecha_de_reabastecimiento = datetime.strptime(fecha_de_reabastecimiento, "%Y-%m-%d").strftime("%Y-%m-%d")
+
+    if not almacen_id or not proveedor_id:
+        raise HTTPException(status_code=400, detail="Los campos almacen_id y proveedor_id son obligatorios")
+    
+    # Consulta Cypher para crear la relación TIENE
+    query = """
+    MATCH (p:Proveedor)-[r:REABASTECE]->(a:Almacen)
+    WHERE ID(r) = $id
+    SET p.id = $proveedor_id, a.id = $almacen_id, r.monto = $monto, r.calidad_del_producto = $calidad_del_producto, r.fecha_de_reabastecimiento = $fecha_de_reabastecimiento 
+    RETURN r
+    """
+    
+    # Ejecutar la consulta Cypher con los parámetros proporcionados
+    result = session.run(query, proveedor_id=proveedor_id, almacen_id=almacen_id, id=id, monto=monto, calidad_del_producto=calidad_del_producto, fecha_de_reabastecimiento=fecha_de_reabastecimiento)
+
+    # Recopilar las propiedades del nodo actualizado
+    updated_info = []
+    for record in result:
+        updated_info.append(dict(record["r"]))
+    
+    return {"message": "Relación REABASTECE creada correctamente"}
