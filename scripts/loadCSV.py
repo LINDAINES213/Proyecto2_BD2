@@ -29,7 +29,7 @@ contraseña = "mmHnKEyuPplktl35zNEi-q31mR4qBY-4hFKAXN2JGhY"
 #generateProveedor() 
 #loadProveedor(uri, usuario, contraseña)
 #generateProducto()
-#loadProducto(uri, usuario, contraseña)
+loadProducto(uri, usuario, contraseña)
 #generateTIENE()
 #loadTIENE(uri, usuario, contraseña)
 #generateCliente()

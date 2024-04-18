@@ -117,7 +117,7 @@ def loadProducto(uri, usuario, contraseña):
         print("Todos los nodos fueron importados o hubo errores que fueron manejados.")
 
     print("Directorio de trabajo actual:", os.getcwd())
-    csv_path = './scripts/Producto.csv'
+    csv_path = './scripts/Producto2.csv'
     label = 'Producto'  # Etiqueta de los nodos
     with driver.session() as session:
         importar_nodos(session, csv_path, label)
