@@ -45,8 +45,8 @@ def get_personal():
 def create_tiene_relation(data: dict):
     driver_neo4j = connection()
 
-    producto_id = data.get("producto_id")
     proveedor_id = data.get("proveedor_id")
+    lista_productos = data.get("productos", [])  # Lista de IDs de productos
 
     # Propiedades adicionales para la relación TIENE
     disponibilidad = data.get("disponibilidad")
@@ -54,22 +54,24 @@ def create_tiene_relation(data: dict):
     fecha_de_produccion = data.get("fecha_de_produccion")
     fecha_de_produccion = datetime.strptime(fecha_de_produccion, "%Y-%m-%d").strftime("%Y-%m-%d")
 
-    if disponibilidad in ['true', 'True', 'disponible', 'no disponible', 'Disponible', 'No disponible']:
-        disponibilidad = True
-    else:
-        disponibilidad = False
+    if not proveedor_id:
+        raise HTTPException(status_code=400, detail="El campo proveedor_id es obligatorio")
+    
+    if not lista_productos:
+        raise HTTPException(status_code=400, detail="La lista de productos no puede estar vacía")
 
-    if not producto_id or not proveedor_id:
-        raise HTTPException(status_code=400, detail="Los campos producto_id y proveedor_id son obligatorios")
-    
-    # Consulta Cypher para crear la relación TIENE
-    query = f"""
-    MATCH (p:Proveedor), (o:Producto)
-    WHERE p.id = '{proveedor_id}' AND o.id = '{producto_id}'
-    CREATE (p)-[:TIENE {{disponibilidad: {disponibilidad}, tipo_de_producto: '{tipo_de_producto}', fecha_de_produccion: date("{fecha_de_produccion}")}}]->(o)
-    """
-    
+    # Consulta Cypher para crear las relaciones TIENE
+    queries = []
+    for producto_id in lista_productos:
+        query = f"""
+        MATCH (p:Proveedor), (o:Producto)
+        WHERE p.id = '{proveedor_id}' AND o.id = '{producto_id}'
+        CREATE (p)-[:TIENE {{disponibilidad: {disponibilidad}, tipo_de_producto: '{tipo_de_producto}', fecha_de_produccion: date("{fecha_de_produccion}")}}]->(o)
+        """
+        queries.append(query)
+
     with driver_neo4j.session() as session:
-        session.run(query)
+        for query in queries:
+            session.run(query)
     
-    return {"message": "Relación TIENE creada correctamente"}
+    return {"message": "Relaciones TIENE creadas correctamente para los productos especificados"}
