@@ -165,7 +165,7 @@ button {
 
 .listaFlotante {
   position: absolute;
-  width: 450px;
+  width: 430px;
   max-height: 300px;
   overflow-y: auto;
   bottom: 1.5vh;

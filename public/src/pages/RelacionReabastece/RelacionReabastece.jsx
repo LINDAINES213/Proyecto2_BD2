@@ -216,7 +216,14 @@ import { Loading } from '../../components';
 
 
   const deleteProperties = () => {
-    
+    axios.put(`https://frail-maryanne-uvg.koyeb.app/relation/remove_properties`, {
+      listIds,
+      categories
+    }).then(() => {
+      fetchData()
+      setListIds([])
+      setCategories([])
+    })
   }
 
 
@@ -345,7 +352,7 @@ import { Loading } from '../../components';
           <div style={{ marginTop: '20px' }}>
             <div className={formGrid}>
               <div className={inputContainer}>
-                <button style={{marginBottom: '-2vh', width:"20vw", marginLeft: "1.5vw", padding: "0.4vh", backgroundColor: "white", color: "black"}} onClick={() => setIsListVisible(!isListVisible)}>
+                <button style={{marginBottom: '-2vh', marginTop:'-2vh', width:"20vw", marginLeft: "1.5vw", padding: "0.4vh", backgroundColor: "white", color: "black"}} onClick={() => setIsListVisible(!isListVisible)}>
                   {isListVisible ? 'Ocultar opciones' : 'Seleccionar categoria/s a eliminar'}
                 </button>
                 {isListVisible && (
@@ -367,15 +374,15 @@ import { Loading } from '../../components';
               <div className={inputContainer}>
                 <input
                   className={inputText}
-                  value={cant}
+                  value={valId}
                   onChange={handleInputChangeId}
-                  placeholder='Cantidad'
-                  type='number'
+                  placeholder='Ingrese un ID'
+                  type='text'
                 />
                 <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={handleAddId}>Añadir+</button>
                 {console.log("codigo", listIds)}
                 {listIds.length > 0 ? (
-                  <div className={floatingWindow} style={{left: "16vw", top: "79vh"}}>
+                  <div className={floatingWindow} style={{left: "39vw", top: "84vh", width: "19vw"}}>
                     <ul className={productList}>
                       {listIds.map((codigo, index) => (
                         <li key={index} className={productItem}>
@@ -390,7 +397,7 @@ import { Loading } from '../../components';
                 ) : (
                   null
                 )}
-                <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={deleteProperties}>Eliminar propiedad/es</button>
+                <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw', width: "10vw", backgroundColor: "green"}} onClick={deleteProperties}>Eliminar propiedad/es</button>
               </div>
             </div>
           </div>

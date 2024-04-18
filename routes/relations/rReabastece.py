@@ -129,10 +129,11 @@ def update_tiene_relation(id: int, updated_data: dict):
     return {"message": "Relación REABASTECE creada correctamente"}
 
 @reabastece_r.put("/relation/remove_properties")
-def remove_properties_from_relations(relation_ids: List[int], properties_to_remove: List[str]):
+def remove_properties_from_relations(relation_ids: List[str], properties_to_remove: List[str]):
     driver_neo4j = connection()
     session = driver_neo4j.session()
 
+    relation_ids = [int(id) for id in relation_ids]
     # Asegurar que se reciben los parámetros necesarios
     if not relation_ids or not properties_to_remove:
         raise HTTPException(status_code=400, detail="Se requieren los IDs de las relaciones y las propiedades a eliminar.")
