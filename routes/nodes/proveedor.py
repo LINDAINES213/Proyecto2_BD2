@@ -118,6 +118,26 @@ def update_proveedor(id: str, updated_data: dict):
 
     return {"response": "node updated"}
 
+@proveedor.post("/update_proveedores")
+def update_proveedores(proveedores_data: list):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+
+    query = '''
+    UNWIND $proveedores AS proveedor_data
+    MATCH (p:Proveedor)
+    WHERE p.id = proveedor_data.id
+    SET p += proveedor_data.properties
+    RETURN p
+    '''
+
+    
+    result = session.run(query, proveedores=proveedores_data)
+    updated_proveedores_info = [dict(record["p"]) for record in result]
+
+    return {"response": updated_proveedores_info}
+
+
 @proveedor.delete("/delete_proveedor/{id}")
 def delete_proveedor(id: str):
     driver_neo4j = connection()
