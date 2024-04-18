@@ -137,23 +137,27 @@ import { Loading } from '../../components';
         setTipoDeProducto('')
         setProductoId('')
         setProveedorId('')
+        setproductos([])
       })
-    } else {
-      axios.put(`https://frail-maryanne-uvg.koyeb.app/update_proveedor/${id}`, {
-        producto_id, 
-        proveedor_id, 
-        disponibilidad, 
-        tipo_de_producto,
-        fecha_de_produccion,
-      }).then(() => {
-        fetchData()
-        setDisponibilidad('')
-        setFechaDeProduccion('')
-        setTipoDeProducto('')
-        setProductoId('')
-        setProveedorId('')
-      })
-    }
+    }   
+  }
+
+  const editTiene = () => {
+    axios.put(`https://frail-maryanne-uvg.koyeb.app/relation/update_tiene_relation`, {
+      productos, 
+      proveedor_id, 
+      disponibilidad, 
+      tipo_de_producto,
+      fecha_de_produccion,
+    }).then(() => {
+      fetchData()
+      setDisponibilidad('')
+      setFechaDeProduccion('')
+      setTipoDeProducto('')
+      setProductoId('')
+      setProveedorId('')
+      setproductos([])
+    })
   }
   
   const deleteData = (id) => {
@@ -187,6 +191,7 @@ import { Loading } from '../../components';
         setTipoDeProducto('')
         setProductoId('')
         setProveedorId('')
+        setproductos([])
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
@@ -259,6 +264,10 @@ import { Loading } from '../../components';
               </div>
                 <div className={inputContainer}>
                   <input className={inputText} value={fecha_de_produccion} onChange={(e) => setFechaDeProduccion(e.target.value)} type="date" placeholder='Fecha de produccion' />
+                  <div className={buttonContainer}>
+                    <button onClick={() => editTiene()} className=" btn btn-sm btn-primary waves-effect waves-light right" style={{padding: "0.5vh"}} type="submit" name="action"> Editar varios 
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className={formGrid}>

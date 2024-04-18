@@ -2,6 +2,7 @@ from http.client import HTTPException
 from fastapi import APIRouter
 from database.db import connection
 from datetime import datetime
+from typing import *
 
 # Definir un enrutador de API para la sección de usuarios
 reabastece_r = APIRouter()
@@ -126,3 +127,27 @@ def update_tiene_relation(id: int, updated_data: dict):
         updated_info.append(dict(record["r"]))
     
     return {"message": "Relación REABASTECE creada correctamente"}
+
+@reabastece_r.put("/relation/remove_properties")
+def remove_properties_from_relations(relation_ids: List[int], properties_to_remove: List[str]):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+
+    # Asegurar que se reciben los parámetros necesarios
+    if not relation_ids or not properties_to_remove:
+        raise HTTPException(status_code=400, detail="Se requieren los IDs de las relaciones y las propiedades a eliminar.")
+
+    # Construir la parte de la consulta para eliminar propiedades
+    properties_removal = ', '.join(f'r.{prop} = NULL' for prop in properties_to_remove)
+    query = f"""
+    MATCH ()-[r]->()
+    WHERE ID(r) IN $relation_ids
+    SET {properties_removal}
+    RETURN ID(r) as relation_id
+    """
+
+    # Ejecutar la consulta
+    result = session.run(query, relation_ids=relation_ids)
+    updated_relations = [record["relation_id"] for record in result]
+
+    return {"message": "Propiedades eliminadas correctamente", "updated_relations": updated_relations}

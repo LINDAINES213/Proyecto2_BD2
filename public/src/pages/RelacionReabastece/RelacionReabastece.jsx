@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { buttonContainer, inputContainer, inputText, crud, editButton, scrollableTable,
+import { buttonContainer, inputContainer, inputText, crud, editButton, scrollableTable, listaFlotante, floatingWindow, productList, productItem, productButton,
   formGrid, centeredDiv
  } from './RelacionReabastece.module.css'
 import { Loading } from '../../components';
@@ -26,6 +26,11 @@ import { Loading } from '../../components';
   const [proveedorList, setProveedorList] = useState([]);
   const [cant, setCant] = useState('')
   const [proveedor_delete, setProveedorDelete] = useState('');
+  const [isListVisible, setIsListVisible] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [listCategories, setListCategories] = useState(['fecha_de_reabastecimiento', 'calidad_del_producto', 'monto'])
+  const [listIds, setListIds] = useState([]);
+  const [valId, setValId] = useState('')
 
   const handleInputChange = (e) => {
     setCodigoProducto(e.target.value);
@@ -42,20 +47,20 @@ import { Loading } from '../../components';
     setCodigo_producto(codigo_producto.filter(c => c !== codigo)); // Elimina el código del array
   };
   
-  const handleInputChangeCantidad = (e) => {
-    setCant(e.target.value);
+  const handleInputChangeId = (e) => {
+    setValId(e.target.value);
   };
 
-  const handleAddCantidad = () => {
-    const intCant = parseInt(cant, 10); // Convierte cant a un entero base 10
-    if (!isNaN(intCant)) { // Asegura que intCant es un número
-      setCantidad([...cantidad, intCant]); // Añade el entero al array
-      setCant(''); // Limpia el input
+  const handleAddId = () => {
+    const intId = parseInt(valId, 10); // Convierte cant a un entero base 10
+    if (!isNaN(intId)) { // Asegura que intCant es un número
+      setListIds([...listIds, intId]); // Añade el entero al array
+      setValId(''); // Limpia el input
     }
   };  
 
-  const handleDeleteCantidad = (codigo) => {
-    setCantidad(cantidad.filter(c => c !== codigo)); // Elimina el código del array
+  const handleDeleteId = (codigo) => {
+    setCantidad(listIds.filter(c => c !== codigo)); // Elimina el código del array
   };
 
   const handleAlmacenChange = (event) => {
@@ -137,6 +142,16 @@ import { Loading } from '../../components';
         setLoading(false)
       })  
   }
+
+  
+  const toggleCategoriesSelection = (cat) => {
+    if (categories.includes(cat)) {
+      setCategories(categories.filter(id => id !== cat));
+    } else {
+      setCategories([...categories, cat]);
+    }
+  };
+
   
 
   const submit = (event, id) => {
@@ -199,6 +214,10 @@ import { Loading } from '../../components';
       })
   }
 
+
+  const deleteProperties = () => {
+    
+  }
 
 
   const formatDate = (date) => {
@@ -279,6 +298,7 @@ import { Loading } from '../../components';
             <table className='table'>
               <thead>
                 <th>ID Almacen</th>
+                <th>ID REABASTECE</th>
                 <th>Monto</th>
                 <th>Calidad del producto</th>
                 <th>Fecha de reabastecimiento</th>
@@ -290,10 +310,10 @@ import { Loading } from '../../components';
                 {currentData.filter(rest => rest.REABASTECE && Object.keys(rest.REABASTECE).length > 0).map((rest) =>
                   <tr key={rest.REABASTECE.id}>
                     <td>{rest.ALMACEN.id}</td>
-                    <td>{rest.REABASTECE.monto}</td>
-                    <td>{rest.REABASTECE.calidad_del_producto}</td>
-                    {console.log("dddd", rest.REABASTECE.fecha_de_reabastecimiento)}
-                    <td>{rest.REABASTECE.fecha_de_reabastecimiento ? formatDateInfo(rest.REABASTECE.fecha_de_reabastecimiento) : 'No disponible'}</td>
+                    <td>{rest.REABASTECE.id}</td>
+                    <td>{rest.REABASTECE.monto ? rest.REABASTECE.monto : 'Sin datos'}</td>
+                    <td>{rest.REABASTECE.calidad_del_producto ? rest.REABASTECE.calidad_del_producto : 'Sin datos'}</td>
+                    <td>{rest.REABASTECE.fecha_de_reabastecimiento ? formatDateInfo(rest.REABASTECE.fecha_de_reabastecimiento) : 'Sin datos'}</td>
                     <td>{rest.PROVEEDOR.id}</td>
                     <td>
                       <button onClick={() => editReabastece(rest.REABASTECE.id)} className={editButton} type="submit" name="action">
@@ -322,7 +342,60 @@ import { Loading } from '../../components';
               Ir al final
             </button>
           </div>
+          <div style={{ marginTop: '20px' }}>
+            <div className={formGrid}>
+              <div className={inputContainer}>
+                <button style={{marginBottom: '-2vh', width:"20vw", marginLeft: "1.5vw", padding: "0.4vh", backgroundColor: "white", color: "black"}} onClick={() => setIsListVisible(!isListVisible)}>
+                  {isListVisible ? 'Ocultar opciones' : 'Seleccionar categoria/s a eliminar'}
+                </button>
+                {isListVisible && (
+                  <div className={listaFlotante}>
+                    {listCategories.map((cat, index) => (
+                      <button
+                        key={index}
+                        onClick={() => toggleCategoriesSelection(cat)}
+                        className={`btn ${categories.includes(cat) ? 'btn-success' : 'btn-secondary'}`}
+                        style={{backgroundColor:'white'}}
+                      >
+                        Categoria: {cat}
+                        {categories.includes(cat) ? ' (Seleccionado)' : ''}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className={inputContainer}>
+                <input
+                  className={inputText}
+                  value={cant}
+                  onChange={handleInputChangeId}
+                  placeholder='Cantidad'
+                  type='number'
+                />
+                <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={handleAddId}>Añadir+</button>
+                {console.log("codigo", listIds)}
+                {listIds.length > 0 ? (
+                  <div className={floatingWindow} style={{left: "16vw", top: "79vh"}}>
+                    <ul className={productList}>
+                      {listIds.map((codigo, index) => (
+                        <li key={index} className={productItem}>
+                          Relacion {index} con ID ➡️ {codigo}
+                          <button type="button" className={productButton} style={{ backgroundColor: "transparent"}} onClick={() => handleDeleteId(codigo)}>
+                            ❌
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  null
+                )}
+                <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={deleteProperties}>Eliminar propiedad/es</button>
+              </div>
+            </div>
+          </div>
         </div>
+
         )
       default:
         return null
