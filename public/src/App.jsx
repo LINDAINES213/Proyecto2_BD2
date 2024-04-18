@@ -6,7 +6,7 @@ import { Content, Sidebar } from './components'
 // eslint-disable-next-line react/function-component-definition
 function App() {
   const [selectedMenuItem, setSelectedMenuItem] = useState('📦 Almacen')
-  const [cambio, setCambio] = useState(false)
+  const [cambio, setCambio] = useState(true)
 
   const handleMenuSelect = (item) => {
     setSelectedMenuItem(item)

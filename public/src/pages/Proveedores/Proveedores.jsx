@@ -43,7 +43,47 @@ import { Loading } from '../../components';
       }
 
     })
+  };
+
+  const emptyProduct = {
+    nombre: '',
+    direccion: '',
+    telefono: '',
+    email: '',
+    tipo_de_producto: ''
 };
+  const [products, setProducts] = useState([emptyProduct]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleChange = (e) => {
+      const newProducts = [...products];
+      newProducts[currentIndex][e.target.name] = e.target.value;
+      setProducts(newProducts);
+  };
+
+  const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log('Enviando productos:', products);
+  };
+
+  const addProduct = () => {
+      const newProducts = [...products, emptyProduct];
+      setProducts(newProducts);
+      setCurrentIndex(newProducts.length - 1); // Mover al nuevo producto
+  };
+
+  const goToNextProduct = () => {
+      if (currentIndex < products.length - 1) {
+          setCurrentIndex(currentIndex + 1);
+      }
+  };
+
+  const goToPreviousProduct = () => {
+      if (currentIndex > 0) {
+          setCurrentIndex(currentIndex - 1);
+      }
+  };
+
 
 
   // Paginacion
@@ -156,33 +196,42 @@ import { Loading } from '../../components';
             <div className='col lg-6 mt-5'>
             <h3 style={{ borderBottom: '3px solid #000000'}}>Añadir proveedor:</h3>
             <form onSubmit={(e) => submit(e, id)}>
+              {console.log("Informacion de productos", products)}
               <div className={formGrid}>
                 <div className={inputContainer}>
-                    <input className={inputText} value={nombre} onChange={(e) => setNombre(e.target.value)} type="text" 
+                    <input className={inputText} name="nombre" value={products[currentIndex].nombre} onChange={handleChange} type="text" 
                       placeholder='Nombre del proveedor' />
                 </div>
                 <div className={inputContainer}>
-                    <input className={inputText} value={direccion} onChange={(e) => setDireccion(e.target.value)} type="text" placeholder='Direccion' />
+                    <input className={inputText} name="direccion" value={products[currentIndex].direccion} onChange={handleChange} type="text" placeholder='Direccion' />
                 </div>
                 <div className={inputContainer}>
                     <input 
-                      className={inputText} value={telefono} onChange={(e) => setTelefono(e.target.value)} placeholder='Telefono' type='tel'
+                      className={inputText} name="telefono" value={products[currentIndex].telefono} onChange={handleChange} placeholder='Telefono' type='tel'
                     />
                 </div>
               </div>
               <div className={formGrid}>
                 <div className={inputContainer}>
-                      <input className={inputText} value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' type='email' />
+                      <input className={inputText} name="email" value={products[currentIndex].email} onChange={handleChange} placeholder='Email' type='email' />
                 </div>
                 <div className={inputContainer}>
-                    <input className={inputText} value={tipo_de_producto} onChange={(e) => setTipo_de_producto(e.target.value)} type="text" placeholder='Tipo de Producto' />
+                    <input className={inputText} name="tipo_de_producto" value={products[currentIndex].tipo_de_producto} onChange={handleChange} type="text" placeholder='Tipo de Producto' />
                     <div className={buttonContainer}>
                       <button className=" btn btn-sm btn-primary waves-effect waves-light right" type="submit" name="action"> Enviar  
                       <i className="material-icons right"> send</i>
                       </button>
                     </div>
                 </div>
-
+              </div>
+              <div className={formGrid} style={{marginBottom: "1vh"}}>
+                <button type="button" onClick={goToPreviousProduct} disabled={currentIndex === 0}>
+                    Anterior
+                </button>
+                <button type="button" onClick={goToNextProduct} disabled={currentIndex === products.length - 1}>
+                    Siguiente
+                </button>
+                <button type="button" onClick={addProduct}>Añadir Producto</button>
               </div>
             </form>
           </div>        
@@ -194,7 +243,6 @@ import { Loading } from '../../components';
                 <th>Telefono</th>
                 <th>Email</th>
                 <th>Tipo de producto</th>
-                <th>Editar</th>
                 <th>Eliminar</th>
               </thead>
               <tbody>
@@ -205,11 +253,6 @@ import { Loading } from '../../components';
                         <td>{rest.telefono}</td>
                         <td>{rest.email}</td>
                         <td>{rest.tipo_de_producto}</td>
-                        <td>
-                          <button onClick={() => submit()} className={editButton} type="submit" name="action">
-                            <i className="material-icons ">edit</i>
-                          </button>
-                        </td>
                         <td>
                           <button onClick={() => deleteData(rest.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
                             <i className="material-icons ">delete</i>

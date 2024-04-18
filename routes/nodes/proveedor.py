@@ -1,6 +1,7 @@
 import uuid
 from fastapi import APIRouter
 from database.db import connection
+from typing import List, Dict
 
 # Definir un enrutador de API para la sección de usuarios
 proveedor = APIRouter()
@@ -35,32 +36,33 @@ def get_ProveedorId(id: str):
     return {"response": nodes_info}
 
 @proveedor.post("/create_proveedor")
-def create_proveedor(proveedor_data: dict):
+def create_proveedor(proveedor_data: List[Dict]):
     driver_neo4j = connection()
     session = driver_neo4j.session()
 
-    id = str(uuid.uuid4())
+    # Agregar un ID único a cada proveedor en la lista
+    for data in proveedor_data:
+        data['id'] = str(uuid.uuid4())
 
-    # Extraer los datos del usuario del cuerpo de la solicitud
-    direccion = proveedor_data.get("direccion")
-    tipo_de_producto = proveedor_data.get("tipo_de_producto")
-    telefono = proveedor_data.get("telefono")
-    nombre = proveedor_data.get("nombre")
-    email = proveedor_data.get("email")
+    # Consulta Cypher para crear múltiples nodos de proveedor usando UNWIND
+    query = '''
+    UNWIND $lista_proveedores AS proveedor
+    CREATE (p:Proveedor {
+        id: proveedor.id,
+        nombre: proveedor.nombre, 
+        direccion: proveedor.direccion, 
+        telefono: proveedor.telefono, 
+        email: proveedor.email, 
+        tipo_de_producto: proveedor.tipo_de_producto
+    })
+    RETURN p
+    '''
 
-    #{"direccion":"420 Crane Unions Port Ronaldshire  FM 79076","tipo_de_producto":"Ropa","id":"1","telefono":"+1-255-568-7924x97883","nombre":"Murray  Mason and Evans","email":"rosschelsea@example.net"}
+    # Ejecutar la consulta Cypher con la lista completa de proveedores
+    result = session.run(query, lista_proveedores=proveedor_data)
 
-    # Consulta Cypher para crear un nodo de usuario
-    query = '''CREATE (p:Proveedor {nombre: $nombre, direccion: $direccion, telefono: $telefono, email: $email, tipo_de_producto: $tipo_de_producto, id: $id})
-    RETURN p'''
-
-    # Ejecutar la consulta Cypher con los parámetros proporcionados
-    result = session.run(query, id=id, nombre=nombre, direccion=direccion, email=email, telefono=telefono, tipo_de_producto=tipo_de_producto)
-
-    # Recopilar las propiedades del nuevo nodo creado
-    created_proveedor_info = []
-    for record in result:
-        created_proveedor_info.append(dict(record["p"]))
+    # Recopilar las propiedades de los nuevos nodos creados
+    created_proveedor_info = [dict(record["p"]) for record in result]
 
     return {"response": created_proveedor_info}
 
