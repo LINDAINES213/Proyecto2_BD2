@@ -11,6 +11,7 @@ import Factura from "./Factura"
 import RelacionTiene from "./RelacionTiene"
 import Estadisticas from "./Estadisticas"
 import RelacionReabastece from "./RelacionReabastece"
+import RelacionBrindaInformacion from "./RelacionBrindaInformacion"
 
 export {
     Proveedores,
@@ -25,5 +26,6 @@ export {
     Factura,
     RelacionTiene,
     Estadisticas,
-    RelacionReabastece
+    RelacionReabastece,
+    RelacionBrindaInformacion
 }

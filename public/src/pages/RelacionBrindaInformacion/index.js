@@ -1,0 +1,3 @@
+import RelacionBrindaInformacion from "./RelacionBrindaInformacion"
+
+export default RelacionBrindaInformacion
