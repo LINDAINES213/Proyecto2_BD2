@@ -144,6 +144,7 @@ import { Loading } from '../../components';
           </table>
         </div>
         );
+        
       default:
         return null
     }

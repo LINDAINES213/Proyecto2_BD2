@@ -143,6 +143,7 @@ import { Loading } from '../../components';
   }
 
   const editTiene = () => {
+    console.log("productos", productos)
     axios.put(`https://frail-maryanne-uvg.koyeb.app/relation/update_tiene_relation`, {
       productos, 
       proveedor_id, 
@@ -242,7 +243,7 @@ import { Loading } from '../../components';
                       ))}
                     </select>
                 <div className={inputContainer}>
-                  <button style={{marginBottom: '-2vh', width:"20vw", marginLeft: "1.5vw", padding: "0.4vh", backgroundColor: "white", color: "black"}} onClick={() => setIsListVisible(!isListVisible)}>
+                  <button  type="button" style={{marginBottom: '-2vh', width:"20vw", marginLeft: "1.5vw", padding: "0.4vh", backgroundColor: "white", color: "black"}} onClick={() => setIsListVisible(!isListVisible)}>
                     {isListVisible ? 'Ocultar opciones' : 'Seleccionar productos'}
                   </button>
                   {isListVisible && (
@@ -250,6 +251,7 @@ import { Loading } from '../../components';
                       {productosList.map((producto, index) => (
                         <button
                           key={index}
+                          type="button"
                           onClick={() => toggleProductSelection(producto.id)}
                           className={`btn ${productos.includes(producto.id) ? 'btn-success' : 'btn-secondary'}`}
                           style={{backgroundColor:'white'}}
@@ -265,7 +267,7 @@ import { Loading } from '../../components';
                 <div className={inputContainer}>
                   <input className={inputText} value={fecha_de_produccion} onChange={(e) => setFechaDeProduccion(e.target.value)} type="date" placeholder='Fecha de produccion' />
                   <div className={buttonContainer}>
-                    <button onClick={() => editTiene()} className=" btn btn-sm btn-primary waves-effect waves-light right" style={{padding: "0.5vh"}} type="submit" name="action"> Editar varios 
+                    <button onClick={() => editTiene()} className=" btn btn-sm btn-primary waves-effect waves-light right" style={{padding: "0.5vh"}} type="button" name="action"> Editar varios 
                     </button>
                   </div>
                 </div>
