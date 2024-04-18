@@ -211,17 +211,21 @@ import { Loading } from '../../components';
       })
   }
 
-
   const deleteProperties = () => {
-    console.log("jeje",listIds, categories)
-    axios.put(`https://frail-maryanne-uvg.koyeb.app/relation/remove_properties`, {
-      listIds,
-      categories
-    }).then(() => {
-      fetchData()
-      setListIds([])
-      setCategories([])
+    console.log("jeje", listIds, categories);
+
+    axios.put('https://frail-maryanne-uvg.koyeb.app/relation/remove_properties', {
+        relation_ids: listIds,
+        properties_to_remove: categories
     })
+    .then(() => {
+        fetchData();
+        setListIds([]);
+        setCategories([]);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
   }
 
 
