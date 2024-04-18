@@ -13,12 +13,11 @@ const Productos = () => {
   const [categoria, setCategoria] = useState('')
   const [precio, setPrecio] = useState('')
   const [precio_al_por_mayor, setPrecio_al_por_mayor] = useState('')
-  const [limit, setLimit] = useState()
-  const [selectedOption, setSelectedOption] = useState('verUsuarios')
+  const [selectedOption, ] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
   const [isListVisible, setIsListVisible] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [listCategories, setListCategories] = useState(['nombre','descripcion','categoria','precio','precio_al_por_mayor'])
+  const [listCategories, ] = useState(['nombre','descripcion','categoria','precio','precio_al_por_mayor'])
   const [listIds, setListIds] = useState([]);
   const [valId, setValId] = useState('')
 
@@ -277,7 +276,7 @@ const Productos = () => {
                 <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={handleAddId}>Añadir+</button>
                 {console.log("codigo", listIds)}
                 {listIds.length > 0 ? (
-                  <div className={floatingWindow} style={{left: "39vw", top: "84vh", width: "19vw"}}>
+                  <div className={floatingWindow} style={{right: "39vw", top: "84vh", width: "19vw"}}>
                     <ul className={productList}>
                       {listIds.map((codigo, index) => (
                         <li key={index} className={productItem}>

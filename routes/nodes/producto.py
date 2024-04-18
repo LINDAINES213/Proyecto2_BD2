@@ -117,7 +117,6 @@ def remove_properties_from_nodes(listIds: List[str], properties_to_remove: List[
     driver_neo4j = connection()
     session = driver_neo4j.session()
 
-    listIds = [int(idV) for idV in listIds]
     # Asegurar que se reciben los parámetros necesarios
     if not listIds or not properties_to_remove:
         raise HTTPException(status_code=400, detail="Se requieren los NITs de los proveedores y las propiedades a eliminar.")

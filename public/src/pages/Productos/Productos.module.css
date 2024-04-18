@@ -45,11 +45,11 @@
 
 .listaFlotante {
   position: absolute;
-  width: 430px;
+  width: 200px;
   max-height: 300px;
   overflow-y: auto;
   bottom: 1.5vh;
-  left: 17vw;
+  right: 1vw;
   background-color: white;
   border: 1px solid #ccc;
   z-index: 1000;
