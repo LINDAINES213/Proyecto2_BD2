@@ -20,6 +20,37 @@
   border-radius: 5px;
 }
 
+.listaFlotante {
+  position: absolute;
+  width: 300px;
+  max-height: 300px;
+  overflow-y: auto;
+  top: 20vh;
+  left: 40vw;
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.listaFlotante button {
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  border: none;
+  background: none;
+  color: black;
+  outline: none;
+  display: block;
+}
+
+.listaFlotante button:hover, .listaFlotante button.btn-success {
+  background-color: #f0f0f0;
+}
+
+
+
 .productList {
   padding: 0;
   margin: 0;

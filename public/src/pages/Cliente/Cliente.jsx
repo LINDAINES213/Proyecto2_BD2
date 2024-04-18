@@ -28,8 +28,6 @@ import { Loading } from '../../components';
   const nextPage = () => { setCurrentPage(current => (current + 1 < pageCount) ? current + 1 : current); };
   const prevPage = () => { setCurrentPage(current => (current - 1 >= 0) ? current - 1 : current);};
   
-
-
   const editCliente = (id) => {
     console.log("id",id)
     axios.get(`https://frail-maryanne-uvg.koyeb.app/get_cliente/${id}`)

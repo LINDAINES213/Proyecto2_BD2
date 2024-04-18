@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { buttonContainer, inputContainer, inputText, crud, centerAligned, editButton, scrollableTable,
+import { buttonContainer, inputContainer, inputText, crud, centerAligned, editButton, scrollableTable, listaFlotante,
   formGrid, centeredDiv
  } from './RelacionTiene.module.css'
 import { Loading } from '../../components';
@@ -23,6 +23,15 @@ import { Loading } from '../../components';
   const [proveedorList, setProveedorList] = useState([]);
   const [cant, setCant] = useState('')
   const [proveedor_delete, setProveedorDelete] = useState('');
+  const [productos, setproductos] = useState([]);
+
+  const toggleProductSelection = (productId) => {
+    if (productos.includes(productId)) {
+      setproductos(productos.filter(id => id !== productId));
+    } else {
+      setproductos([...productos, productId]);
+    }
+  };
 
   const handleInputChange = (e) => {
     setCodigoProducto(e.target.value);
@@ -116,7 +125,7 @@ import { Loading } from '../../components';
     event.preventDefault()
     if (id === 0) {
       axios.post("https://frail-maryanne-uvg.koyeb.app/relation/create_tiene_relation", {
-        producto_id, 
+        productos, 
         proveedor_id, 
         disponibilidad, 
         tipo_de_producto,
@@ -193,6 +202,8 @@ import { Loading } from '../../components';
     return formattedDate;
   }
 
+  const [isListVisible, setIsListVisible] = useState(false);
+
   const renderTable = () => {
     if (loading) {
       console.log("info", tiene)
@@ -212,22 +223,6 @@ import { Loading } from '../../components';
               <div className={formGrid}>
                 <div className={inputContainer}>
                   <select
-                    className={inputText}
-                    value={producto_id} // Aquí se almacena el ID del cliente seleccionado
-                    onChange={handleProductChange} // Esta función se ejecuta cuando se selecciona un cliente
-                    placeholder='Seleccione un producto'
-                  >
-                    {/* Opción por defecto */}
-                    <option value="">Seleccione un producto</option>
-                    {productosList.map((producto, index) => (
-                      <option key={index} value={producto.id}>
-                        ID: {producto.id} {producto.nombre}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className={inputContainer}>
-                  <select
                       className={inputText}
                       value={proveedor_id} // Aquí se almacena el ID del cliente seleccionado
                       onChange={handleProveedorChange} // Esta función se ejecuta cuando se selecciona un cliente
@@ -241,7 +236,27 @@ import { Loading } from '../../components';
                         </option>
                       ))}
                     </select>
+                <div className={inputContainer}>
+                  <button style={{marginBottom: '-2vh', width:"20vw", marginLeft: "1.5vw", padding: "0.4vh", backgroundColor: "white", color: "black"}} onClick={() => setIsListVisible(!isListVisible)}>
+                    {isListVisible ? 'Ocultar opciones' : 'Seleccionar productos'}
+                  </button>
+                  {isListVisible && (
+                    <div className={listaFlotante}>
+                      {productosList.map((producto, index) => (
+                        <button
+                          key={index}
+                          onClick={() => toggleProductSelection(producto.id)}
+                          className={`btn ${productos.includes(producto.id) ? 'btn-success' : 'btn-secondary'}`}
+                          style={{backgroundColor:'white'}}
+                        >
+                          ID: {producto.id} - {producto.nombre}
+                          {productos.includes(producto.id) ? ' (Seleccionado)' : ''}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
+              </div>
                 <div className={inputContainer}>
                   <input className={inputText} value={fecha_de_produccion} onChange={(e) => setFechaDeProduccion(e.target.value)} type="date" placeholder='Fecha de produccion' />
                 </div>

@@ -62,6 +62,10 @@ def create_tiene_relation(data: dict):
     if not lista_productos:
         raise HTTPException(status_code=400, detail="La lista de productos no puede estar vacía")
 
+    if disponibilidad in ["Disponible", "disponible", "True", "true", "t"]:
+        disponibilidad = True
+    else:
+        disponibilidad = False
     # Consulta Cypher para crear las relaciones TIENE
     query = f"""
     MATCH (p:Proveedor)
