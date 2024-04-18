@@ -133,7 +133,7 @@ def remove_properties_from_nodes(listIds: List[str], properties_to_remove: List[
 
     # Ejecutar la consulta
     result = session.run(query, listIds=listIds)
-    updated_nits = [record["updated_id"] for record in result]
+    updated_ids = [record["updated_id"] for record in result]
 
-    return {"message": "Propiedades eliminadas correctamente", "updated_nits": updated_id}
+    return {"message": "Propiedades eliminadas correctamente", "updated_nits": updated_ids}
 
