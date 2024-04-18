@@ -114,52 +114,6 @@ import { Loading } from '../../components';
       })
   }, [])
 
-
-  const submit = (event, id) => {
-    event.preventDefault()
-    console.log("fecha", fecha_de_reabastecimiento)
-    if (id === 0) {
-      axios.post("https://frail-maryanne-uvg.koyeb.app/relation/create_reabastece_relation", {
-        almacen_id, 
-        proveedor_id, 
-        monto, 
-        calidad_del_producto,
-        fecha_de_reabastecimiento,
-      }).then(() => {
-        fetchData()
-        setMonto(0)
-        setCalidad_del_producto(0)
-        setFecha_de_reabastecimiento('')
-        setAlmacenId('')
-        setProveedorId('')
-      })
-    } else {
-      axios.put(`https://frail-maryanne-uvg.koyeb.app/update_proveedor/${id}`, {
-        almacen_id, 
-        proveedor_id, 
-        disponibilidad, 
-        tipo_de_producto,
-        fecha_de_produccion,
-      }).then(() => {
-        fetchData()
-        setDisponibilidad('')
-        setFechaDeProduccion('')
-        setTipoDeProducto('')
-        setAlmacenId('')
-        setProveedorId('')
-      })
-    }
-  }
-  
-  const deleteData = (id) => {
-    console.log("id",id)
-    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_reabastece_relation/${id}`)
-      .then(() => {
-        fetchData()
-      })
-  }
-
-
   const fetchData = () => {  
     setLoading(true)
 
@@ -183,6 +137,69 @@ import { Loading } from '../../components';
         setLoading(false)
       })  
   }
+  
+
+  const submit = (event, id) => {
+    event.preventDefault()
+    console.log("fecha", fecha_de_reabastecimiento)
+    if (id === 0) {
+      axios.post("https://frail-maryanne-uvg.koyeb.app/relation/create_reabastece_relation", {
+        almacen_id, 
+        proveedor_id, 
+        monto, 
+        calidad_del_producto,
+        fecha_de_reabastecimiento,
+      }).then(() => {
+        fetchData()
+        setMonto(0)
+        setCalidad_del_producto(0)
+        setFecha_de_reabastecimiento('')
+        setAlmacenId('')
+        setProveedorId('')
+      })
+    } else {
+      axios.put(`https://frail-maryanne-uvg.koyeb.app/relation/update_reabastece_relation/${id}`, {
+        almacen_id, 
+        proveedor_id, 
+        disponibilidad, 
+        tipo_de_producto,
+        fecha_de_produccion,
+      }).then(() => {
+        fetchData()
+        setId('')
+        setAlmacenId('')
+        setProveedorId('')
+        setFecha_de_reabastecimiento('')
+        setMonto(0)
+        setCalidad_del_producto(0)
+      })
+    }
+  }
+
+  function formatDateInfo(dateObject) {
+    const { _Date__year, _Date__month, _Date__day } = dateObject;
+  
+    // Añade un cero adelante si el mes o el día son menores de 10 para asegurar el formato correcto
+    const month = _Date__month < 10 ? `0${_Date__month}` : _Date__month;
+    const day = _Date__day < 10 ? `0${_Date__day}` : _Date__day;
+  
+    return `${_Date__year}-${month}-${day}`;
+  }
+  
+  const editReabastece = (id) => {
+    console.log("id",id)
+    axios.get(`https://frail-maryanne-uvg.koyeb.app/get_relation_reabastece/${id}`)
+      .then((res) => {
+        console.log("informacionnnnnnnnnn",res)
+        setAlmacenId(res.data.almacen_id)
+        setProveedorId(res.data.proveedor_id)
+        setFecha_de_reabastecimiento(formatDateInfo(res.data.fecha_de_reabastecimiento))
+        setMonto(res.data.monto)
+        setCalidad_del_producto(res.data.calidad_del_producto)
+      })
+  }
+
+
 
   const formatDate = (date) => {
     // Assuming date._Date__month is zero-indexed
@@ -267,7 +284,6 @@ import { Loading } from '../../components';
                 <th>Fecha de reabastecimiento</th>
                 <th>ID Proveedor</th>
                 <th>Editar</th>
-                <th>Eliminar</th>
               </thead>
               <tbody>
                 {console.log("dddd", currentData)}
@@ -277,16 +293,11 @@ import { Loading } from '../../components';
                     <td>{rest.REABASTECE.monto}</td>
                     <td>{rest.REABASTECE.calidad_del_producto}</td>
                     {console.log("dddd", rest.REABASTECE.fecha_de_reabastecimiento)}
-                    <td>{rest.REABASTECE.fecha_de_reabastecimiento ? formatDate(rest.REABASTECE.fecha_de_reabastecimiento) : 'No disponible'}</td>
+                    <td>{rest.REABASTECE.fecha_de_reabastecimiento ? formatDateInfo(rest.REABASTECE.fecha_de_reabastecimiento) : 'No disponible'}</td>
                     <td>{rest.PROVEEDOR.id}</td>
                     <td>
-                      <button onClick={() => submit()} className={editButton} type="submit" name="action">
+                      <button onClick={() => editReabastece(rest.REABASTECE.id)} className={editButton} type="submit" name="action">
                         <i className="material-icons ">edit</i>
-                      </button>
-                    </td>
-                    <td>
-                      <button onClick={() => deleteData(rest.REABASTECE.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
-                        <i className="material-icons ">delete</i>
                       </button>
                     </td>
                   </tr>
