@@ -1,0 +1,3 @@
+import RelacionPromocionaPublicidad from "./RelacionPromocionaPublicidad"
+
+export default RelacionPromocionaPublicidad

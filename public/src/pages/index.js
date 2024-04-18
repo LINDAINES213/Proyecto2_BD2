@@ -12,6 +12,7 @@ import RelacionTiene from "./RelacionTiene"
 import Estadisticas from "./Estadisticas"
 import RelacionReabastece from "./RelacionReabastece"
 import RelacionBrindaInformacion from "./RelacionBrindaInformacion"
+import RelacionPromocionaPublicidad from "./RelacionPromocionaPublicidad"
 
 export {
     Proveedores,
@@ -27,5 +28,6 @@ export {
     RelacionTiene,
     Estadisticas,
     RelacionReabastece,
-    RelacionBrindaInformacion
+    RelacionBrindaInformacion,
+    RelacionPromocionaPublicidad
 }

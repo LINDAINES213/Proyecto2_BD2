@@ -3,11 +3,11 @@ import axios from 'axios';
 
 import { buttonContainer, inputContainer, inputText, crud, editButton, scrollableTable,
   formGrid, centeredDiv
- } from './RelacionBrindaInformacion.module.css'
+ } from './RelacionPromocionaPublicidad.module.css'
 import { Loading } from '../../components';
 
- const RelacionBrindaInformacion = () => {
-  const [brindaInformacion, setBrindaInformacion] = useState([])
+ const RelacionPromocionaPublicidad = () => {
+  const [promocionaPublicidad, setPromocionaPublicidad] = useState([])
   const [id, setId] = useState(0)
   const [codigo_producto, setCodigo_producto] = useState([])
   const [cantidad, setCantidad] = useState([])
@@ -15,14 +15,14 @@ import { Loading } from '../../components';
   const [loading, setLoading] = useState(false)
   const [codigoProducto, setCodigoProducto] = useState(''); // Para el input actual
 
-  const [fecha_brindada, setFecha_brindada] = useState('');
-  const [presupuesto, setPresupuesto] = useState(0);
-  const [solicitud, setSolicitud] = useState('');
+  const [fecha_asignado, setFecha_asignado] = useState('');
+  const [tiempo_asignado, setTiempo_asignado] = useState(0);
+  const [trabajo_a_realizar, setTrabajo_a_realizar] = useState('');
 
-  const [almacen_id, setAlmacenId] = useState('');
+  const [personal_id, setPersonalId] = useState('');
   const [publicidad_id, setPublicidadId] = useState('')
   const [publicidadList, setPublicidadList] = useState([]);
-  const [almacenList, setAlmacenList] = useState([]);
+  const [personalList, setPersonalList] = useState([]);
   const [cant, setCant] = useState('')
   const [publicidad_delete, setPublicidadDelete] = useState('');
 
@@ -70,25 +70,25 @@ import { Loading } from '../../components';
   const pageSize = 10; 
   const startIndex = currentPage * pageSize;
   const endIndex = startIndex + pageSize;
-  console.log("Brinda Informacion", brindaInformacion)
-  const brindaInformacionSeguros = brindaInformacion ?? [];
-  const currentData = brindaInformacionSeguros.slice(startIndex, endIndex);
+  console.log("Brinda Informacion", promocionaPublicidad)
+  const promocionaPublicidadSeguros = promocionaPublicidad ?? [];
+  const currentData = promocionaPublicidadSeguros.slice(startIndex, endIndex);
   console.log(startIndex,endIndex,currentData)
 
-  const pageCount = Math.ceil(brindaInformacionSeguros.length / pageSize);
+  const pageCount = Math.ceil(promocionaPublicidadSeguros.length / pageSize);
   const nextPage = () => { setCurrentPage(current => (current + 1 < pageCount) ? current + 1 : current); };
   const prevPage = () => { setCurrentPage(current => (current - 1 >= 0) ? current - 1 : current);};
 
   useEffect(() => {
     setLoading(true)
-    axios.get('https://frail-maryanne-uvg.koyeb.app/relation/BrindaInformacion')
+    axios.get('https://frail-maryanne-uvg.koyeb.app/relation/PromocionaPublicidad')
       .then(response => {
-        setBrindaInformacion(response.data.response);
+        setPromocionaPublicidad(response.data.response);
         setId(0)
-        setFecha_brindada('')
-        setPresupuesto(0)
-        setSolicitud('')
-        setAlmacenId('')
+        setFecha_asignado('')
+        setTiempo_asignado(0)
+        setTrabajo_a_realizar('')
+        setPersonalId('')
         setPublicidadId('')
       })
       .catch((error) => {
@@ -103,9 +103,9 @@ import { Loading } from '../../components';
           console.error('Error fetching data:', error)
         })
 
-        axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Almacen')
+        axios.get('https://frail-maryanne-uvg.koyeb.app/nodes/Personal')
         .then(response => {
-          setAlmacenList(response.data.response);
+          setPersonalList(response.data.response);
         })
         .catch((error) => {
           console.error('Error fetching data:', error)
@@ -116,20 +116,20 @@ import { Loading } from '../../components';
 
   const submit = (event, id) => {
     event.preventDefault()
-    console.log("fecha", fecha_brindada)
+    console.log("fecha", fecha_asignado)
     if (id === 0) {
-      axios.post("https://frail-maryanne-uvg.koyeb.app/relation/create_brinda_informacion_relation", {
-        almacen_id, 
+      axios.post("https://frail-maryanne-uvg.koyeb.app/relation/create_promocionar_publicidad_relation", {
         publicidad_id, 
-        solicitud, 
-        presupuesto,
-        fecha_brindada,
+        personal_id, 
+        trabajo_a_realizar, 
+        tiempo_asignado,
+        fecha_asignado,
       }).then(() => {
         fetchData()
-        setFecha_brindada('')
-        setPresupuesto(0)
-        setSolicitud('')
-        setAlmacenId('')
+        setFecha_asignado('')
+        setTiempo_asignado(0)
+        setTrabajo_a_realizar('')
+        setPersonalId('')
         setPublicidadId('')
       })
     } else {
@@ -141,10 +141,10 @@ import { Loading } from '../../components';
         fecha_de_produccion,
       }).then(() => {
         fetchData()
-        setFecha_brindada('')
-        setPresupuesto(0)
-        setSolicitud('')
-        setAlmacenId('')
+        setFecha_asignado('')
+        setTiempo_asignado(0)
+        setTrabajo_a_realizar('')
+        setPersonalId('')
         setPublicidadId('')
       })
     }
@@ -152,7 +152,7 @@ import { Loading } from '../../components';
   
   const deleteData = (id) => {
     console.log("id",id)
-    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_brinda_informacion_relation/${id}`)
+    axios.delete(`https://frail-maryanne-uvg.koyeb.app/delete_promocionar_publicidad_relation/${id}`)
       .then(() => {
         fetchData()
       })
@@ -164,15 +164,15 @@ import { Loading } from '../../components';
 
     //const parsedLimit = parseInt(limit)
     //const isLimitInteger = !isNaN(parsedLimit) && Number.isInteger(parsedLimit)    const url = 'https://frail-maryanne-uvg.koyeb.app/nodes/Producto'
-    const url = 'https://frail-maryanne-uvg.koyeb.app/relation/BrindaInformacion'
+    const url = 'https://frail-maryanne-uvg.koyeb.app/relation/PromocionaPublicidad'
   
     axios.get(url)
       .then((res) => {
         setBrindaInformacion(res.data.response)
-        setFecha_brindada('')
-        setPresupuesto(0)
-        setSolicitud('')
-        setAlmacenId('')
+        setFecha_asignado('')
+        setTiempo_asignado(0)
+        setTrabajo_a_realizar('')
+        setPersonalId('')
         setPublicidadId('')
       })
       .catch((error) => {
@@ -191,7 +191,7 @@ import { Loading } from '../../components';
 
   const renderTable = () => {
     if (loading) {
-      console.log("info", brindaInformacion)
+      console.log("info", promocionaPublicidad)
       return (
         <div className={centeredDiv}>
           <Loading />
@@ -209,15 +209,15 @@ import { Loading } from '../../components';
                 <div className={inputContainer}>
                   <select
                     className={inputText}
-                    value={almacen_id} // Aquí se almacena el ID del cliente seleccionado
+                    value={personal_id} // Aquí se almacena el ID del cliente seleccionado
                     onChange={handleAlmacenChange} // Esta función se ejecuta cuando se selecciona un cliente
-                    placeholder='Seleccione un Almacen'
+                    placeholder='Seleccione una Persona'
                   >
                     {/* Opción por defecto */}
-                    <option value="">Seleccione un almacen</option>
-                    {almacenList.map((almacen, index) => (
-                      <option key={index} value={almacen.id}>
-                        ID: {almacen.id} {almacen.nombre}
+                    <option value="">Seleccione una persona</option>
+                    {personalList.map((personal, index) => (
+                      <option key={index} value={personal.id}>
+                        ID: {personal.id} {personal.nombre}
                       </option>
                     ))}
                   </select>
@@ -227,7 +227,7 @@ import { Loading } from '../../components';
                       className={inputText}
                       value={publicidad_id} // Aquí se almacena el ID del cliente seleccionado
                       onChange={handleProveedorChange} // Esta función se ejecuta cuando se selecciona un cliente
-                      placeholder='Seleccione un proveedor'
+                      placeholder='Seleccione una Publicidad'
                     >
                       {/* Opción por defecto */}
                       <option value="">Seleccione una Publicidad</option>
@@ -239,15 +239,15 @@ import { Loading } from '../../components';
                     </select>
                 </div>
                 <div className={inputContainer}>
-                  <input className={inputText} value={presupuesto} onChange={(e) => setPresupuesto(e.target.value)} type="number" placeholder='Presupuesto' />
+                  <input className={inputText} value={tiempo_asignado} onChange={(e) => setTiempo_asignado(e.target.value)} type="number" placeholder='tiempo_asignado' />
                 </div>
               </div>
               <div className={formGrid}>
                 <div className={inputContainer}>
-                  <input className={inputText} value={solicitud} onChange={(e) => setSolicitud(e.target.value)} type="text" placeholder='Solicitud' />
+                  <input className={inputText} value={trabajo_a_realizar} onChange={(e) => setTrabajo_a_realizar(e.target.value)} type="text" placeholder='trabajo_a_realizar' />
                 </div>
                 <div className={inputContainer}>
-                  <input className={inputText} value={fecha_brindada} onChange={(e) => setFecha_brindada(e.target.value)} type="date" placeholder='Fecha brindada' />
+                  <input className={inputText} value={fecha_asignado} onChange={(e) => setFecha_asignado(e.target.value)} type="date" placeholder='Fecha brindada' />
                   <div className={buttonContainer}>
                     <button className=" btn btn-sm btn-primary waves-effect waves-light right" style={{padding: "0.5vh"}} type="submit" name="action"> Enviar  
                     <i className="material-icons right"> send</i>
@@ -260,23 +260,23 @@ import { Loading } from '../../components';
           <div className={scrollableTable}>
             <table className='table'>
               <thead>
-                <th>ID Almacen</th>
-                <th>Presupuesto</th>
-                <th>Solicitud</th>
-                <th>Fecha_brindada</th>
+                <th>ID Persona</th>
+                <th>tiempo_asignado</th>
+                <th>trabajo_a_realizar</th>
+                <th>fecha_asignado</th>
                 <th>ID Publicidad</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
               </thead>
               <tbody>
                 {console.log("dddd", currentData)}
-                {currentData.filter(rest => rest.BRINDAINFORMACION && Object.keys(rest.BRINDAINFORMACION).length > 0).map((rest) =>
-                  <tr key={rest.BRINDAINFORMACION.id}>
-                    <td>{rest.ALMACEN.id}</td>
-                    <td>{rest.BRINDAINFORMACION.presupuesto}</td>
-                    <td>{rest.BRINDAINFORMACION.solicitud}</td>
-                    {console.log("dddd", rest.BRINDAINFORMACION.fecha_brindada)}
-                    <td>{rest.BRINDAINFORMACION.fecha_brindada ? formatDate(rest.BRINDAINFORMACION.fecha_brindada) : 'No disponible'}</td>
+                {currentData.filter(rest => rest.PROMOCIONAPUBLICIDAD && Object.keys(rest.PROMOCIONAPUBLICIDAD).length > 0).map((rest) =>
+                  <tr key={rest.PROMOCIONAPUBLICIDAD.id}>
+                    <td>{rest.PERSONAL.id}</td>
+                    <td>{rest.PROMOCIONAPUBLICIDAD.tiempo_asignado}</td>
+                    <td>{rest.PROMOCIONAPUBLICIDAD.trabajo_a_realizar}</td>
+                    {console.log("dddd", rest.PROMOCIONAPUBLICIDAD.fecha_asignado)}
+                    <td>{rest.PROMOCIONAPUBLICIDAD.fecha_asignado ? formatDate(rest.PROMOCIONAPUBLICIDAD.fecha_asignado) : 'No disponible'}</td>
                     <td>{rest.PUBLICIDAD.id}</td>
                     <td>
                       <button onClick={() => submit()} className={editButton} type="submit" name="action">
@@ -284,7 +284,7 @@ import { Loading } from '../../components';
                       </button>
                     </td>
                     <td>
-                      <button onClick={() => deleteData(rest.BRINDAINFORMACION.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
+                      <button onClick={() => deleteData(rest.PROMOCIONAPUBLICIDAD.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
                         <i className="material-icons ">delete</i>
                       </button>
                     </td>
@@ -326,4 +326,4 @@ import { Loading } from '../../components';
   )
 }
 
-export default RelacionBrindaInformacion
+export default RelacionPromocionaPublicidad
