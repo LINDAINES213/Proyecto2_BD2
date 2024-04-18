@@ -131,3 +131,4 @@ def delete_proveedor(id: str):
     session.run(query, id=id)
 
     return {"response": "Proveedor deleted successfully"}
+

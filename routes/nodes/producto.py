@@ -1,6 +1,9 @@
 import uuid
 from fastapi import APIRouter
 from database.db import connection
+from typing import List
+from http.client import HTTPException
+
 
 # Definir un enrutador de API para la sección de usuarios
 producto = APIRouter()
@@ -108,3 +111,29 @@ def delete_producto(id: str):
     session.run(query, id=id)
 
     return {"response": "producto deleted successfully"}
+
+@producto.put("/node/remove_properties/Producto")
+def remove_properties_from_nodes(listIds: List[str], properties_to_remove: List[str]):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+
+    listIds = [int(idV) for idV in listIds]
+    # Asegurar que se reciben los parámetros necesarios
+    if not listIds or not properties_to_remove:
+        raise HTTPException(status_code=400, detail="Se requieren los NITs de los proveedores y las propiedades a eliminar.")
+
+    # Construir la parte de la consulta para eliminar propiedades
+    properties_removal = ', '.join(f'p.{prop} = NULL' for prop in properties_to_remove)
+    query = f"""
+    MATCH (p:Producto)
+    WHERE p.id IN $listIds
+    SET {properties_removal}
+    RETURN p.id as updated_id
+    """
+
+    # Ejecutar la consulta
+    result = session.run(query, listIds=listIds)
+    updated_nits = [record["updated_id"] for record in result]
+
+    return {"message": "Propiedades eliminadas correctamente", "updated_nits": updated_id}
+

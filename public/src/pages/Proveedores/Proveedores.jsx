@@ -16,8 +16,6 @@ import { Loading } from '../../components';
   const [tipo_de_producto, setTipo_de_producto] = useState('')
   const [selectedOption, ] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
-
-
   const [providerId, setProviderId] = useState('');
   const [providerData, setProviderData] = useState(null);
   const [isLoadingSearch, setIsLoadingSearch] = useState(false);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { buttonContainer, inputContainer, inputText, crud, leftAligned, editButton, scrollableTable,
+import { buttonContainer, inputContainer, inputText, crud, leftAligned, scrollableTable, floatingWindow, productList, productItem, productButton, listaFlotante,
   formGrid, centeredDiv,
  } from './Productos.module.css'
 import Loading from '../../components/Loading';
@@ -16,6 +16,11 @@ const Productos = () => {
   const [limit, setLimit] = useState()
   const [selectedOption, setSelectedOption] = useState('verUsuarios')
   const [loading, setLoading] = useState(false)
+  const [isListVisible, setIsListVisible] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [listCategories, setListCategories] = useState(['nombre','descripcion','categoria','precio','precio_al_por_mayor'])
+  const [listIds, setListIds] = useState([]);
+  const [valId, setValId] = useState('')
 
   // Paginacion
   const [currentPage, setCurrentPage] = useState(0);
@@ -112,6 +117,43 @@ const Productos = () => {
       })  
   }
 
+  const handleInputChangeId = (e) => {
+    setValId(e.target.value);
+  };
+
+  const handleAddId = () => {
+    setListIds([...listIds, valId]); // Añade el entero al array
+    setValId(''); // Limpia el input
+  };  
+
+  const handleDeleteId = (codigo) => {
+    setListIds(listIds.filter(c => c !== codigo)); // Elimina el código del array
+  };
+
+  const toggleCategoriesSelection = (cat) => {
+    if (categories.includes(cat)) {
+      setCategories(categories.filter(id => id !== cat));
+    } else {
+      setCategories([...categories, cat]);
+    }
+  };
+
+  const deleteProperties = () => {
+    console.log("jeje", listIds, categories);
+
+    axios.put('https://frail-maryanne-uvg.koyeb.app/node/remove_properties/Producto', {
+        listIds: listIds,
+        properties_to_remove: categories
+    })
+    .then(() => {
+        fetchData();
+        setListIds([]);
+        setCategories([]);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  }
   const renderTable = () => {
     if (loading) {
       return (
@@ -158,27 +200,23 @@ const Productos = () => {
           <div className={scrollableTable}>
             <table className='table'>
               <thead>
+                <th>Codigo Producto</th>
                 <th>Nombre</th>
                 <th>Descripcion</th>
                 <th>Categoria</th>
                 <th>Precio</th>
                 <th>Precio al por mayor</th>
-                <th>Editar</th>
                 <th>Eliminar</th>
               </thead>
               <tbody>
                 {currentData.map(rest =>
                       <tr key={rest.id}>
+                        <td>{rest.id || "sin datos"}</td>
                         <td className={leftAligned}>{rest.nombre || "sin datos"}</td>
                         <td>{rest.descripcion || "sin datos"}</td>
                         <td>{rest.categoria || "sin datos"}</td>
                         <td>{rest.precio ? `$${rest.precio}` : "sin datos"}</td>
                         <td>{rest.precio_al_por_mayor ? `$${rest.precio_al_por_mayor}` : "sin datos"}</td>
-                        <td>
-                          <button onClick={() => submit()} className={editButton} type="submit" name="action">
-                            <i className="material-icons ">edit</i>
-                          </button>
-                        </td>
                         <td>
                           <button onClick={() => deleteData(rest.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
                             <i className="material-icons ">delete</i>
@@ -205,6 +243,58 @@ const Productos = () => {
             <button onClick={() => setCurrentPage(pageCount - 1)} disabled={currentPage + 1 >= pageCount} className="btn btn-primary">
               Ir al final
             </button>
+          </div>
+          <div style={{ marginTop: '20px' }}>
+            <div className={formGrid}>
+              <div className={inputContainer}>
+                <button style={{marginBottom: '-2vh', marginTop:'-2vh', width:"20vw", marginLeft: "1.5vw", padding: "0.4vh", backgroundColor: "white", color: "black"}} onClick={() => setIsListVisible(!isListVisible)}>
+                  {isListVisible ? 'Ocultar opciones' : 'Seleccionar categoria/s a eliminar'}
+                </button>
+                {isListVisible && (
+                  <div className={listaFlotante}>
+                    {listCategories.map((cat, index) => (
+                      <button
+                        key={index}
+                        onClick={() => toggleCategoriesSelection(cat)}
+                        className={`btn ${categories.includes(cat) ? 'btn-success' : 'btn-secondary'}`}
+                        style={{backgroundColor:'white'}}
+                      >
+                        Categoria: {cat}
+                        {categories.includes(cat) ? ' (Seleccionado)' : ''}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className={inputContainer}>
+                <input
+                  className={inputText}
+                  value={valId}
+                  onChange={handleInputChangeId}
+                  placeholder='Ingrese un ID'
+                  type='text'
+                />
+                <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={handleAddId}>Añadir+</button>
+                {console.log("codigo", listIds)}
+                {listIds.length > 0 ? (
+                  <div className={floatingWindow} style={{left: "39vw", top: "84vh", width: "19vw"}}>
+                    <ul className={productList}>
+                      {listIds.map((codigo, index) => (
+                        <li key={index} className={productItem}>
+                          Relacion {index} con ID ➡️ {codigo}
+                          <button type="button" className={productButton} style={{ backgroundColor: "transparent"}} onClick={() => handleDeleteId(codigo)}>
+                            ❌
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  null
+                )}
+                <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw', width: "10vw", backgroundColor: "green"}} onClick={deleteProperties}>Eliminar propiedad/es</button>
+              </div>
+            </div>
           </div>
         </div>
         )
