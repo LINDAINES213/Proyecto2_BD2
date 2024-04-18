@@ -160,3 +160,30 @@ def delete_proveedor(id: str):
 
     return {"response": "Proveedor deleted successfully"}
 
+
+@proveedor.get("/get_similares/{id}")
+def get_similares(id: str):
+    driver_neo4j = connection()
+    session = driver_neo4j.session()
+    
+    # Consulta Cypher para obtener los datos del Proveedor por su ID
+    query = f"""MATCH (p:Proveedor {id: $id})
+MATCH (p2:Producto)
+WHERE p1 <> p2 AND p1.categoria = p2.categoria AND p2.nombre IS NOT NULL
+RETURN p2.nombre AS recommendedProduct
+"""
+    
+    # Ejecutar la consulta Cypher
+    results = session.run(query)
+    
+    # Obtener los datos del proveedor del resultado de la consulta
+    similitudes_data = results.single()
+
+    # Verificar si se encontraron datos para el proveedor
+    if similitudes_data:
+        # Convertir el resultado a un diccionario
+        similitud_dict = dict(similitudes_data)
+        return similitud_dict
+    else:
+        return {"error": "Proveedor no encontrado"}
+
