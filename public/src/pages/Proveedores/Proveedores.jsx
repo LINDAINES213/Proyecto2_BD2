@@ -61,11 +61,6 @@ import { Loading } from '../../components';
       setProducts(newProducts);
   };
 
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log('Enviando productos:', products);
-  };
-
   const addProduct = () => {
       const newProducts = [...products, emptyProduct];
       setProducts(newProducts);
@@ -91,7 +86,23 @@ import { Loading } from '../../components';
   const pageSize = 10; 
   const startIndex = currentPage * pageSize;
   const endIndex = startIndex + pageSize;
-  const productosSeguros = proveedores ?? [];
+  // Asegúrate de que 'proveedores' es un array antes de intentar ordenarlo.
+  const productosSeguros = proveedores ? [...proveedores].sort((a, b) => {
+    // Convertir nombres a minúsculas, tratando null o undefined como string vacío para el ordenamiento
+    const nameA = a.nombre ? a.nombre.toLowerCase() : '';
+    const nameB = b.nombre ? b.nombre.toLowerCase() : '';
+  
+    // Colocar elementos sin nombre al final
+    if (!nameA && nameB) return 1; // Si a no tiene nombre, b va primero
+    if (nameA && !nameB) return -1; // Si b no tiene nombre, a va primero
+    if (!nameA && !nameB) return 0; // Si ambos no tienen nombre, se consideran iguales
+  
+    // Ordenamiento alfabético normal
+    return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+  }) : [];
+  
+
+
   const currentData = productosSeguros.slice(startIndex, endIndex);
   const pageCount = Math.ceil(productosSeguros.length / pageSize);
   const nextPage = () => { setCurrentPage(current => (current + 1 < pageCount) ? current + 1 : current); };
@@ -118,35 +129,19 @@ import { Loading } from '../../components';
 
   const submit = (event, id) => {
     event.preventDefault()
+    console.log("infoID", id)
     if (id === 0) {
-      axios.post("https://frail-maryanne-uvg.koyeb.app/create_proveedor", {
-        nombre,
-        direccion,
-        telefono,
-        email,
-        tipo_de_producto
-      }).then(() => {
+      axios.post("https://frail-maryanne-uvg.koyeb.app/create_proveedor", products).then(response => {
+        console.log("Respuesta del servidor:", response.data);  
         fetchData()
-        setNombre('')
-        setDireccion('')
-        setTelefono('')
-        setEmail('')
-        setTipo_de_producto('')
+        setCurrentIndex(0)
+        setProducts([emptyProduct])
       })
     } else {
-      axios.put(`https://frail-maryanne-uvg.koyeb.app/update_proveedor/${id}`, {
-        nombre,
-        direccion,
-        telefono,
-        email,
-        tipo_de_producto
-      }).then(() => {
+      axios.put(`https://frail-maryanne-uvg.koyeb.app/update_proveedores`,products).then(() => {
         fetchData()
-        setNombre('')
-        setDireccion('')
-        setTelefono('')
-        setEmail('')
-        setTipo_de_producto('')
+        setCurrentIndex(0)
+        setProducts([emptyProduct])
       })
     }
   }
@@ -171,6 +166,7 @@ import { Loading } from '../../components';
     axios.get(url)
       .then((res) => {
         setProveedores(res.data.response)
+        setCurrentIndex(0)
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
@@ -179,6 +175,25 @@ import { Loading } from '../../components';
         setLoading(false)
       })  
   }
+
+  const handleEdit = (productToEdit) => {
+    let index = products.findIndex(p => p.id === productToEdit.id);
+    setId(-1)
+    if (index !== -1) {
+        // Producto encontrado, establece el índice
+        setCurrentIndex(index);
+    } else {       // Producto no encontrado
+      if (products.length === 1 && products[0].id === undefined) {
+          // Si el único producto es el producto vacío, reemplázalo
+          setProducts([productToEdit]);
+          setCurrentIndex(0);
+      } else {
+          // Añade el nuevo producto y actualiza el índice
+          setProducts([...products, productToEdit]);
+          setCurrentIndex(products.length); // El nuevo índice es el último
+      }
+    }
+  };
 
   const renderTable = () => {
     if (loading) {
@@ -243,6 +258,7 @@ import { Loading } from '../../components';
                 <th>Telefono</th>
                 <th>Email</th>
                 <th>Tipo de producto</th>
+                <th>Editar</th>
                 <th>Eliminar</th>
               </thead>
               <tbody>
@@ -253,6 +269,11 @@ import { Loading } from '../../components';
                         <td>{rest.telefono}</td>
                         <td>{rest.email}</td>
                         <td>{rest.tipo_de_producto}</td>
+                        <td>
+                          <button className={editButton} type="button" onClick={() => handleEdit(rest)}>
+                            <i className="material-icons ">edit</i>
+                          </button>
+                        </td>
                         <td>
                           <button onClick={() => deleteData(rest.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
                             <i className="material-icons ">delete</i>

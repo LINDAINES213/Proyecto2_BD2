@@ -123,19 +123,25 @@ def update_proveedores(proveedores_data: list):
     driver_neo4j = connection()
     session = driver_neo4j.session()
 
+    # Preparar los datos eliminando el 'id' de las propiedades a actualizar
+    clean_data = []
+    for proveedor in proveedores_data:
+        # Crear una copia del diccionario excepto la propiedad 'id'
+        properties = {k: v for k, v in proveedor.items() if k != 'id'}
+        clean_data.append({'id': proveedor['id'], 'properties': properties})
+
     query = '''
     UNWIND $proveedores AS proveedor_data
-    MATCH (p:Proveedor)
-    WHERE p.id = proveedor_data.id
+    MATCH (p:Proveedor {id: proveedor_data.id})
     SET p += proveedor_data.properties
     RETURN p
     '''
 
-    
-    result = session.run(query, proveedores=proveedores_data)
+    result = session.run(query, proveedores=clean_data)
     updated_proveedores_info = [dict(record["p"]) for record in result]
 
     return {"response": updated_proveedores_info}
+
 
 
 @proveedor.delete("/delete_proveedor/{id}")
