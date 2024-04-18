@@ -122,7 +122,7 @@ def update_proveedor(id: str, updated_data: dict):
 def update_proveedores(proveedores_data: List[Dict]):
     driver_neo4j = connection()
     session = driver_neo4j.session()
-
+    # Hola
     # Preparar los datos eliminando el 'id' de las propiedades a actualizar
     clean_data = []
     for proveedor in proveedores_data:
