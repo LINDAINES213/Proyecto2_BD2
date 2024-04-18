@@ -52,15 +52,12 @@ import { Loading } from '../../components';
   };
 
   const handleAddId = () => {
-    const intId = parseInt(valId, 10); // Convierte cant a un entero base 10
-    if (!isNaN(intId)) { // Asegura que intCant es un número
-      setListIds([...listIds, intId]); // Añade el entero al array
-      setValId(''); // Limpia el input
-    }
+    setListIds([...listIds, valId]); // Añade el entero al array
+    setValId(''); // Limpia el input
   };  
 
   const handleDeleteId = (codigo) => {
-    setCantidad(listIds.filter(c => c !== codigo)); // Elimina el código del array
+    setListIds(listIds.filter(c => c !== codigo)); // Elimina el código del array
   };
 
   const handleAlmacenChange = (event) => {
@@ -216,6 +213,7 @@ import { Loading } from '../../components';
 
 
   const deleteProperties = () => {
+    console.log("jeje",listIds, categories)
     axios.put(`https://frail-maryanne-uvg.koyeb.app/relation/remove_properties`, {
       listIds,
       categories
