@@ -210,12 +210,12 @@ const Productos = () => {
               <tbody>
                 {currentData.map(rest =>
                       <tr key={rest.id}>
-                        <td>{rest.id || "sin datos"}</td>
-                        <td className={leftAligned}>{rest.nombre || "sin datos"}</td>
-                        <td>{rest.descripcion || "sin datos"}</td>
-                        <td>{rest.categoria || "sin datos"}</td>
-                        <td>{rest.precio ? `$${rest.precio}` : "sin datos"}</td>
-                        <td>{rest.precio_al_por_mayor ? `$${rest.precio_al_por_mayor}` : "sin datos"}</td>
+                        <td>{rest.id || "Sin datos"}</td>
+                        <td className={leftAligned}>{rest.nombre || "Sin datos"}</td>
+                        <td>{rest.descripcion || "Sin datos"}</td>
+                        <td>{rest.categoria || "Sin datos"}</td>
+                        <td>{rest.precio ? `$${rest.precio}` : "Sin datos"}</td>
+                        <td>{rest.precio_al_por_mayor ? `$${rest.precio_al_por_mayor}` : "Sin datos"}</td>
                         <td>
                           <button onClick={() => deleteData(rest.id)} className="btn btn-sm btn-danger waves-light " type="submit" name="action">
                             <i className="material-icons ">delete</i>
@@ -247,7 +247,7 @@ const Productos = () => {
             <div className={formGrid}>
               <div className={inputContainer}>
                 <button style={{marginBottom: '-2vh', marginTop:'-2vh', width:"20vw", marginLeft: "1.5vw", padding: "0.4vh", backgroundColor: "white", color: "black"}} onClick={() => setIsListVisible(!isListVisible)}>
-                  {isListVisible ? 'Ocultar opciones' : 'Seleccionar categoria/s a eliminar'}
+                  {isListVisible ? 'Ocultar opciones' : 'Seleccionar propiedad/es a eliminar'}
                 </button>
                 {isListVisible && (
                   <div className={listaFlotante}>
@@ -276,7 +276,7 @@ const Productos = () => {
                 <button type="button" style={{padding: "1vh", paddingBottom: "0.4vh", paddingTop: "0.4vh", marginLeft: '1vw'}} onClick={handleAddId}>Añadir+</button>
                 {console.log("codigo", listIds)}
                 {listIds.length > 0 ? (
-                  <div className={floatingWindow} style={{right: "39vw", top: "84vh", width: "19vw"}}>
+                  <div className={floatingWindow} style={{right: "41vw", top: "85vh", width: "19vw"}}>
                     <ul className={productList}>
                       {listIds.map((codigo, index) => (
                         <li key={index} className={productItem}>

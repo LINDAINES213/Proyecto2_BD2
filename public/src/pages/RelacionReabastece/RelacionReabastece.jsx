@@ -355,7 +355,7 @@ import { Loading } from '../../components';
             <div className={formGrid}>
               <div className={inputContainer}>
                 <button style={{marginBottom: '-2vh', marginTop:'-2vh', width:"20vw", marginLeft: "1.5vw", padding: "0.4vh", backgroundColor: "white", color: "black"}} onClick={() => setIsListVisible(!isListVisible)}>
-                  {isListVisible ? 'Ocultar opciones' : 'Seleccionar categoria/s a eliminar'}
+                  {isListVisible ? 'Ocultar opciones' : 'Seleccionar propiedad/es a eliminar'}
                 </button>
                 {isListVisible && (
                   <div className={listaFlotante}>
