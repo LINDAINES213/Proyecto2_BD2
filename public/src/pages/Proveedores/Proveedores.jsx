@@ -129,7 +129,7 @@ import { Loading } from '../../components';
 
   const submit = (event, id) => {
     event.preventDefault()
-    console.log("infoID", id)
+    console.log("infoID", products)
     if (id === 0) {
       axios.post("https://frail-maryanne-uvg.koyeb.app/create_proveedor", products).then(response => {
         console.log("Respuesta del servidor:", response.data);  
