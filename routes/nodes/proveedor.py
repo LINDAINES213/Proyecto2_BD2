@@ -118,7 +118,7 @@ def update_proveedor(id: str, updated_data: dict):
 
     return {"response": "node updated"}
 
-@proveedor.post("/update_proveedores")
+@proveedor.put("/update_proveedores")
 def update_proveedores(proveedores_data: list):
     driver_neo4j = connection()
     session = driver_neo4j.session()
