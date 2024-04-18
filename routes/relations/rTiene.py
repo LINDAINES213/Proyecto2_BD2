@@ -82,42 +82,37 @@ def create_tiene_relation(data: dict):
     
     return {"message": "Relaciones TIENE creadas correctamente para los productos especificados"}
 
-@tiene.post("/relation/update_tiene_relation")
+@tiene.put("/relation/update_tiene_relation")
 def update_tiene_relation(data: dict):
     driver_neo4j = connection()
 
-    relaciones_actualizadas = data.get("relaciones", [])
-
-    if not relaciones_actualizadas:
-        raise HTTPException(status_code=400, detail="La lista de relaciones a actualizar no puede estar vacía")
 
     queries = []
-    for relacion in relaciones_actualizadas:
-        proveedor_id = relacion.get("proveedor_id")
-        productos = relacion.get("productos", [])  # Lista de IDs de productos
-        disponibilidad = data.get("disponibilidad")
-        tipo_de_producto = data.get("tipo_de_producto")
-        fecha_de_produccion = data.get("fecha_de_produccion")
-        fecha_de_produccion = datetime.strptime(fecha_de_produccion, "%Y-%m-%d").strftime("%Y-%m-%d")
+    proveedor_id = data.get("proveedor_id")
+    productos = data.get("productos", [])  # Lista de IDs de productos
+    disponibilidad = data.get("disponibilidad")
+    tipo_de_producto = data.get("tipo_de_producto")
+    fecha_de_produccion = data.get("fecha_de_produccion")
+    fecha_de_produccion = datetime.strptime(fecha_de_produccion, "%Y-%m-%d").strftime("%Y-%m-%d")
 
-        if not proveedor_id:
-            raise HTTPException(status_code=400, detail="El campo proveedor_id es obligatorio")
+    if not proveedor_id:
+        raise HTTPException(status_code=400, detail="El campo proveedor_id es obligatorio")
 
-        if not productos:
-            raise HTTPException(status_code=400, detail="La lista de productos no puede estar vacía")
+    if not productos:
+        raise HTTPException(status_code=400, detail="La lista de productos no puede estar vacía")
 
-        if disponibilidad in ["Disponible", "disponible", "True", "true", "t"]:
-            disponibilidad = True
-        else:
-            disponibilidad = False
+    if disponibilidad in ["Disponible", "disponible", "True", "true", "t"]:
+        disponibilidad = True
+    else:
+        disponibilidad = False
 
         # Construir la parte de la consulta Cypher para cada relación
-        query = f"""
+    query = f"""
         MATCH (p:Proveedor {{id: '{proveedor_id}'}})-[r:TIENE]->(o:Producto)
         WHERE o.id IN {productos}
         SET r.disponibilidad = {disponibilidad}, r.tipo_de_producto = '{tipo_de_producto}', r.fecha_de_produccion = date("{fecha_de_produccion}")
         """
-        queries.append(query)
+    queries.append(query)
 
     # Unir todas las consultas en una sola
     full_query = "\n".join(queries)
